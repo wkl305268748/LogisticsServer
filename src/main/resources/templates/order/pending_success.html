@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<!-- BEGIN HEAD -->
+<head>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/font-awesome/css/font-awesome.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/simple-line-icons/simple-line-icons.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap/css/bootstrap.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css"/>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/css/components.min.css"
+          rel="stylesheet" id="style_components" type="text/css"/>
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/css/plugins.min.css"
+          rel="stylesheet" type="text/css"/>
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/layouts/layout4/css/layout.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/layouts/layout4/css/themes/default.min.css"
+          rel="stylesheet" type="text/css" id="style_color"/>
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/layouts/layout4/css/custom.min.css"
+          rel="stylesheet" type="text/css"/>
+    <!-- END THEME LAYOUT STYLES -->
+</head>
+<!-- END HEAD -->
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="#">待处理运单列表</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">接单</span>
+    </li>
+</ul>
+
+<div class="row">
+
+    <div class="col-md-12">
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-gift"></i>运单详情 </div>
+            <div class="tools">
+                <a href="javascript:;" class="expand" data-original-title="" title=""> </a>
+            </div>
+        </div>
+        <div class="portlet-body portlet-collapsed form" style="display: none;">
+            <!-- BEGIN FORM-->
+            <div class="form-body">
+            <h4 class="form-section">发货人信息</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">姓名:</label>
+                        <div class="col-md-9">
+                            <p th:text="${pending.send_name}"> </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">手机号:</label>
+                        <div class="col-md-9">
+                            <p th:text="${pending.send_phone}"> </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">发货地址:</label>
+                        <div class="col-md-9">
+                            <p th:text="${pending.send_addr}"> </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <h4 class="form-section">收货人信息</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">姓名:</label>
+                        <div class="col-md-9">
+                            <p th:text="${pending.recive_name}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">手机号:</label>
+                        <div class="col-md-9">
+                            <p th:text="${pending.recive_phone}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">收货地址:</label>
+                        <div class="col-md-9">
+                            <p th:text="${pending.recive_addr}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/row-->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">配送方式:</label>
+                        <div class="col-md-9">
+                            <div th:switch="${pending.dispatching_type}">
+                                <p th:case="'dispatching'" class="label label-info">配送</p>
+                                <p th:case="'since'" class="label label-warning">自提</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!--/span-->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">计划发货时间:</label>
+                        <div class="col-md-9">
+                            <p th:text="${#dates.format(pending.send_time,'yyyy年MM月dd日')}"> </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">限期到达时间:</label>
+                        <div class="col-md-9">
+                            <p th:text="${#dates.format(pending.recive_time,'yyyy年MM月dd日')}"> </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+        </div>
+            <!-- END FORM-->
+        </div>
+    </div>
+
+    <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa fa-truck"></i>
+                <span class="caption-subject font-blue-hoki bold uppercase">派车</span>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <!-- BEGIN FORM-->
+            <form  method="post" th:action="@{pending_success_submit}" class="horizontal-form form-validation" novalidate="novalidate">
+                <input type="hidden" name="order_customer_id" th:value="${pending.id}"/>
+                <div class="">
+                    <h4 class="form-section">派车信息</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group form-md-line-input">
+                                <select class="form-control required" name="driver_id" aria-required="true" aria-invalid="false" id="form_control_1" aria-describedby="delivery-error">
+                                    <option th:each="list : ${driver}" th:value="${list.id}" th:text="${list.name} +'('+ ${list.phone}+')'"></option>
+                                </select>
+                                <span id="delivery-error" class="help-block help-block-error"></span>
+                                <label for="form_control_1">选择司机
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <span class="help-block">选择司机...</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group form-md-line-input">
+                                <select class="form-control required" name="car_id" aria-required="true" aria-invalid="false" id="form_control_2" aria-describedby="delivery-error">
+                                    <option th:each="list : ${car}" th:value="${list.id}" th:text="${list.car_plate} +'('+ ${list.car_type}+')'"></option>
+                                </select>
+                                <span id="delivery-error2" class="help-block help-block-error"></span>
+                                <label for="form_control_2">选择车辆
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <span class="help-block">选择车辆...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="form-section">应收应付</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group form-md-line-input">
+                                <div class="input-group">
+                                    <div class="input-group-control">
+                                        <input type="text" class="form-control required number" name="recive" id="form_control_4" placeholder="输入应收金额"/>
+                                        <label for="form_control_4">应收款
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <span class="help-block">输入应收金额...</span>
+                                    </div>
+                                    <span class="input-group-btn btn-right">
+                                        <p class="label label-warning"> 元
+                                        </p>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group form-md-line-input">
+                                <div class="input-group">
+                                    <div class="input-group-control">
+                                        <input type="text" class="form-control required number" name="pay" id="form_control_5" placeholder="输入应付金额"/>
+                                        <label for="form_control_5">应付款
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <span class="help-block">输入应付金额...</span>
+                                    </div>
+                                    <span class="input-group-btn btn-right">
+                                        <p class="label label-warning"> 元
+                                        </p>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-actions right">
+                    <button type="submit" class="btn green-jungle">
+                        <i class="fa fa-check"></i> 确定派车 </button>
+                    <button type="reset" class="btn default">取消</button>
+                </div>
+            </form>
+            <!-- END FORM-->
+        </div>
+    </div>
+    </div>
+</div>
+<!-- END PAGE BASE CONTENT -->
+
+<!-- BEGIN CORE PLUGINS -->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap/js/bootstrap.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/js.cookie.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery.blockui.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
+        type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/scripts/app.min.js"
+        type="text/javascript"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/layouts/layout4/scripts/layout.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/layouts/layout4/scripts/demo.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/layouts/global/scripts/quick-sidebar.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/layouts/global/scripts/quick-nav.min.js"
+        type="text/javascript"></script>
+<!-- END THEME LAYOUT SCRIPTS -->
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+<script th:src="@{/js/form-validation-role.min.js}" type="text/javascript"></script>
+<!-- END THEME LAYOUT SCRIPTS -->
+</html>

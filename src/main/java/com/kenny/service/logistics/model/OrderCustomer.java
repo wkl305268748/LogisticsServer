@@ -14,13 +14,15 @@ public class OrderCustomer {
     String send_phone;
     String send_addr;
     String send_addr_info;
-    String revice_name;
+    String recive_name;
     String recive_phone;
-    String revice_addr;
-    String revice_addr_info;
+    String recive_addr;
+    String recive_addr_info;
     Date send_time;
-    Date revice_time;
-    String dispatching_type;
+    Date recive_time;
+    String dispatching_type;//dispatching / since
+    String status;//wait待派车、ignor已拒绝、success已派车
+    String remark;
     Date time;
 
     public int getId() {
@@ -79,12 +81,20 @@ public class OrderCustomer {
         this.send_addr = send_addr;
     }
 
-    public String getRevice_name() {
-        return revice_name;
+    public String getSend_addr_info() {
+        return send_addr_info;
     }
 
-    public void setRevice_name(String revice_name) {
-        this.revice_name = revice_name;
+    public void setSend_addr_info(String send_addr_info) {
+        this.send_addr_info = send_addr_info;
+    }
+
+    public String getRecive_name() {
+        return recive_name;
+    }
+
+    public void setRecive_name(String recive_name) {
+        this.recive_name = recive_name;
     }
 
     public String getRecive_phone() {
@@ -95,12 +105,20 @@ public class OrderCustomer {
         this.recive_phone = recive_phone;
     }
 
-    public String getRevice_addr() {
-        return revice_addr;
+    public String getRecive_addr() {
+        return recive_addr;
     }
 
-    public void setRevice_addr(String revice_addr) {
-        this.revice_addr = revice_addr;
+    public void setRecive_addr(String recive_addr) {
+        this.recive_addr = recive_addr;
+    }
+
+    public String getRecive_addr_info() {
+        return recive_addr_info;
+    }
+
+    public void setRecive_addr_info(String recive_addr_info) {
+        this.recive_addr_info = recive_addr_info;
     }
 
     public Date getSend_time() {
@@ -111,28 +129,12 @@ public class OrderCustomer {
         this.send_time = send_time;
     }
 
-    public Date getRevice_time() {
-        return revice_time;
+    public Date getRecive_time() {
+        return recive_time;
     }
 
-    public void setRevice_time(Date revice_time) {
-        this.revice_time = revice_time;
-    }
-
-    public String getSend_addr_info() {
-        return send_addr_info;
-    }
-
-    public void setSend_addr_info(String send_addr_info) {
-        this.send_addr_info = send_addr_info;
-    }
-
-    public String getRevice_addr_info() {
-        return revice_addr_info;
-    }
-
-    public void setRevice_addr_info(String revice_addr_info) {
-        this.revice_addr_info = revice_addr_info;
+    public void setRecive_time(Date recive_time) {
+        this.recive_time = recive_time;
     }
 
     public String getDispatching_type() {
@@ -149,5 +151,21 @@ public class OrderCustomer {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

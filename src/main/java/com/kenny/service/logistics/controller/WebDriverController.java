@@ -17,8 +17,18 @@ import java.util.List;
 @Controller
 public class WebDriverController {
 
-    @RequestMapping("/mydriver")
-    public String mydriver() {
-        return "driver/mydriver";
+    @RequestMapping("/add")
+    public String add() {
+        return "driver/add";
+    }
+
+    @RequestMapping("/add_submit")
+    public String add_submit() {
+        return "driver/add_submit";
+    }
+
+    @RequestMapping("/all")
+    public String all() {
+        return "driver/all";
     }
 }

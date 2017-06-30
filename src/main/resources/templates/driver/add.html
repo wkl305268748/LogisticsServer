@@ -41,18 +41,18 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-equalizer font-blue-hoki"></i>
-                        <span class="caption-subject font-blue-hoki bold uppercase">创建运单</span>
+                        <span class="caption-subject font-blue-hoki bold uppercase">添加司机</span>
                     </div>
                 </div>
                 <div class="portlet-body form">
                     <!-- BEGIN FORM-->
-                    <form  method="post" th:action="@{create_submit}" class="horizontal-form" novalidate="novalidate" id="form_sample_2">
+                    <form  method="post" th:action="@{add_submit}" class="horizontal-form form-validation" novalidate="novalidate">
                         <div class="">
-                            <h4 class="form-section">发货人信息</h4>
+                            <h4 class="form-section">司机信息</h4>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control" name="send_name" id="form_control_1" placeholder="输入发货人姓名"/>
+                                        <input type="text" class="form-control required" name="name" id="form_control_1" placeholder="输入发货人姓名"/>
                                         <label for="form_control_1">姓名
                                             <span class="required" aria-required="true">*</span>
                                         </label>
@@ -62,7 +62,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control" name="send_phone" id="form_control_2" placeholder="输入发货人手机号"/>
+                                        <input type="text" class="form-control required number" name="send_phone" id="form_control_2" placeholder="输入发货人手机号"/>
                                         <label for="form_control_2">手机号
                                             <span class="required" aria-required="true">*</span>
                                         </label>
@@ -70,96 +70,44 @@
                                     </div>
                                 </div>
 
-
-                                <div class="col-md-6">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control" name="send_addr" id="form_control_3" placeholder="输入发货人地址"/>
-                                        <label for="form_control_3">地址
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入发货人地址...</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4 class="form-section">收货人信息</h4>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control" name="recive_name" id="form_control_4" placeholder="输入收货人姓名"/>
-                                        <label for="form_control_4">姓名
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入收货人姓名...</span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control" name="recive_phone" id="form_control_5" placeholder="输入收货人手机号"/>
-                                        <label for="form_control_5">手机号
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入收货人手机号...</span>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control" name="recive_addr" id="form_control_6" placeholder="输入收货人地址"/>
-                                        <label for="form_control_6">地址
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入收货人地址...</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h4 class="form-section">配送信息</h4>
-                            <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group form-md-radios">
-                                        <label for="form_control_1">配送方式</label>
+                                        <label for="form_control_1">性别</label>
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
-                                                <input type="radio" id="checkbox2_8" name="dispatching_type" value="dispatching" class="md-radiobtn" checked="checked"/>
+                                                <input type="radio" id="checkbox2_8" name="sex" value="man" class="md-radiobtn" checked="checked"/>
                                                 <label for="checkbox2_8">
                                                     <span></span>
                                                     <span class="check"></span>
-                                                    <span class="box"></span> 配送 </label>
+                                                    <span class="box"></span> 男 </label>
                                             </div>
                                             <div class="md-radio">
-                                                <input type="radio" id="checkbox2_9" name="dispatching_type" value="since" class="md-radiobtn"/>
+                                                <input type="radio" id="checkbox2_9" name="sex" value="woman" class="md-radiobtn"/>
                                                 <label for="checkbox2_9">
                                                     <span></span>
                                                     <span class="check"></span>
-                                                    <span class="box"></span> 自提 </label>
+                                                    <span class="box"></span> 女 </label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
 
-                                <div class="col-md-3">
+                            </div>
+                            <h4 class="form-section">驾驶证信息</h4>
+                            <div class="row">
+                                <div class="col-md-4">
                                     <div class="form-group form-md-line-input">
-                                        <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" value="" id="form_control_7" name="send_time"/>
-                                        <label for="form_control_7">预计发货时间
+                                        <input type="text" class="form-control required" name="recive_name" id="form_control_4" placeholder="输入驾驶证号"/>
+                                        <label for="form_control_4">驾驶证
                                             <span class="required" aria-required="true">*</span>
                                         </label>
-                                        <span class="help-block">选择预计发货时间...</span>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" value="" id="form_control_8" name="recive_time"/>
-                                        <label for="form_control_8">限时到达时间
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">选择限时到达时间...</span>
+                                        <span class="help-block">输入驾驶证...</span>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="form-actions right">
                             <button type="submit" class="btn blue">
@@ -221,7 +169,7 @@
 
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-<script th:src="@{/js/form-validation-md.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/form-validation-role.min.js}" type="text/javascript"></script>
 
 <script  th:inline="javascript">
     /*<![CDATA[*/

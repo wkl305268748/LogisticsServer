@@ -41,73 +41,141 @@
 <!-- END HEAD -->
 <!-- BEGIN PAGE HEAD-->
 <div class="page-head">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-equalizer font-blue-hoki"></i>
-                        <span class="caption-subject font-blue-hoki bold uppercase">待处理运单</span>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="index.html">待处理运单列表</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">运单详情</span>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject font-blue-hoki bold uppercase" th:text="'订单号：'+${data.order_number}"></span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <div>
+                    <h3 class="form-section">发货人信息</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">姓名:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.send_name}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">手机号:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.send_phone}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <!--/row-->
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">发货地址:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.send_addr}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <h3 class="form-section">收货人信息</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">姓名:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.recive_name}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">手机号:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.recive_phone}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">收货地址:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.recive_addr}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/row-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">配送方式:</label>
+                                <div class="col-md-9">
+                                    <div th:switch="${data.dispatching_type}">
+                                        <p th:case="'dispatching'" class="label label-info">配送</p>
+                                        <p th:case="'since'" class="label label-warning">自提</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--/span-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">计划发货时间:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${#dates.format(data.send_time,'yyyy年MM月dd日')}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">限期到达时间:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${#dates.format(data.recive_time,'yyyy年MM月dd日')}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
                     </div>
                 </div>
-                <div class="portlet-body">
-                    <div class="table-scrollable">
-                        <table class="table table-striped table-bordered table-advance table-hover">
-                            <thead>
-                            <tr>
-                                <th> <i class="fa fa-briefcase"></i> 运单号 </th>
-                                <th> 发货人</th>
-                                <th> 发货地址</th>
-                                <th> 收货人</th>
-                                <th> 收货地</th>
-                                <th> 下单时间</th>
-                                <th> 操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="list : ${data.item}" >
-                                <td class="highlight">
-                                    <div class="success"></div>
-                                    <a th:href="@{pending_info(id=${list.id})}" th:text="${list.order_number}"></a>
-                                </td>
-                                <td th:text="${list.send_name}"></td>
-                                <td th:text="${list.send_addr}"></td>
-                                <td th:text="${list.recive_name}"></td>
-                                <td th:text="${list.recive_addr}"></td>
-                                <td th:text="${#dates.format(list.time,'yyyy-MM-dd HH:mm')}"></td>
-
-                                <td><a th:href ="@{pending_success(id=${list.id})}" class="btn btn-circle green-jungle"><i class="fa fa fa-truck"></i> 派车 </a>
-                                    <br/>
-                                    <br/>
-                                    <a th:href ="@{pending_ignor(id=${list.id})}" class="btn btn-default"><i class="fa fa-hand-paper-o"></i> 忽略 </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button type="submit" class="btn green">
+                                        <i class="fa fa-pencil"></i> Edit</button>
+                                    <button type="button" class="btn default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6"> </div>
                     </div>
                 </div>
-
-                <div style="text-align:center;"
-                     th:if="${not(data.total/data.pageSize le 0)}"
-                     th:with="totalPage = ${data.total%data.pageSize == 0}?${data.total/data.pageSize}:${data.total/data.pageSize + 1},
-                              nowPage = ${data.offset%data.pageSize == 0}?${data.offset/data.pageSize + 1}:${data.offset/data.pageSize + 2}">
-                    <ul class="pagination">
-                        <li th:class="${nowPage gt 1}?'':'prev disabled'">
-                            <a th:href="${nowPage gt 1}?@{pending(page=${nowPage-1})}:'javascript:void(0);'"><i class="fa fa-angle-left"></i></a>
-                        </li>
-                        <li th:each="i : ${#numbers.sequence( 1, totalPage)}"
-                            th:class="${nowPage eq i}? 'active' : ''">
-                            <a th:href="${nowPage eq i}?'#':@{pending(page=${i})}">
-                                <span th:text="${i}"/>
-                            </a>
-                        </li>
-                        <li th:class="${nowPage lt totalPage}?'':'prev disabled'">
-                            <a th:href="${nowPage lt totalPage}?@{pending(page=${nowPage+1})}:'javascript:void(0);'"><i class="fa fa-angle-right"></i></a>
-                        </li>
-                    </ul>
-
-
-                </div>
+                <!-- END FORM-->
             </div>
         </div>
     </div>

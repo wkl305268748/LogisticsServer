@@ -9,6 +9,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="" name="author"/>
+
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/font-awesome/css/font-awesome.min.css"
           rel="stylesheet" type="text/css"/>
@@ -284,7 +285,7 @@
         <!-- BEGIN CONTENT BODY -->
         <div class="page-content">
             <iframe src="/web/home" id="iframepage" width="100%" frameborder="0" scrolling="no" marginheight="0"
-                    marginwidth="0" onLoad="iFrameHeight()"  name="iframe"></iframe>
+                    marginwidth="0" onLoad="this.height=this.contentWindow.document.documentElement.scrollHeight"  name="iframe"></iframe>
         </div>
         <!-- END CONTENT BODY -->
     </div>
@@ -324,14 +325,6 @@
 
 <script>
     /*<![CDATA[*/
-    function iFrameHeight() {
-        var ifm = document.getElementById("iframepage");
-        var subWeb = document.frames ? document.frames["iframepage"].document : ifm.contentDocument;
-        if (ifm != null && subWeb != null) {
-            ifm.height = subWeb.body.scrollHeight;
-            //ifm.width = subWeb.body.scrollWidth;
-        }
-    }
     /*]]>*/
 </script>
 
