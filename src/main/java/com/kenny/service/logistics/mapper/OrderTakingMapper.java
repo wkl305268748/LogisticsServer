@@ -21,7 +21,7 @@ public interface OrderTakingMapper {
     @Select("SELECT * FROM tb_order_taking")
     List<OrderTaking> select();
 
-    @Select("SELECT * FROM tb_order_taking  limit #{offset},#{pageSize}")
+    @Select("SELECT * FROM tb_order_taking order by time desc limit #{offset},#{pageSize}")
     List<OrderTaking> selectPage(@Param(value = "offset") Integer offset, @Param(value = "pageSize") Integer pageSize);
 
     @Select("SELECT COUNT(*) FROM tb_order_taking")

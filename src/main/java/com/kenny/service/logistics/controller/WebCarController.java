@@ -1,71 +1,66 @@
 package com.kenny.service.logistics.controller;
 
 
-import com.kenny.service.logistics.json.response.WebMenuResponse;
+import com.kenny.service.logistics.service.CarService;
 import com.kenny.service.logistics.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * Created by WKL on 2016-12-20.
  */
-@RequestMapping("/web/driver")
+@RequestMapping("/web/car")
 @Controller
-public class WebDriverController {
+public class WebCarController {
     @Autowired
-    DriverService driverService;
+    CarService carService;
     private static final int PAGESIZE = 10;
 
     @RequestMapping("/add")
     public String add() {
-        return "driver/add";
+        return "car/add";
     }
 
     @RequestMapping("/add_submit")
-    public String add_submit(@RequestParam(value = "name") String name,
-                             @RequestParam(value = "sex") String sex,
-                             @RequestParam(value = "phone") String phone,
-                             @RequestParam(value = "driver_license") String driver_license,
+    public String add_submit(@RequestParam(value = "car_plate") String car_plate,
+                             @RequestParam(value = "car_resource") String car_resource,
+                             @RequestParam(value = "car_type") String car_type,
                              @RequestParam(value = "remark") String remark) {
-        driverService.addDriver(name,phone,sex,driver_license,remark);
+
+        carService.addCar(car_plate,car_resource,car_type,remark);
         return "redirect:all";
     }
 
     @RequestMapping("/edit")
     public String edit(ModelMap map,@RequestParam(value = "id") int id) {
-        map.addAttribute("data",driverService.getDriver(id));
-        return "driver/edit";
+        map.addAttribute("data",carService.getCar(id));
+        return "car/edit";
     }
 
     @RequestMapping("/delete")
     public String delete(ModelMap map,@RequestParam(value = "id") int id) {
-        driverService.deleteDriver(id);
+        carService.deleteCar(id);
         return "redirect:all";
     }
 
     @RequestMapping("/edit_submit")
     public String add_submit(@RequestParam(value = "id") int id,
-                             @RequestParam(value = "name") String name,
-                             @RequestParam(value = "sex") String sex,
-                             @RequestParam(value = "phone") String phone,
-                             @RequestParam(value = "driver_license") String driver_license,
+                             @RequestParam(value = "car_plate") String car_plate,
+                             @RequestParam(value = "car_resource") String car_resource,
+                             @RequestParam(value = "car_type") String car_type,
                              @RequestParam(value = "remark") String remark) {
-        driverService.editDriver(id,name,phone,sex,driver_license,remark);
+        carService.editCar(id,car_plate,car_resource,car_type,remark);
         return "redirect:all";
     }
 
     @RequestMapping("/all")
     public String all(ModelMap map,
                       @RequestParam(value = "page",required = false,defaultValue = "1") Integer page) {
-        map.addAttribute("data",driverService.getDriversAll(PAGESIZE,(page - 1)*PAGESIZE));
-        return "driver/all";
+        map.addAttribute("data",carService.getCarsAll(PAGESIZE,(page - 1)*PAGESIZE));
+        return "car/all";
     }
 }

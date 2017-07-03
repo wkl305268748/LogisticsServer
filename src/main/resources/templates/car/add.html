@@ -41,69 +41,54 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-equalizer font-blue-hoki"></i>
-                        <span class="caption-subject font-blue-hoki bold uppercase">添加司机</span>
+                        <span class="caption-subject font-blue-hoki bold uppercase">添加车辆</span>
                     </div>
                 </div>
                 <div class="portlet-body form">
                     <!-- BEGIN FORM-->
                     <form  method="post" th:action="@{add_submit}" class="horizontal-form form-validation" novalidate="novalidate">
                         <div class="">
-                            <h4 class="form-section">司机信息</h4>
+                            <h4 class="form-section">车辆信息</h4>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="name" id="form_control_1" placeholder="输入司机姓名"/>
-                                        <label for="form_control_1">姓名
+                                        <input type="text" class="form-control required" name="car_plate" id="form_control_1" placeholder="输入车牌"/>
+                                        <label for="form_control_1">车牌
                                             <span class="required" aria-required="true">*</span>
                                         </label>
-                                        <span class="help-block">输入司机人姓名...</span>
+                                        <span class="help-block">输入车牌...</span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required number" name="phone" id="form_control_2" placeholder="输入司机手机号"/>
-                                        <label for="form_control_2">手机号
+                                        <input type="text" class="form-control required number" name="car_type" id="form_control_2" placeholder="输入车辆类型"/>
+                                        <label for="form_control_2">车辆类型
                                             <span class="required" aria-required="true">*</span>
                                         </label>
-                                        <span class="help-block">输入司机手机号...</span>
+                                        <span class="help-block">输入车辆类型...</span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group form-md-radios">
-                                        <label for="form_control_1">性别</label>
+                                        <label for="form_control_1">车辆归属</label>
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
-                                                <input type="radio" id="checkbox2_8" name="sex" value="man" class="md-radiobtn" checked="checked"/>
+                                                <input type="radio" id="checkbox2_8" name="car_resource" value="owner" class="md-radiobtn" checked="checked"/>
                                                 <label for="checkbox2_8">
                                                     <span></span>
                                                     <span class="check"></span>
-                                                    <span class="box"></span> 男 </label>
+                                                    <span class="box"></span> 自有 </label>
                                             </div>
                                             <div class="md-radio">
-                                                <input type="radio" id="checkbox2_9" name="sex" value="woman" class="md-radiobtn"/>
+                                                <input type="radio" id="checkbox2_9" name="car_resource" value="other" class="md-radiobtn"/>
                                                 <label for="checkbox2_9">
                                                     <span></span>
                                                     <span class="check"></span>
-                                                    <span class="box"></span> 女 </label>
+                                                    <span class="box"></span> 第三方 </label>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-
-                            </div>
-                            <h4 class="form-section">驾驶证信息</h4>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="driver_license" id="form_control_4" placeholder="输入驾驶证号"/>
-                                        <label for="form_control_4">驾驶证
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入驾驶证编号...</span>
                                     </div>
                                 </div>
                             </div>

@@ -44,7 +44,6 @@
 </div>
 <ul class="page-breadcrumb breadcrumb">
     <li>
-        <a href="index.html">待处理运单列表</a>
         <i class="fa fa-circle"></i>
     </li>
     <li>
@@ -160,21 +159,31 @@
                         </div>
                         <!--/span-->
                     </div>
-                </div>
-                <div class="form-actions">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-offset-3 col-md-9">
-                                    <button type="submit" class="btn green">
-                                        <i class="fa fa-pencil"></i> Edit</button>
-                                    <button type="button" class="btn default">Cancel</button>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">备注:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.remark}"></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6"> </div>
                     </div>
                 </div>
+                <!--<div class="form-actions">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-6">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-offset-3 col-md-9">-->
+                                    <!--<button type="submit" class="btn green">-->
+                                        <!--<i class="fa fa-pencil"></i> Edit</button>-->
+                                    <!--<button type="button" class="btn default">Cancel</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-6"> </div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <!-- END FORM-->
             </div>
         </div>

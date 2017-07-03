@@ -31,7 +31,7 @@ public class OrderTakingService {
     DriverMapper driverMapper;
 
     //创建订单
-    public void createOrderTaking(int order_customer_id,int car_id,int driver_id,int pay,int recive){
+    public OrderTaking createOrderTaking(int order_customer_id,int car_id,int driver_id,int pay,int recive){
         OrderTaking orderTaking = new OrderTaking();
         orderTaking.setFk_order_customer_id(order_customer_id);
         orderTaking.setFk_car_id(car_id);
@@ -41,6 +41,7 @@ public class OrderTakingService {
         orderTaking.setTime(new Date());
         orderTaking.setStatus("send");
         orderTakingMapper.insert(orderTaking);
+        return orderTaking;
     }
 
     //获取列表
@@ -65,6 +66,7 @@ public class OrderTakingService {
         return response;
     }
 
+    //获取单个
     public OrderTakingResponse getOrderTakingById(int id){
         OrderTaking orderTaking = orderTakingMapper.selectById(id);
         OrderTakingResponse orderTakingResponse = new OrderTakingResponse();
@@ -77,5 +79,12 @@ public class OrderTakingService {
         orderTakingResponse.setDriver(driverMapper.selectById(orderTaking.getFk_driver_id()));
         orderTakingResponse.setOrderCustomer(orderCustomerMapper.selectById(orderTaking.getFk_order_customer_id()));
         return orderTakingResponse;
+    }
+
+    //完成订单
+    public void finishOrderTaking(int id){
+        OrderTaking orderTaking = orderTakingMapper.selectById(id);
+        orderTaking.setStatus("finish");
+        orderTakingMapper.update(orderTaking);
     }
 }

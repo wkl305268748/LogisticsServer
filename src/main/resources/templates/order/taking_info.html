@@ -39,75 +39,200 @@
     <!-- END THEME LAYOUT STYLES -->
 </head>
 <!-- END HEAD -->
-
 <!-- BEGIN PAGE HEAD-->
 <div class="page-head">
-    <!-- BEGIN PAGE TITLE -->
-    <div class="page-title">
-        <h1>首页
-            <small>欢迎使用物流管理系统</small>
-        </h1>
-    </div>
-    <!-- END PAGE TITLE -->
 </div>
-<!-- END PAGE HEAD-->
-<!-- BEGIN PAGE BASE CONTENT -->
-<div class="row widget-row">
-    <div class="col-md-3">
-        <!-- BEGIN WIDGET THUMB -->
-        <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
-            <h4 class="widget-thumb-heading">我的车辆</h4>
-            <div class="widget-thumb-wrap">
-                <i class="widget-thumb-icon bg-green icon-bulb"></i>
-                <div class="widget-thumb-body">
-                    <span class="widget-thumb-subtitle">Car</span>
-                    <span class="widget-thumb-body-stat" data-counter="counterup" th:attr="data-value=${car}" th:text="${car}"></span>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">运单详情</span>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject font-blue-hoki bold uppercase" th:text="'订单号：'+${data.orderCustomer.order_number}"></span>
                 </div>
             </div>
-        </div>
-        <!-- END WIDGET THUMB -->
-    </div>
-    <div class="col-md-3">
-        <!-- BEGIN WIDGET THUMB -->
-        <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
-            <h4 class="widget-thumb-heading">我的司机</h4>
-            <div class="widget-thumb-wrap">
-                <i class="widget-thumb-icon bg-red icon-layers"></i>
-                <div class="widget-thumb-body">
-                    <span class="widget-thumb-subtitle">Driver</span>
-                    <span class="widget-thumb-body-stat" data-counter="counterup" th:attr="data-value=${driver}" th:text="${driver}"></span>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <div>
+                    <h3 class="form-section">发货人信息</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">姓名:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.orderCustomer.send_name}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">手机号:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.orderCustomer.send_phone}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <!--/row-->
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">发货地址:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.orderCustomer.send_addr}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <h3 class="form-section">收货人信息</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">姓名:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.orderCustomer.recive_name}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">手机号:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.orderCustomer.recive_phone}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">收货地址:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.orderCustomer.recive_addr}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/row-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">配送方式:</label>
+                                <div class="col-md-9">
+                                    <div th:switch="${data.orderCustomer.dispatching_type}">
+                                        <p th:case="'dispatching'" class="label label-info">配送</p>
+                                        <p th:case="'since'" class="label label-warning">自提</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--/span-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">计划发货时间:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${#dates.format(data.orderCustomer.send_time,'yyyy年MM月dd日')}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">限期到达时间:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${#dates.format(data.orderCustomer.recive_time,'yyyy年MM月dd日')}"> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">备注:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.orderCustomer.remark}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="form-section">派车信息</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">司机姓名:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.driver.name}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">司机手机号:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.driver.phone}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">司机证件:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.driver.driver_license}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">车牌号:</label>
+                                <div class="col-md-9">
+                                    <p th:text="${data.car.car_plate}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${data.status eq 'finish'}">
+                    <h3 class="form-section">签收信息</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img th:src="${order_sign.order_img}"/>
+                        </div>
+                    </div>
+                    </div>
                 </div>
+                <!--<div class="form-actions">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-6">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-offset-3 col-md-9">-->
+                                    <!--<button type="submit" class="btn green">-->
+                                        <!--<i class="fa fa-pencil"></i> Edit</button>-->
+                                    <!--<button type="button" class="btn default">Cancel</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-6"> </div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!-- END FORM-->
             </div>
         </div>
-        <!-- END WIDGET THUMB -->
-    </div>
-    <div class="col-md-3">
-        <!-- BEGIN WIDGET THUMB -->
-        <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
-            <h4 class="widget-thumb-heading">未处理运单</h4>
-            <div class="widget-thumb-wrap">
-                <i class="widget-thumb-icon bg-purple icon-screen-desktop"></i>
-                <div class="widget-thumb-body">
-                    <span class="widget-thumb-subtitle">Untreated</span>
-                    <span class="widget-thumb-body-stat" data-counter="counterup"  th:attr="data-value=${order_customer_wait}" th:text="${order_customer_wait}"></span>
-                </div>
-            </div>
-        </div>
-        <!-- END WIDGET THUMB -->
-    </div>
-    <div class="col-md-3">
-        <!-- BEGIN WIDGET THUMB -->
-        <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
-            <h4 class="widget-thumb-heading">所有运单</h4>
-            <div class="widget-thumb-wrap">
-                <i class="widget-thumb-icon bg-blue icon-bar-chart"></i>
-                <div class="widget-thumb-body">
-                    <span class="widget-thumb-subtitle">Order</span>
-                    <span class="widget-thumb-body-stat" data-counter="counterup"  th:attr="data-value=${order_taking}" th:text="${order_taking}"></span>
-                </div>
-            </div>
-        </div>
-        <!-- END WIDGET THUMB -->
     </div>
 </div>
 <!-- END PAGE BASE CONTENT -->
