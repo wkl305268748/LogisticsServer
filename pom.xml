@@ -70,16 +70,20 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+        <!--thymeleaf的修正，貌似没用-->
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
             <version>1.9.22</version>
         </dependency>
 
+        <!--阿里大于-->
         <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
-            <version>2.7.0</version>
+            <groupId>com.taobao.api</groupId>
+            <artifactId>Alidayu</artifactId>
+            <version>1455552377940-20160607</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/taobao-sdk.jar</systemPath>
         </dependency>
 
     </dependencies>
@@ -92,6 +96,17 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+
+        <resources>
+            <!--把本地jar包在打包中加上-->
+            <resource>
+                <directory>${basedir}/lib</directory>
+                <targetPath>BOOT-INF/lib/</targetPath>
+                <includes>
+                    <include>**/*.jar</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
 </project>

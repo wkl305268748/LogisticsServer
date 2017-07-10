@@ -1,4 +1,4 @@
-package com.kenny.service.logistics.controller;
+package com.kenny.service.logistics.controller_web;
 
 
 import com.kenny.service.logistics.json.response.WebMenuResponse;
