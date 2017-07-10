@@ -1,52 +1,60 @@
 package com.kenny.service.logistics.model;
 
-/**
- * Created by Kenny on 2017/6/29.
- */
-public class Goods {
-    int id;
-    String name;
-    String size;
-    int weight;
-    String remark;
+import java.util.Date;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
-    public int getId() {
-        return id;
-    }
+@ApiModel("货物信息，用户下单时需要提供货物信息")
+public class Goods{
+	@ApiModelProperty("")
+	private Integer id;
+	@ApiModelProperty("货物名称")
+	private String name;
+	@ApiModelProperty("货物的体积")
+	private String size;
+	@ApiModelProperty("货物总重量，单位吨")
+	private Integer weight;
+	@ApiModelProperty("货物备注")
+	private String remark;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public Integer getId(){
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Integer id){
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName(){
+		return name;
+	}
 
-    public String getSize() {
-        return size;
-    }
+	public void setName(String name){
+		this.name = name;
+	}
 
-    public void setSize(String size) {
-        this.size = size;
-    }
+	public String getSize(){
+		return size;
+	}
 
-    public int getWeight() {
-        return weight;
-    }
+	public void setSize(String size){
+		this.size = size;
+	}
 
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
+	public Integer getWeight(){
+		return weight;
+	}
 
-    public String getRemark() {
-        return remark;
-    }
+	public void setWeight(Integer weight){
+		this.weight = weight;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public String getRemark(){
+		return remark;
+	}
+
+	public void setRemark(String remark){
+		this.remark = remark;
+	}
+
 }
