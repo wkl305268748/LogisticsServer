@@ -5,6 +5,6 @@
 4、增加tb_system_defind
 5、增加tb_system_defind_type
 6、修改了tb_car里面除了id/remark/time/visible的所有字段
-7、增加了tb_driver大部分字段，绑定驾驶证外键
+7、增加了tb_driver大部分字段，绑定驾驶证外键，增加账户密码
 8、增加了tb_city、tb_area、tb_province省市县三级数据库
 9、增加了用户和短信表,tb_user,tb_user_info,tb_user_token,tb_sms,tb_sms_type

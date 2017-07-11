@@ -28,12 +28,18 @@
           rel="stylesheet" type="text/css"/>
     <!-- END THEME LAYOUT STYLES -->
 
-    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+          rel="stylesheet" type="text/css"/>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
+          rel="stylesheet" type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
+
+    <link th:href="@{/css/city-picker.css}" rel="stylesheet" type="text/css"/>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN PAGE HEAD-->
@@ -49,13 +55,16 @@
                 </div>
                 <div class="portlet-body form">
                     <!-- BEGIN FORM-->
-                    <form  method="post" th:action="@{create_submit}" class="horizontal-form form-validation" novalidate="novalidate">
+                    <form method="post" th:action="@{create_submit}" class="horizontal-form form-validation"
+                          novalidate="novalidate">
                         <div class="">
-                            <h4 class="form-section">发货人信息</h4>
+
+                            <h5 class="form-section"> <i class="fa fa-send"></i> 发货人信息</h5>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="send_name" id="form_control_1" placeholder="输入发货人姓名"/>
+                                        <input type="text" class="form-control required" name="send_name"
+                                               id="form_control_1" placeholder="输入发货人姓名"/>
                                         <label for="form_control_1">姓名
                                             <span class="required" aria-required="true">*</span>
                                         </label>
@@ -65,30 +74,50 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required number" name="send_phone" id="form_control_2" placeholder="输入发货人手机号"/>
-                                        <label for="form_control_2">手机号
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入发货人手机号...</span>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="send_addr" id="form_control_3" placeholder="输入发货人地址"/>
-                                        <label for="form_control_3">地址
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入发货人地址...</span>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control required number" name="send_phone"
+                                                   id="form_control_2" placeholder="输入发货人手机号"/>
+                                            <label for="form_control_2">手机号
+                                                <span class="required" aria-required="true">*</span>
+                                            </label>
+                                            <span class="help-block">输入发货人手机号...</span>
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-phone"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <h4 class="form-section">收货人信息</h4>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="recive_name" id="form_control_4" placeholder="输入收货人姓名"/>
+                                        <input type="text" class="form-control required" name="send_addr"
+                                               id="form_control_13" placeholder="输入发货人地址" data-toggle="city-picker"/>
+                                        <label for="form_control_13">发货地
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <span class="help-block">选择发货地...</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="text" class="form-control required" name="send_addr_info"
+                                               id="form_control_3" placeholder="输入发货人地址"/>
+                                        <label for="form_control_3">详细地址
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <span class="help-block">输入发货人详细地址...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="form-section"><i class="fa fa-reply"></i> 收货人信息</h5>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="text" class="form-control required" name="recive_name"
+                                               id="form_control_4" placeholder="输入收货人姓名"/>
                                         <label for="form_control_4">姓名
                                             <span class="required" aria-required="true">*</span>
                                         </label>
@@ -98,41 +127,56 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required number" name="recive_phone" id="form_control_5" placeholder="输入收货人手机号"/>
+                                        <input type="text" class="form-control required number" name="recive_phone"
+                                               id="form_control_5" placeholder="输入收货人手机号"/>
                                         <label for="form_control_5">手机号
                                             <span class="required" aria-required="true">*</span>
                                         </label>
                                         <span class="help-block">输入收货人手机号...</span>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="text" class="form-control required" name="recive_addr"
+                                               id="form_control_16" placeholder="输入收货人地址" data-toggle="city-picker"/>
+                                        <label for="form_control_16">收货地
+                                            <span class="required" aria-required="true">*</span>
+                                        </label>
+                                        <span class="help-block">选择收货地...</span>
+                                    </div>
+                                </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="recive_addr" id="form_control_6" placeholder="输入收货人地址"/>
-                                        <label for="form_control_6">地址
+                                        <input type="text" class="form-control required" name="recive_addr_info"
+                                               id="form_control_6" placeholder="收货人详细地址"/>
+                                        <label for="form_control_6">详细地址
                                             <span class="required" aria-required="true">*</span>
                                         </label>
-                                        <span class="help-block">输入收货人地址...</span>
+                                        <span class="help-block">输入收货人详细地址...</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <h4 class="form-section">配送信息</h4>
+                            <h5 class="form-section"><i class="fa fa-truck"></i> 配送信息</h5>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group form-md-radios">
                                         <label for="form_control_1">配送方式</label>
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
-                                                <input type="radio" id="checkbox2_8" name="dispatching_type" value="dispatching" class="md-radiobtn" checked="checked"/>
+                                                <input type="radio" id="checkbox2_8" name="dispatching_type"
+                                                       value="dispatching" class="md-radiobtn" checked="checked"/>
                                                 <label for="checkbox2_8">
                                                     <span></span>
                                                     <span class="check"></span>
                                                     <span class="box"></span> 配送 </label>
                                             </div>
                                             <div class="md-radio">
-                                                <input type="radio" id="checkbox2_9" name="dispatching_type" value="since" class="md-radiobtn"/>
+                                                <input type="radio" id="checkbox2_9" name="dispatching_type"
+                                                       value="since" class="md-radiobtn"/>
                                                 <label for="checkbox2_9">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -144,7 +188,9 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input class="form-control form-control-inline input-medium date-picker required" size="16" type="text" value="" id="form_control_7" name="send_time" data-date-format="yyyy/mm/dd"/>
+                                        <input class="form-control form-control-inline input-medium date-picker required"
+                                               size="16" type="text" value="" id="form_control_7" name="send_time"
+                                               data-date-format="yyyy/mm/dd"/>
                                         <label for="form_control_7">预计发货时间
                                             <span class="required" aria-required="true">*</span>
                                         </label>
@@ -155,7 +201,9 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input class="form-control form-control-inline input-medium date-picker required" size="16" type="text" value="" id="form_control_8" name="recive_time" data-date-format="yyyy/mm/dd"/>
+                                        <input class="form-control form-control-inline input-medium date-picker required"
+                                               size="16" type="text" value="" id="form_control_8" name="recive_time"
+                                               data-date-format="yyyy/mm/dd"/>
                                         <label for="form_control_8">限时到达时间
                                             <span class="required" aria-required="true">*</span>
                                         </label>
@@ -163,19 +211,66 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group form-md-line-input">
-                                        <textarea class="form-control" rows="3" id="form_control_9" name="remark"></textarea>
-                                        <label for="form_control_9">备注
-                                        </label>
+
+                            <h5 class="form-section"><i class="fa fa-tasks"></i> 货物信息</h5>
+                            <div class="row ">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <div class="mt-repeater">
+                                            <div data-repeater-list="group-b">
+
+                                                <div data-repeater-item="" class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group form-md-line-input">
+                                                            <input type="text" class="form-control required" name="recive_addr"
+                                                                   id="form_control_41" placeholder="输入货物名称"/>
+                                                            <label for="form_control_41">货物名称
+                                                                <span class="required" aria-required="true">*</span>
+                                                            </label>
+                                                            <span class="help-block">选择收货地...</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">颜色</label>
+                                                        <input type="text" placeholder="" class="form-control"/></div>
+                                                    <div class="col-md-2">
+                                                        <label class="control-label">大小</label>
+                                                        <input type="text" placeholder="" class="form-control"/></div>
+                                                    <div class="col-md-2">
+                                                        <label class="control-label">总重量</label>
+                                                        <input type="text" placeholder="单位：吨" class="form-control"/>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="control-label">备注</label>
+                                                        <textarea name="textarea-input" class="form-control"
+                                                                  rows="3"></textarea></div>
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">&nbsp;</label>
+                                                        <a href="javascript:;" data-repeater-delete=""
+                                                           class="btn btn-danger form-control">
+                                                            <i class="fa fa-close"></i> 删除
+                                                        </a>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <hr/>
+                                            <a href="javascript:;" data-repeater-create=""
+                                               class="btn btn-info mt-repeater-add">
+                                                <i class="fa fa-plus"></i> 增加货物</a>
+                                            <br/>
+                                            <br/></div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                         <div class="form-actions right">
                             <button type="submit" class="btn blue">
-                                <i class="fa fa-check"></i> 确定创建 </button>
+                                <i class="fa fa-check"></i> 确定创建
+                            </button>
                         </div>
                     </form>
                     <!-- END FORM-->
@@ -216,22 +311,54 @@
 <!-- END THEME LAYOUT SCRIPTS -->
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/moment.min.js" type="text/javascript"></script>
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/moment.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"
+        type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
+        type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
+        type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/additional-methods.min.js"
+        type="text/javascript"></script>
 <script th:src="@{/js/form-validation-role.min.js}" type="text/javascript"></script>
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-repeater/jquery.repeater.js"
+        type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+
+<script th:src="@{/js/city-picker.data.js}" type="text/javascript"></script>
+<script th:src="@{/js/city-picker.js}" type="text/javascript"></script>
 
 <script>
     $(".date-picker").datepicker({
-        language:"zh-CN"
+        language: "zh-CN"
     });
+
+    $(".mt-repeater").each(function () {
+        $(this).repeater({
+            show: function () {
+                $(this).slideDown();
+                parent.onframeinit(100);
+            },
+            hide: function (e) {
+                $(this).slideUp(e);
+                parent.onframeinit(-100);
+            },
+            ready: function (e) {
+            }
+        })
+    });
+
+    $('#target').citypicker();
+
 </script>
 </html>

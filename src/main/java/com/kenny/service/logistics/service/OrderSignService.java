@@ -1,6 +1,5 @@
 package com.kenny.service.logistics.service;
 
-import com.aliyun.oss.OSSClient;
 import com.kenny.service.logistics.json.response.OrderTakingResponse;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.mapper.*;

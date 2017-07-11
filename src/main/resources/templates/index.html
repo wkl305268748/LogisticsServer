@@ -285,7 +285,7 @@
         <!-- BEGIN CONTENT BODY -->
         <div class="page-content">
             <iframe src="/web/home" id="iframepage" width="100%" frameborder="0" scrolling="no" marginheight="0"
-                    marginwidth="0" onLoad="this.height=this.contentWindow.document.documentElement.scrollHeight"  name="iframe"></iframe>
+                    marginwidth="0" onLoad="onframeinit(0)"  name="iframe"></iframe>
         </div>
         <!-- END CONTENT BODY -->
     </div>
@@ -326,6 +326,11 @@
 <script>
     /*<![CDATA[*/
     /*]]>*/
+    
+    function onframeinit(add) {
+        var myframe = document.getElementById("iframepage");
+        myframe.height = myframe.contentWindow.document.documentElement.scrollHeight + add;
+    }
 </script>
 
 </html>

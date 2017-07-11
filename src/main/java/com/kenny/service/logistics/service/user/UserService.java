@@ -25,14 +25,23 @@ public class UserService {
 
     /**
      * 校验手机号是否已经注册
-     *
      * @param phone
      */
-    public void RegisterPhoneCheck(String phone) throws ErrorCodeException {
+    public void CheckPhone(String phone) throws ErrorCodeException {
         //参数判断
         if (phone.length() != 11)
             throw new ErrorCodeException(UserErrorCode.PARAM_ERROR);
         User user = userMapper.selectUserByPhone(phone);
+        if (user != null)
+            throw new ErrorCodeException(UserErrorCode.USER_EXISTS);
+    }
+
+    /**
+     * 校验账户是否已经注册
+     * @param username
+     */
+    public void CheckUser(String username) throws ErrorCodeException {
+        User user = userMapper.selectUserByUserName(username);
         if (user != null)
             throw new ErrorCodeException(UserErrorCode.USER_EXISTS);
     }

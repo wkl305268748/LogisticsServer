@@ -22,7 +22,7 @@ import java.util.Date;
 @Api(value = "/v1/user/api", description = "用户接口模块")
 @RequestMapping(value = "/v1/user/api")
 @RestController
-public class UserController {
+public class ApiController {
     @Autowired
     private SmsService smsService;
     @Autowired

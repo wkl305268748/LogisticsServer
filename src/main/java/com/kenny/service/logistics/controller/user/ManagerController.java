@@ -21,8 +21,8 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/11/4.
  */
-@Api(value = "/v1/manager", description = "用户管理模块")
-@RequestMapping(value = "/v1/manager")
+@Api(value = "/v1/user/manager", description = "用户管理模块")
+@RequestMapping(value = "/v1/user/manager")
 @RestController
 public class ManagerController {
     @Autowired
