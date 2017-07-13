@@ -1,14 +1,11 @@
 package com.kenny.service.logistics.controller_web;
 
 
-import com.kenny.service.logistics.json.response.WebMenuResponse;
 import com.kenny.service.logistics.model.OrderCustomer;
-import com.kenny.service.logistics.model.OrderSign;
 import com.kenny.service.logistics.model.OrderTaking;
 import com.kenny.service.logistics.service.*;
 import com.kenny.service.logistics.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -106,6 +101,7 @@ public class WebOrderController {
 
     @RequestMapping("create_submit")
     public String create_submit(ModelMap map ,
+                                /*
                                 @RequestParam(value = "send_name")String send_name,
                                 @RequestParam(value = "send_phone")String send_phone,
                                 @RequestParam(value = "send_addr")String send_addr,
@@ -114,9 +110,12 @@ public class WebOrderController {
                                 @RequestParam(value = "recive_addr")String recive_addr,
                                 @RequestParam(value = "dispatching_type")String dispatching_type,
                                 @RequestParam(value = "send_time")Date send_time,
-                                @RequestParam(value = "recive_time")Date recive_time,
-                                @RequestParam(value = "remark",required = false)String remark){
-        orderCustomerService.createOrderCustomer(send_name,send_phone,send_addr,recive_name,recive_phone,recive_addr,dispatching_type,send_time,recive_time,remark);
+                                @RequestParam(value = "recive_time")Date recive_time,*/
+                                @RequestParam(value = "goods[][name]")List<String> goods){
+
+        System.out.println(goods.size());
+
+        //orderCustomerService.createOrderCustomer(send_name,send_phone,send_addr,recive_name,recive_phone,recive_addr,dispatching_type,send_time,recive_time,"");
 
         MessageUtil.is_message = true;
         MessageUtil.message = "下单成功！";

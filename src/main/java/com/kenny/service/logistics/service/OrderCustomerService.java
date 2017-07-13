@@ -1,12 +1,16 @@
 package com.kenny.service.logistics.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.mapper.OrderCustomerMapper;
+import com.kenny.service.logistics.mapper.OrderGoodsMapper;
 import com.kenny.service.logistics.model.OrderCustomer;
+import com.kenny.service.logistics.model.OrderGoods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,36 +23,49 @@ import java.util.Random;
 public class OrderCustomerService {
     @Autowired
     OrderCustomerMapper orderCustomerMapper;
+    @Autowired
+    OrderGoodsMapper orderGoodsMapper;
 
     //创建订单
     public void createOrderCustomer(String send_name,
                                     String send_phone,
                                     String send_addr,
+                                    String send_addr_info,
                                     String recive_name,
                                     String recive_phone,
                                     String recive_addr,
+                                    String recive_addr_info,
                                     String dispatching_type,
                                     Date send_time,
                                     Date recive_time,
-                                    String remark) {
+                                    String goods) {
         OrderCustomer orderCustomer = new OrderCustomer();
         //流水号
         orderCustomer.setSerial_number(createSerialNumber());
         //单号
         orderCustomer.setOrder_number(createOrderNumber());
-        orderCustomer.setTime(new Date());
         orderCustomer.setSend_name(send_name);
         orderCustomer.setSend_addr(send_addr);
+        orderCustomer.setSend_addr_info(send_addr_info);
         orderCustomer.setSend_phone(send_phone);
         orderCustomer.setSend_time(send_time);
         orderCustomer.setRecive_name(recive_name);
         orderCustomer.setRecive_phone(recive_phone);
         orderCustomer.setRecive_addr(recive_addr);
+        orderCustomer.setRecive_addr_info(recive_addr_info);
         orderCustomer.setRecive_time(recive_time);
-        orderCustomer.setRemark(remark);
         orderCustomer.setDispatching_type(dispatching_type);
+        orderCustomer.setTime(new Date());
         orderCustomer.setStatus("wait");
         orderCustomerMapper.insert(orderCustomer);
+
+        Gson gson = new Gson();
+        List<OrderGoods> goodsList = gson.fromJson(goods,new TypeToken<List<OrderGoods>>(){}.getType());
+        //货物
+        for(OrderGoods good : goodsList){
+            good.setFk_order_customer_id(orderCustomer.getId());
+            orderGoodsMapper.insert(good);
+        }
     }
 
     //更新订单
