@@ -36,7 +36,7 @@ public class ApiOrderController {
                              @RequestParam(value = "recive_time") Date recive_time,
                              @RequestParam(value = "dispatching_type") String goods) {
 
-        orderCustomerService.createOrderCustomer(send_name, send_phone, send_addr,send_addr_info, recive_name, recive_phone, recive_addr,recive_addr_info, dispatching_type, send_time, recive_time, goods);
+        orderCustomerService.createOrderCustomer(send_name, send_phone, send_addr,send_addr_info, recive_name, recive_phone, recive_addr,recive_addr_info, dispatching_type, send_time, recive_time, goods,"admin",1);
         return new JsonBean(UserErrorCode.SUCCESS);
     }
 
@@ -52,9 +52,10 @@ public class ApiOrderController {
                                  @RequestParam(value = "dispatching_type") String dispatching_type,
                                  @RequestParam(value = "send_time") Date send_time,
                                  @RequestParam(value = "recive_time") Date recive_time,
-                                 @RequestParam(value = "goods", required = false) String goods) {
+                                 @RequestParam(value = "goods", required = false) String goods,
+                                 @RequestParam(value = "token") String token) {
 
-        //orderCustomerService.createOrderCustomer(send_name, send_phone, send_addr, recive_name, recive_phone, recive_addr, dispatching_type, send_time, recive_time, goods);
+        //orderCustomerService.createOrderCustomerUser(send_name, send_phone, send_addr, recive_name, recive_phone, recive_addr, dispatching_type, send_time, recive_time, goods);
         return new JsonBean(UserErrorCode.SUCCESS);
     }
 }
