@@ -29,8 +29,6 @@
           rel="stylesheet" type="text/css"/>
     <!-- END THEME LAYOUT STYLES -->
 
-    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
-          rel="stylesheet" type="text/css"/>
     <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
           rel="stylesheet" type="text/css"/>
     <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
@@ -40,8 +38,10 @@
           rel="stylesheet" type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
 
+    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" type="text/css"/>
+    <!--城市插件样式-->
     <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/city-picker/css/city-picker.css" rel="stylesheet" type="text/css"/>
-    <link href="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/vue/vue-resource1.3.4.js" rel="stylesheet" type="text/css"/>
 	
 	
 </head>
@@ -59,106 +59,77 @@
                 </div>
                 <div class="portlet-body form" id="form">
                     <!-- BEGIN FORM-->
-                    <form class="horizontal-form form-validation" novalidate="novalidate">
+                    <div class="horizontal-form" novalidate="novalidate">
                         <div class="">
-
                             <h5 class="form-section"> <i class="fa fa-send"></i> 发货人信息</h5>
                             <div class="row">
+                                
+                                
                                 <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="send_name" v-model="order.send_name"
-                                               id="form_control_1" placeholder="输入发货人姓名"/>
-                                        <label for="form_control_1">姓名
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入发货人姓名...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('send_name')}">
+                                        <input v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('send_name') }" name="send_name" type="text" placeholder="输入发货人姓名" v-model="order.send_name">
+                                        <label for="send_name">姓名<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('send_name')?errors.first('send_name'):'输入发货人姓名...'}}</span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control required number" name="send_phone" v-model="order.send_phone"
-                                                   id="form_control_2" placeholder="输入发货人手机号"/>
-                                            <label for="form_control_2">手机号
-                                                <span class="required" aria-required="true">*</span>
-                                            </label>
-                                            <span class="help-block">输入发货人手机号...</span>
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-phone"></i>
-                                            </span>
-                                        </div>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('send_phone')}">
+                                        <input v-validate="'required|numeric'" :class="{'form-control': true, 'is-danger': errors.has('send_phone') }" name="send_phone" type="text" placeholder="输入发货人手机号" v-model="order.send_phone">
+                                        <label for="send_phone">手机号<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('send_phone')?errors.first('send_phone'):'输入发货人手机号...'}}</span>
                                     </div>
                                 </div>
+                                
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="send_addr" v-model="order.send_addr"
-                                               id="form_control_13" placeholder="输入发货人地址" data-toggle="city-picker"/>
-                                        <label for="form_control_13">发货地
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">选择发货地...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('send_addr')}">
+                                        <input v-validate="'required'" :class="{'form-control': true }" name="send_addr" type="text" placeholder="输入发货人地址" v-model="order.send_addr"  data-toggle="city-picker">
+                                        <label for="send_addr">发货地<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('send_addr')?errors.first('send_addr'):'输入发货人地址...'}}</span>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="send_addr_info" v-model="order.send_addr_info"
-                                               id="form_control_3" placeholder="输入发货人地址"/>
-                                        <label for="form_control_3">详细地址
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入发货人详细地址...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('send_addr_info')}">
+                                        <input v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('send_addr_info') }" name="send_addr_info" type="text" placeholder="输入发货人详细地址" v-model="order.send_addr_info">
+                                        <label for="send_addr_info">详细地址<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('send_addr_info')?errors.first('send_addr_info'):'输入发货人详细地址...'}}</span>
                                     </div>
-                                </div>
+                                </div>     
                             </div>
 
                             <h5 class="form-section"><i class="fa fa-reply"></i> 收货人信息</h5>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="recive_name" v-model="order.recive_name"
-                                               id="form_control_4" placeholder="输入收货人姓名"/>
-                                        <label for="form_control_4">姓名
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入收货人姓名...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('recive_name')}">
+                                        <input v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('recive_name') }" name="recive_name" type="text" placeholder="输入收货人姓名" v-model="order.recive_name">
+                                        <label for="recive_name">姓名<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('recive_name')?errors.first('recive_name'):'输入收货人姓名...'}}</span>
                                     </div>
                                 </div>
-
+                                
                                 <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required number" name="recive_phone" v-model="order.recive_phone"
-                                               id="form_control_5" placeholder="输入收货人手机号"/>
-                                        <label for="form_control_5">手机号
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入收货人手机号...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('recive_phone')}">
+                                        <input v-validate="'required|numeric'" :class="{'form-control': true, 'is-danger': errors.has('recive_phone') }" name="recive_phone" type="text" placeholder="输入收货人手机号" v-model="order.recive_phone">
+                                        <label for="recive_phone">手机号<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('recive_phone')?errors.first('recive_phone'):'输入收货人手机号...'}}</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="recive_addr" v-model="order.recive_addr"
-                                               id="form_control_16" placeholder="输入收货人地址" data-toggle="city-picker"/>
-                                        <label for="form_control_16">收货地
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">选择收货地...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('recive_addr')}">
+                                        <input v-validate="'required'" :class="{'form-control': true}" name="recive_addr" type="text" placeholder="输入收货人地址" v-model="order.recive_addr" data-toggle="city-picker">
+                                        <label for="recive_addr">收货地<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('recive_addr')?errors.first('recive_addr'):'输入收货人地址...'}}</span>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="recive_addr_info" v-model="order.recive_addr_info"
-                                               id="form_control_6" placeholder="收货人详细地址"/>
-                                        <label for="form_control_6">详细地址
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">输入收货人详细地址...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('recive_addr_info')}">
+                                        <input v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('recive_addr_info') }" name="recive_addr_info" type="text" placeholder="输入收货人详细地址" v-model="order.recive_addr_info">
+                                        <label for="recive_addr_info">详细地址<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('recive_addr_info')?errors.first('recive_addr_info'):'输入收货人详细地址...'}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -188,31 +159,24 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input class="form-control form-control-inline input-medium date-picker required"
-                                               size="16" type="text" value="" id="form_control_7" name="send_time" v-model="order.send_time"
-                                               data-date-format="yyyy/mm/dd"/>
-                                        <label for="form_control_7">预计发货时间
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">选择预计发货时间...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('send_time')}">
+                                        <input v-validate="'required'" :class="{'form-control': true, 'date-picker':true, 'is-danger': errors.has('send_time') }" name="send_time" type="text" placeholder="选择预计发货时间" v-model="order.send_time" data-date-format="yyyy/mm/dd">
+                                        <label for="send_time">预计发货时间<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('send_time')?errors.first('send_time'):'选择预计发货时间...'}}</span>
                                     </div>
                                 </div>
 
 
                                 <div class="col-md-3">
-                                    <div class="form-group form-md-line-input">
-                                        <input class="form-control form-control-inline input-medium date-picker required"
-                                               size="16" type="text" value="" id="form_control_8" name="recive_time" v-model="order.recive_time"
-                                               data-date-format="yyyy/mm/dd"/>
-                                        <label for="form_control_8">限时到达时间
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <span class="help-block">选择限时到达时间...</span>
+                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('recive_time')}">
+                                        <input v-validate="'required'" :class="{'form-control': true, 'date-picker':true, 'is-danger': errors.has('recive_time') }" name="recive_time" type="text" placeholder="选择要求到达时间" v-model="order.recive_time" data-date-format="yyyy/mm/dd">
+                                        <label for="recive_time">要求到达时间<span class="required">*</span></label>
+                                        <span class="help-block">{{ errors.has('recive_time')?errors.first('recive_time'):'选择要求到达时间...'}}</span>
                                     </div>
                                 </div>
+                                
                             </div>
 
                             <h5 class="form-section"><i class="fa fa-tasks"></i> 货物信息</h5>
@@ -221,14 +185,12 @@
                                     <div class="form-group">
                                         <div class="mt-repeater" id="goods_list">
                                             <div v-for="(good, index) in order.goods" class="row">
-												<div class="col-md-3">
-                                                    <div class="form-group form-md-line-input">
-                                                        <input type="text" class="form-control required" :name="'goods['+index+'].name'" v-model="good.name"
-                                                               id="form_control_41" placeholder="输入货物名称"/>
-                                                        <label for="form_control_41">货物名称
-                                                            <span class="required" aria-required="true">*</span>
-                                                        </label>
-                                                        <span class="help-block">输入货物名称...</span>
+                                                
+                                                <div class="col-md-3">
+                                                    <div :class="{'form-group':true, 'form-md-line-input':true, 'has-error':errors.has('goods_name')}">
+                                                        <input v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('recive_addr_info') }" name="goods_name" type="text" placeholder="输入货物名称" v-model="good.name">
+                                                        <label for="goods_name">货物名称<span class="required">*</span></label>
+                                                        <span class="help-block">{{ errors.has('goods_name')?errors.first('goods_name'):'输入货物名称...'}}</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
@@ -261,12 +223,11 @@
                             </div>
                         </div>
                         <div class="form-actions right" v-on:click="submitOrder">
-                            <button class="btn blue" type="submit">
+                            <button class="btn blue">
                                 <i class="fa fa-check"></i> 确定创建
                             </button>
                         </div>
-                    
-                    </form>
+                    </div>
                     <!-- END FORM-->
                 </div>
             </div>
@@ -275,6 +236,11 @@
 </div>
 <!-- END PAGE BASE CONTENT -->
 
+<template id="goods_template">
+
+		
+		
+</template>
 
 <!-- BEGIN CORE PLUGINS -->
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery.min.js"
@@ -308,10 +274,7 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/moment.min.js"
         type="text/javascript"></script>
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
-        type="text/javascript"></script>
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"
-        type="text/javascript"></script>
+    
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -319,63 +282,46 @@
         type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
-        type="text/javascript"></script>
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/localization/messages_zh.js"
-        type="text/javascript"></script>
-    
-<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/additional-methods.min.js"
-        type="text/javascript"></script>
 <!--
 <script th:src="@{/js/form-validation-role.min.js}" type="text/javascript"></script>
 -->
 
+    <!--日期选择器插件-->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+    <!--城市插件-->
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/city-picker/js/city-picker.data.js" type="text/javascript"></script>
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/city-picker/js/city-picker.js" type="text/javascript"></script>
+    <!--vue.js插件-->
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/vue/vue2.3.4.js" type="text/javascript"></script>
+    <!--vue restful通信插件-->
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/vue/vue-resource1.3.4.js" type="text/javascript"></script>
+    <!--vue 表单验证插件-->
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/vue/vee-validate/vee-validate.js" type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/vue/vee-validate/locale/zh_CN.js" type="text/javascript"></script>
 
 
 
 <script>
-    $(".date-picker").datepicker({
-        language: "zh-CN"
-    });
-
-    $('#target').citypicker();
     
-    var e = $(".form-validation"),
-        r = $(".alert-danger", e),
-        i = $(".alert-success", e);
-    $(".form-validation").validate({
-        errorElement: "span",
-        errorClass: "help-block help-block-error",
-        focusInvalid: !1,
-        ignore: "",
-        invalidHandler: function(e, t) {
-            i.hide(),
-            r.show(),
-            App.scrollTo(r, -200)
-        },
-        errorPlacement: function(e, r) {
-            r.is(":checkbox") ? e.insertAfter(r.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline")) : r.is(":radio") ? e.insertAfter(r.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline")) : e.insertAfter(r)
-        },
-        highlight: function(e) {
-            $(e).closest(".form-group").addClass("has-error")
-        },
-        unhighlight: function(e) {
-            $(e).closest(".form-group").removeClass("has-error")
-        },
-        success: function(e) {
-            e.closest(".form-group").removeClass("has-error")
-        },
-        submitHandler: function(e) {
-            i.show(),
-            r.hide()
-        }
+    $().ready(function(){
+        $(".date-picker").datepicker({
+            language: "zh-CN"
+        });
+        
+        $('#target').citypicker();
     });
-
     
+
+    const config = {
+        errorBagName: 'errors', // change if property conflicts.
+        delay: 0,
+        locale: 'zh_CN',
+        messages: null,
+        strict: true
+    };
+    
+    Vue.use(VeeValidate,config);
     new Vue({
       el: '#form',
       data: {
@@ -408,34 +354,40 @@
             this.order.goods.splice(index,1);  
         },
         submitOrder: function () {
-            /*
             var resouce = this.$resource('http://localhost/v1/order/api/customer');
-            
-            var fd = new FormData();
-            fd.append('send_name',this.order.send_name);
-            fd.append('send_phone',this.order.send_phone);
-            fd.append('send_addr',this.order.send_addr);
-            fd.append('send_addr_info',this.order.send_addr_info);
-            fd.append('recive_phone',this.order.recive_phone);
-            fd.append('recive_addr',this.order.recive_addr);
-            fd.append('recive_addr_info',this.order.recive_addr_info);
-            fd.append('dispatching_type',this.order.dispatching_type);
-            fd.append('send_time',this.order.send_time);
-            fd.append('recive_time',this.order.recive_time);
-            fd.append('goods',JSON.stringify(this.order.goods));
-            
-            resouce.save(this.order).then(
-                function (response){
-                    var result = $.parseJSON(response.bodyText);
-                    if(result.success)
-                        {
-                            alert('成功！');
+            var orders = this.order;
+            this.$validator.validateAll().then(function(result){
+               if(result)
+                {
+                    var fd = new FormData();
+                    fd.append('send_name',orders.send_name);
+                    fd.append('send_phone',orders.send_phone);
+                    fd.append('send_addr',orders.send_addr);
+                    fd.append('send_addr_info',orders.send_addr_info);
+                    fd.append('recive_phone',orders.recive_phone);
+                    fd.append('recive_addr',orders.recive_addr);
+                    fd.append('recive_addr_info',orders.recive_addr_info);
+                    fd.append('dispatching_type',orders.dispatching_type);
+                    fd.append('send_time',orders.send_time);
+                    fd.append('recive_time',orders.recive_time);
+                    fd.append('goods',JSON.stringify(orders.goods));
+
+                    resouce.save(fd).then(
+                        function (response){
+                            var result = $.parseJSON(response.bodyText);
+                            if(result.success)
+                                {
+                                    alert('成功！');
+                                }
+                        },
+                        function (error){
+                            console.log(error);
                         }
-                },
-                function (error){
-                    console.log(error);
+                    );
                 }
-            );*/
+            });
+            
+            
         }
       }
     })

@@ -38,7 +38,9 @@ public class OrderCustomerService {
                                     String dispatching_type,
                                     Date send_time,
                                     Date recive_time,
-                                    String goods) {
+                                    String goods,
+                                    String user_from,
+                                    int user_id) {
         OrderCustomer orderCustomer = new OrderCustomer();
         //流水号
         orderCustomer.setSerial_number(createSerialNumber());
