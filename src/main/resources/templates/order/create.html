@@ -59,7 +59,7 @@
                 </div>
                 <div class="portlet-body form" id="form">
                     <!-- BEGIN FORM-->
-                    <div class="horizontal-form form-validation" novalidate="novalidate">
+                    <form class="horizontal-form form-validation" novalidate="novalidate">
                         <div class="">
 
                             <h5 class="form-section"> <i class="fa fa-send"></i> 发货人信息</h5>
@@ -261,11 +261,12 @@
                             </div>
                         </div>
                         <div class="form-actions right" v-on:click="submitOrder">
-                            <button class="btn blue">
+                            <button class="btn blue" type="submit">
                                 <i class="fa fa-check"></i> 确定创建
                             </button>
                         </div>
-                    </div>
+                    
+                    </form>
                     <!-- END FORM-->
                 </div>
             </div>
@@ -274,11 +275,6 @@
 </div>
 <!-- END PAGE BASE CONTENT -->
 
-<template id="goods_template">
-
-		
-		
-</template>
 
 <!-- BEGIN CORE PLUGINS -->
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery.min.js"
@@ -325,6 +321,9 @@
 
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/jquery.validate.min.js"
         type="text/javascript"></script>
+<script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/localization/messages_zh.js"
+        type="text/javascript"></script>
+    
 <script src="http://avatarcn-html.oss-cn-hangzhou.aliyuncs.com/metronic_v4.7.5/assets/global/plugins/jquery-validation/js/additional-methods.min.js"
         type="text/javascript"></script>
 <!--
@@ -345,53 +344,36 @@
 
     $('#target').citypicker();
     
+    var e = $(".form-validation"),
+        r = $(".alert-danger", e),
+        i = $(".alert-success", e);
     $(".form-validation").validate({
-                errorElement: "span",
-                errorClass: "help-block help-block-error",
-                focusInvalid: !1,
-                ignore: "",
-                messages: {
-                    required: "这是必填字段",
-                    remote: "请修正此字段",
-                    email: "请输入有效的电子邮件地址",
-                    url: "请输入有效的网址",
-                    date: "请输入有效的日期",
-                    dateISO: "请输入有效的日期 (YYYY-MM-DD)",
-                    number: "请输入有效的数字",
-                    digits: "只能输入数字",
-                    creditcard: "请输入有效的信用卡号码",
-                    equalTo: "你的输入不相同",
-                    extension: "请输入有效的后缀",
-                    maxlength: $.validator.format("最多可以输入 {0} 个字符"),
-                    minlength: $.validator.format("最少要输入 {0} 个字符"),
-                    rangelength: $.validator.format("请输入长度在 {0} 到 {1} 之间的字符串"),
-                    range: $.validator.format("请输入范围在 {0} 到 {1} 之间的数值"),
-                    max: $.validator.format("请输入不大于 {0} 的数值"),
-                    min: $.validator.format("请输入不小于 {0} 的数值")
-                },
-                invalidHandler: function(e, t) {
-                    i.hide(),
-                        r.show(),
-                        App.scrollTo(r, -200)
-                },
-                errorPlacement: function(e, r) {
-                    r.is(":checkbox") ? e.insertAfter(r.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline")) : r.is(":radio") ? e.insertAfter(r.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline")) : e.insertAfter(r)
-                },
-                highlight: function(e) {
-                    $(e).closest(".form-group").addClass("has-error")
-                },
-                unhighlight: function(e) {
-                    $(e).closest(".form-group").removeClass("has-error")
-                },
-                success: function(e) {
-                    e.closest(".form-group").removeClass("has-error")
-                },
-                submitHandler: function(e) {
-                    i.show(),
-                    r.hide(),
-                        form.submit()
-                }
-            });
+        errorElement: "span",
+        errorClass: "help-block help-block-error",
+        focusInvalid: !1,
+        ignore: "",
+        invalidHandler: function(e, t) {
+            i.hide(),
+            r.show(),
+            App.scrollTo(r, -200)
+        },
+        errorPlacement: function(e, r) {
+            r.is(":checkbox") ? e.insertAfter(r.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline")) : r.is(":radio") ? e.insertAfter(r.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline")) : e.insertAfter(r)
+        },
+        highlight: function(e) {
+            $(e).closest(".form-group").addClass("has-error")
+        },
+        unhighlight: function(e) {
+            $(e).closest(".form-group").removeClass("has-error")
+        },
+        success: function(e) {
+            e.closest(".form-group").removeClass("has-error")
+        },
+        submitHandler: function(e) {
+            i.show(),
+            r.hide()
+        }
+    });
 
     
     new Vue({
@@ -426,6 +408,7 @@
             this.order.goods.splice(index,1);  
         },
         submitOrder: function () {
+            /*
             var resouce = this.$resource('http://localhost/v1/order/api/customer');
             
             var fd = new FormData();
@@ -452,7 +435,7 @@
                 function (error){
                     console.log(error);
                 }
-            );
+            );*/
         }
       }
     })

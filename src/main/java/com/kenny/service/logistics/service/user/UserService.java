@@ -6,9 +6,11 @@ import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.mapper.user.UserInfoMapper;
 import com.kenny.service.logistics.mapper.user.UserMapper;
+import com.kenny.service.logistics.mapper.user.UserTokenMapper;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.model.user.UserInfo;
 import com.kenny.service.logistics.model.user.UserSet;
+import com.kenny.service.logistics.model.user.UserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private UserInfoMapper userInfoMapper;
+    @Autowired
+    private UserTokenMapper userTokenMapper;
 
     /**
      * 校验手机号是否已经注册
@@ -232,6 +236,29 @@ public class UserService {
 
         return user;
     }
+
+    /**
+     * 校验token
+     *
+     * @param token
+     * @return
+     */
+    public User getUser(String token) throws ErrorCodeException {
+        //1、参数合法判断
+        if (token.length() != 16)
+            throw new ErrorCodeException(UserErrorCode.PARAM_ERROR);
+        //2、判断token是否存在
+        UserToken userToken = userTokenMapper.selectByToken(token);
+        if (userToken == null)
+            throw new ErrorCodeException(UserErrorCode.TOKEN_ERROR);
+        //3、判断token是否超时
+
+        //校验用户
+        User user = userMapper.selectByPrimaryKey(userToken.getUserId());
+        CheckUser(user);
+        return user;
+    }
+
 
     public User GetUser(int id) throws ErrorCodeException {
         User user = userMapper.selectByPrimaryKey(id);
