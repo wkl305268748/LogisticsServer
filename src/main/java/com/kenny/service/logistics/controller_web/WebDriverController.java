@@ -1,8 +1,9 @@
 package com.kenny.service.logistics.controller_web;
 
 
+import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.json.response.WebMenuResponse;
-import com.kenny.service.logistics.service.DriverService;
+import com.kenny.service.logistics.service.fleet.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,19 +36,19 @@ public class WebDriverController {
                              @RequestParam(value = "phone") String phone,
                              @RequestParam(value = "driver_license") String driver_license,
                              @RequestParam(value = "remark") String remark) {
-        driverService.addDriver(name,phone,sex,driver_license,remark);
+        driverService.insert(name,sex,phone,0,false,driver_license,null,null,remark);
         return "redirect:all";
     }
 
     @RequestMapping("/edit")
-    public String edit(ModelMap map,@RequestParam(value = "id") int id) {
-        map.addAttribute("data",driverService.getDriver(id));
+    public String edit(ModelMap map,@RequestParam(value = "id") int id) throws ErrorCodeException {
+        map.addAttribute("data",driverService.selectByPrimaryKey(id));
         return "driver/edit";
     }
 
     @RequestMapping("/delete")
     public String delete(ModelMap map,@RequestParam(value = "id") int id) {
-        driverService.deleteDriver(id);
+        driverService.deleteByPrimaryKey(id);
         return "redirect:all";
     }
 
@@ -57,15 +58,15 @@ public class WebDriverController {
                              @RequestParam(value = "sex") String sex,
                              @RequestParam(value = "phone") String phone,
                              @RequestParam(value = "driver_license") String driver_license,
-                             @RequestParam(value = "remark") String remark) {
-        driverService.editDriver(id,name,phone,sex,driver_license,remark);
+                             @RequestParam(value = "remark") String remark) throws ErrorCodeException {
+        driverService.update(id,name,sex,phone,0,false,driver_license,null,null,remark);
         return "redirect:all";
     }
 
     @RequestMapping("/all")
     public String all(ModelMap map,
                       @RequestParam(value = "page",required = false,defaultValue = "1") Integer page) {
-        map.addAttribute("data",driverService.getDriversAll(PAGESIZE,(page - 1)*PAGESIZE));
+        map.addAttribute("data",driverService.selectPage((page - 1)*PAGESIZE,PAGESIZE));
         return "driver/all";
     }
 }

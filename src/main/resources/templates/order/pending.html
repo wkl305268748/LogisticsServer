@@ -59,27 +59,27 @@
                             <tr th:each="list : ${data.item}" >
                                 <td class="highlight">
                                     <div class="success"></div>
-                                    <a th:href="@{pending_info(id=${list.id})}" th:text="${list.order_number}"></a>
+                                    <a th:href="@{pending_info(id=${list.orderCustomer.id})}" th:text="${list.orderCustomer.order_number}"></a>
                                     <br/>
                                     <br/>
-                                    <h6 th:text="'下单时间：' + ${#dates.format(list.time,'yyyy-MM-dd HH:mm')}"></h6>
+                                    <h6 th:text="'下单时间：' + ${#dates.format(list.orderCustomer.time,'yyyy-MM-dd HH:mm')}"></h6>
                                 </td>
                                 <td>
-                                    <h6 th:text="${list.send_name} + '|' + ${list.send_phone}"></h6>
-                                    <h6 th:text="${list.send_addr}"></h6>
+                                    <h6 th:text="${list.orderCustomer.send_name} + '|' + ${list.orderCustomer.send_phone}"></h6>
+                                    <h6 th:text="${list.orderCustomer.send_addr}"></h6>
                                 </td>
                                 <td>
-                                    <h6 th:text="${list.recive_name} + '|' + ${list.recive_phone}"></h6>
-                                    <h6 th:text="${list.recive_addr}"></h6>
+                                    <h6 th:text="${list.orderCustomer.recive_name} + '|' + ${list.orderCustomer.recive_phone}"></h6>
+                                    <h6 th:text="${list.orderCustomer.recive_addr}"></h6>
                                 </td>
                                 <td>
-                                    <h6 th:if="${not #lists.isEmpty(list.remark)}" th:text="${list.remark}"></h6>
+                                    <h6 th:if="${not #lists.isEmpty(list.orderCustomer.remark)}" th:text="${list.orderCustomer.remark}"></h6>
                                 </td>
 
-                                <td><a th:href ="@{pending_success(id=${list.id})}" class="btn btn-circle green-jungle"><i class="fa fa fa-truck"></i> 派车 </a>
+                                <td><a th:href ="@{pending_success(id=${list.orderCustomer.id})}" class="btn btn-circle green-jungle"><i class="fa fa fa-truck"></i> 派车 </a>
                                     <br/>
                                     <br/>
-                                    <a th:onclick="'onignor(' + ${list.id} + ')'" class="btn btn-default"><i class="fa fa-hand-paper-o"></i> 忽略 </a>
+                                    <a th:onclick="'onignor(' + ${list.orderCustomer.id} + ')'" class="btn btn-default"><i class="fa fa-hand-paper-o"></i> 忽略 </a>
                                 </td>
                             </tr>
                             </tbody>

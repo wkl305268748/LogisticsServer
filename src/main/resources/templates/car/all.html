@@ -57,9 +57,9 @@
                             </thead>
                             <tbody>
                             <tr th:each="list : ${data.item}">
-                                <td th:text="${list.car_plate}"></td>
-                                <td th:text="${list.car_type}"></td>
-                                <td th:text="${list.car_resource =='owner'?'自有':'第三方'}"></td>
+                                <td th:text="${list.plate}"></td>
+                                <td th:text="${list.type}"></td>
+                                <td th:text="${list.resource =='owner'?'自有':'第三方'}"></td>
                                 <td th:text="${list.remark}"></td>
 
                                 <td><a th:href ="@{edit(id=${list.id})}" class="btn btn-circle green-jungle"><i class="fa fa-edit"></i> 修改 </a>

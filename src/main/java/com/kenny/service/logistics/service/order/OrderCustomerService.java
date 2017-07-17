@@ -26,8 +26,6 @@ public class OrderCustomerService {
     private OrderCustomerMapper orderCustomerMapper;
     @Autowired
     private OrderGoodsMapper orderGoodsMapper;
-    @Autowired
-    private OrderStatusMapper orderStatusMapper;
 
     //创建订单
     public OrderCustomer insert(String send_name,
@@ -41,9 +39,7 @@ public class OrderCustomerService {
                                 String dispatching_type,
                                 Date send_time,
                                 Date recive_time,
-                                String goods,
-                                String user_from,
-                                String user) {
+                                String goods) {
         OrderCustomer orderCustomer = new OrderCustomer();
         //流水号
         orderCustomer.setSerial_number(createSerialNumber());
@@ -61,27 +57,18 @@ public class OrderCustomerService {
         orderCustomer.setRecive_time(recive_time);
         orderCustomer.setDispatching_type(dispatching_type);
         orderCustomer.setTime(new Date());
-        orderCustomer.setStatus("ORDER_PLACE");
-        orderCustomer.setOrder_users_from(user_from);
-        orderCustomer.setOrder_users(user);
         orderCustomerMapper.insert(orderCustomer);
 
         //添加货物
-        Gson gson = new Gson();
-        List<OrderGoods> goodsList = gson.fromJson(goods, new TypeToken<List<OrderGoods>>() {
-        }.getType());
-        for (OrderGoods good : goodsList) {
-            good.setFk_order_customer_id(orderCustomer.getId());
-            orderGoodsMapper.insert(good);
+        if(goods!=null) {
+            Gson gson = new Gson();
+            List<OrderGoods> goodsList = gson.fromJson(goods, new TypeToken<List<OrderGoods>>() {
+            }.getType());
+            for (OrderGoods good : goodsList) {
+                good.setFk_order_customer_id(orderCustomer.getId());
+                orderGoodsMapper.insert(good);
+            }
         }
-
-        //添加订单操作记录
-        OrderStatus orderStatus = new OrderStatus();
-        orderStatus.setOrder_number(orderCustomer.getOrder_number());
-        orderStatus.setStatus("ORDER_PLACE");
-        orderStatus.setTime(new Date());
-        orderStatusMapper.insert(orderStatus);
-
         return orderCustomer;
     }
 
@@ -119,21 +106,26 @@ public class OrderCustomerService {
         //货物修改
         //删除所有这个订单的货物
         orderGoodsMapper.deleteByOrderCustomer(id);
-        Gson gson = new Gson();
-        List<OrderGoods> goodsList = gson.fromJson(goods, new TypeToken<List<OrderGoods>>() {
-        }.getType());
-        for (OrderGoods good : goodsList) {
-            good.setFk_order_customer_id(orderCustomer.getId());
-            orderGoodsMapper.insert(good);
+        if(goods!=null) {
+            Gson gson = new Gson();
+            List<OrderGoods> goodsList = gson.fromJson(goods, new TypeToken<List<OrderGoods>>() {
+            }.getType());
+            for (OrderGoods good : goodsList) {
+                good.setFk_order_customer_id(orderCustomer.getId());
+                orderGoodsMapper.insert(good);
+            }
         }
+        return orderCustomer;
+    }
 
-        //添加订单操作记录
-        OrderStatus orderStatus = new OrderStatus();
-        orderStatus.setOrder_number(orderCustomer.getOrder_number());
-        orderStatus.setStatus("ORDER_EDIT");
-        orderStatus.setTime(new Date());
-        orderStatusMapper.insert(orderStatus);
-
+    //修改订单
+    public OrderCustomer updateStatus(Integer id,String status) throws ErrorCodeException {
+        OrderCustomer orderCustomer = orderCustomerMapper.selectByPrimaryKey(id);
+        if (orderCustomer == null) {
+            throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+        }
+        orderCustomer.setStatus(status);
+        orderCustomerMapper.update(orderCustomer);
         return orderCustomer;
     }
 

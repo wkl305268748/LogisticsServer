@@ -1,5 +1,6 @@
 package com.kenny.service.logistics.model.order;
 
+import java.util.Date;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 

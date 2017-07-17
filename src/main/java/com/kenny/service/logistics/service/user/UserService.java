@@ -31,11 +31,11 @@ public class UserService {
      * 校验手机号是否已经注册
      * @param phone
      */
-    public void CheckPhone(String phone) throws ErrorCodeException {
+    public void CheckPhone(String phone,String type) throws ErrorCodeException {
         //参数判断
         if (phone.length() != 11)
             throw new ErrorCodeException(UserErrorCode.PARAM_ERROR);
-        User user = userMapper.selectUserByPhone(phone);
+        User user = userMapper.selectByPhone(phone,type);
         if (user != null)
             throw new ErrorCodeException(UserErrorCode.USER_EXISTS);
     }
@@ -44,25 +44,10 @@ public class UserService {
      * 校验账户是否已经注册
      * @param username
      */
-    public void CheckUser(String username) throws ErrorCodeException {
-        User user = userMapper.selectUserByUserName(username);
+    public void CheckUser(String username,String type) throws ErrorCodeException {
+        User user = userMapper.selectByUserName(username,type);
         if (user != null)
             throw new ErrorCodeException(UserErrorCode.USER_EXISTS);
-    }
-
-    /**
-     * 用户校验
-     * 1、校验用户是否存在
-     * 2、校验用户是否封禁
-     */
-    public void CheckUser(User user) throws ErrorCodeException {
-        //1、校验用户是否存在
-        if (user == null)
-            throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
-
-        //2、校验用户是否封禁
-        if (user.getIsDisable())
-            throw new ErrorCodeException(UserErrorCode.USER_BLOCKED);
     }
 
     /**
@@ -72,15 +57,15 @@ public class UserService {
      * @param password
      * @return
      */
-    public User CheckUserPassword(String username, String password) throws ErrorCodeException {
-        User user = userMapper.selectUserByUserName(username);
+    public User CheckUserPassword(String username, String password,String type) throws ErrorCodeException {
+        User user = userMapper.selectByUserName(username,type);
 
         //1、校验用户是否存在
         if (user == null)
             throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
 
         //2、校验用户是否封禁
-        if (user.getIsDisable())
+        if (user.getIs_disable())
             throw new ErrorCodeException(UserErrorCode.USER_BLOCKED);
 
         //3、是否设定密码
@@ -101,15 +86,15 @@ public class UserService {
      * @param password
      * @return
      */
-    public User CheckPhonePassword(String phone, String password) throws ErrorCodeException {
-        User user = userMapper.selectUserByPhone(phone);
+    public User CheckPhonePassword(String phone, String password,String type) throws ErrorCodeException {
+        User user = userMapper.selectByPhone(phone,type);
 
         //1、校验用户是否存在
         if (user == null)
             throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
 
         //2、校验用户是否封禁
-        if (user.getIsDisable())
+        if (user.getIs_disable())
             throw new ErrorCodeException(UserErrorCode.USER_BLOCKED);
 
         //3、是否设定密码
@@ -130,46 +115,25 @@ public class UserService {
      * @param phone
      * @return
      */
-    public User CreateUser(String phone,String password) throws ErrorCodeException {
+    public User CreateUser(String phone,String password,String type) throws ErrorCodeException {
         //参数判断
         if (phone.length() != 11)
             throw new ErrorCodeException(UserErrorCode.PARAM_ERROR);
 
-        User user = userMapper.selectUserByPhone(phone);
+        User user = userMapper.selectByPhone(phone,type);
         if (user != null)
             throw new ErrorCodeException(UserErrorCode.USER_EXISTS);
 
         user = new User();
         user.setPhone(phone);
         user.setPassword(password);
-        user.setIsDisable(false);
+        user.setIs_disable(false);
         user.setUsername(phone);
+        user.setType(type);
         user.setRegtime(new Date());
         int result = userMapper.insert(user);
         if (result <= 0)
             throw new ErrorCodeException(UserErrorCode.DB_ERROR);
-        return user;
-    }
-
-    /**
-     * 根据用户名密码创建用户
-     *
-     * @param username
-     * @param password
-     * @return
-     */
-    public User CreateUserByUsername(String username, String password) throws ErrorCodeException {
-
-        User user = new User();
-        user.setPhone(null);
-        user.setPassword(password);
-        user.setIsDisable(false);
-        user.setUsername(username);
-        user.setRegtime(new Date());
-        int result = userMapper.insert(user);
-        if (result <= 0)
-            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
-
         return user;
     }
 
@@ -186,54 +150,6 @@ public class UserService {
         int result = userMapper.update(user);
         if (result <= 0)
             throw new ErrorCodeException(UserErrorCode.DB_ERROR);
-        return user;
-    }
-
-
-    /**
-     * 删除用户
-     *
-     * @param id
-     */
-    public void DeleteUser(int id) throws ErrorCodeException {
-        User user = userMapper.selectByPrimaryKey(id);
-        if (user == null)
-            throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
-        int result = userMapper.delete(user);
-        if (result <= 0)
-            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
-    }
-
-    /**
-     * 修改用户
-     */
-    public User EditUser(int id, String phone, String username) throws ErrorCodeException {
-        //修改
-        User user = userMapper.selectByPrimaryKey(id);
-        if (user == null)
-            throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
-        user.setPhone(phone);
-        user.setUsername(username);
-        int result = userMapper.update(user);
-        if (result <= 0)
-            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
-
-        return user;
-    }
-
-    /**
-     * 封禁用户
-     */
-    public User BlockedUser(int id) throws ErrorCodeException {
-        User user = userMapper.selectByPrimaryKey(id);
-        if (user == null)
-            throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
-        //设置valid
-        user.setIsDisable(true);
-        int result = userMapper.update(user);
-        if (result <= 0)
-            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
-
         return user;
     }
 
@@ -254,46 +170,10 @@ public class UserService {
         //3、判断token是否超时
 
         //校验用户
-        User user = userMapper.selectByPrimaryKey(userToken.getUserId());
-        CheckUser(user);
+        User user = userMapper.selectByPrimaryKey(userToken.getUser_id());
         return user;
     }
 
-
-    public User GetUser(int id) throws ErrorCodeException {
-        User user = userMapper.selectByPrimaryKey(id);
-        if (user == null)
-            throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
-        return user;
-    }
-
-    public PageResponse<User> GetUserList(int offset,int pageSize){
-        List<User> users = userMapper.selectPage(offset,pageSize);
-        PageResponse<User> pageResponse = new PageResponse<>();
-        pageResponse.setItem(users);
-        pageResponse.setOffset(offset);
-        pageResponse.setPageSize(pageSize);
-        pageResponse.setTotal(userMapper.count());
-        return pageResponse;
-    }
-
-    public PageResponse<UserSet> GetUserSetList(int offset, int pageSize){
-        PageResponse<UserSet> pageResponse = new PageResponse<>();
-        List<UserSet> userSets = new ArrayList<>();
-        for(User user : userMapper.selectPage(offset,pageSize))
-        {
-            UserInfo userInfo = userInfoMapper.selectByUserId(user.getId());
-            UserSet userSet = new UserSet();
-            userSet.setUser(user);
-            userSet.setUserInfo(userInfo);
-            userSets.add(userSet);
-        }
-        pageResponse.setItem(userSets);
-        pageResponse.setOffset(offset);
-        pageResponse.setPageSize(pageSize);
-        pageResponse.setTotal(userMapper.count());
-        return pageResponse;
-    }
 }
 
 

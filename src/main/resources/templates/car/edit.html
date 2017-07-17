@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="car_plate" th:value="${data.car_plate}" id="form_control_1" placeholder="输入车牌"/>
+                                        <input type="text" class="form-control required" name="car_plate" th:value="${data.plate}" id="form_control_1" placeholder="输入车牌"/>
                                         <label for="form_control_1">车牌
                                             <span class="required" aria-required="true">*</span>
                                         </label>
@@ -63,7 +63,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group form-md-line-input">
-                                        <input type="text" class="form-control required" name="car_type" th:value="${data.car_type}" id="form_control_2" placeholder="输入车辆类型"/>
+                                        <input type="text" class="form-control required" name="car_type" th:value="${data.type}" id="form_control_2" placeholder="输入车辆类型"/>
                                         <label for="form_control_2">车辆类型
                                             <span class="required" aria-required="true">*</span>
                                         </label>
@@ -76,14 +76,14 @@
                                         <label for="form_control_1">车辆归属</label>
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
-                                                <input type="radio" id="checkbox2_8" name="car_resource" value="owner" class="md-radiobtn" th:checked="${data.car_resource == 'owner'}"/>
+                                                <input type="radio" id="checkbox2_8" name="car_resource" value="owner" class="md-radiobtn" th:checked="${data.resource == 'owner'}"/>
                                                 <label for="checkbox2_8">
                                                     <span></span>
                                                     <span class="check"></span>
                                                     <span class="box"></span> 自有 </label>
                                             </div>
                                             <div class="md-radio">
-                                                <input type="radio" id="checkbox2_9" name="car_resource" value="other" class="md-radiobtn" th:checked="${data.car_resource == 'other'}"/>
+                                                <input type="radio" id="checkbox2_9" name="car_resource" value="other" class="md-radiobtn" th:checked="${data.resource == 'other'}"/>
                                                 <label for="checkbox2_9">
                                                     <span></span>
                                                     <span class="check"></span>

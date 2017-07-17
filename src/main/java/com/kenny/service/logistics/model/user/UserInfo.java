@@ -1,63 +1,70 @@
 package com.kenny.service.logistics.model.user;
 
 import java.util.Date;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
-/**
- * Created by madengfeng on 2016/11/8.
- */
-public class UserInfo {
-    private Integer id;
-    private Integer user_id;
-    private String nickname;
-    private String sex;
-    private String img;
-    private Date birthday;
+@ApiModel("")
+public class UserInfo{
+	@ApiModelProperty("")
+	private Integer id;
+	@ApiModelProperty("")
+	private Integer user_id;
+	@ApiModelProperty("")
+	private String nickname;
+	@ApiModelProperty("")
+	private String sex;
+	@ApiModelProperty("")
+	private String img;
+	@ApiModelProperty("")
+	private Date birthday;
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId(){
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id){
+		this.id = id;
+	}
 
-    public String getNickname() {
-        return nickname;
-    }
+	public Integer getUser_id(){
+		return user_id;
+	}
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+	public void setUser_id(Integer user_id){
+		this.user_id = user_id;
+	}
 
-    public String getSex() {
-        return sex;
-    }
+	public String getNickname(){
+		return nickname;
+	}
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
+	public void setNickname(String nickname){
+		this.nickname = nickname;
+	}
 
-    public String getImg() {
-        return img;
-    }
+	public String getSex(){
+		return sex;
+	}
 
-    public void setImg(String img) {
-        this.img = img;
-    }
+	public void setSex(String sex){
+		this.sex = sex;
+	}
 
-    public Integer getUser_id() {
-        return user_id;
-    }
+	public String getImg(){
+		return img;
+	}
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
+	public void setImg(String img){
+		this.img = img;
+	}
 
-    public Date getBirthday() {
-        return birthday;
-    }
+	public Date getBirthday(){
+		return birthday;
+	}
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+	public void setBirthday(Date birthday){
+		this.birthday = birthday;
+	}
+
 }

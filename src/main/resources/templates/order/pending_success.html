@@ -189,7 +189,7 @@
                         <div class="col-md-4">
                             <div class="form-group form-md-line-input">
                                 <select class="form-control required" name="car_id" aria-required="true" aria-invalid="false" id="form_control_2" aria-describedby="delivery-error">
-                                    <option th:each="list : ${car}" th:value="${list.id}" th:text="${list.car_plate} +'('+ ${list.car_type}+')'"></option>
+                                    <option th:each="list : ${car}" th:value="${list.id}" th:text="${list.plate} +'('+ ${list.type}+')'"></option>
                                 </select>
                                 <span id="delivery-error2" class="help-block help-block-error"></span>
                                 <label for="form_control_2">选择车辆

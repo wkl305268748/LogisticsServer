@@ -1,5 +1,6 @@
 package com.kenny.service.logistics.model.order;
 
+import java.util.Date;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 
@@ -15,6 +16,10 @@ public class OrderGoods{
 	private String size;
 	@ApiModelProperty("货物总重量，单位吨")
 	private Integer weight;
+	@ApiModelProperty("件数")
+	private Integer number;
+	@ApiModelProperty("运费")
+	private Integer freight;
 	@ApiModelProperty("货物备注")
 	private String remark;
 
@@ -56,6 +61,22 @@ public class OrderGoods{
 
 	public void setWeight(Integer weight){
 		this.weight = weight;
+	}
+
+	public Integer getNumber(){
+		return number;
+	}
+
+	public void setNumber(Integer number){
+		this.number = number;
+	}
+
+	public Integer getFreight(){
+		return freight;
+	}
+
+	public void setFreight(Integer freight){
+		this.freight = freight;
 	}
 
 	public String getRemark(){

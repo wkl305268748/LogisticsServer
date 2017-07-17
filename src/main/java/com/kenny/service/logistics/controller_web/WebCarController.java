@@ -1,8 +1,8 @@
 package com.kenny.service.logistics.controller_web;
 
 
-import com.kenny.service.logistics.service.CarService;
-import com.kenny.service.logistics.service.DriverService;
+import com.kenny.service.logistics.exception.ErrorCodeException;
+import com.kenny.service.logistics.service.fleet.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,19 +31,19 @@ public class WebCarController {
                              @RequestParam(value = "car_type") String car_type,
                              @RequestParam(value = "remark") String remark) {
 
-        carService.addCar(car_plate,car_resource,car_type,remark);
+        carService.insert(car_plate,car_type,car_resource,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,remark);
         return "redirect:all";
     }
 
     @RequestMapping("/edit")
-    public String edit(ModelMap map,@RequestParam(value = "id") int id) {
-        map.addAttribute("data",carService.getCar(id));
+    public String edit(ModelMap map,@RequestParam(value = "id") int id) throws ErrorCodeException {
+        map.addAttribute("data",carService.selectByPrimaryKey(id));
         return "car/edit";
     }
 
     @RequestMapping("/delete")
     public String delete(ModelMap map,@RequestParam(value = "id") int id) {
-        carService.deleteCar(id);
+        carService.deleteByPrimaryKey(id);
         return "redirect:all";
     }
 
@@ -52,15 +52,15 @@ public class WebCarController {
                              @RequestParam(value = "car_plate") String car_plate,
                              @RequestParam(value = "car_resource") String car_resource,
                              @RequestParam(value = "car_type") String car_type,
-                             @RequestParam(value = "remark") String remark) {
-        carService.editCar(id,car_plate,car_resource,car_type,remark);
+                             @RequestParam(value = "remark") String remark) throws ErrorCodeException {
+        carService.update(id,car_plate,car_type,car_resource,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,remark);
         return "redirect:all";
     }
 
     @RequestMapping("/all")
     public String all(ModelMap map,
                       @RequestParam(value = "page",required = false,defaultValue = "1") Integer page) {
-        map.addAttribute("data",carService.getCarsAll(PAGESIZE,(page - 1)*PAGESIZE));
+        map.addAttribute("data",carService.selectPage((page - 1)*PAGESIZE,PAGESIZE));
         return "car/all";
     }
 }

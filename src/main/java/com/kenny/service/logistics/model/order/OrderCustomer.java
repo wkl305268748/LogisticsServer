@@ -36,10 +36,6 @@ public class OrderCustomer{
 	private String dispatching_type;
 	@ApiModelProperty("订单状态，关联status表")
 	private String status;
-	@ApiModelProperty("下单用户标识")
-	private String order_users;
-	@ApiModelProperty("下单用户来源")
-	private String order_users_from;
 	@ApiModelProperty("")
 	private String remark;
 	@ApiModelProperty("")
@@ -163,22 +159,6 @@ public class OrderCustomer{
 
 	public void setStatus(String status){
 		this.status = status;
-	}
-
-	public String getOrder_users(){
-		return order_users;
-	}
-
-	public void setOrder_users(String order_users){
-		this.order_users = order_users;
-	}
-
-	public String getOrder_users_from(){
-		return order_users_from;
-	}
-
-	public void setOrder_users_from(String order_users_from){
-		this.order_users_from = order_users_from;
 	}
 
 	public String getRemark(){

@@ -1,9 +1,9 @@
 package com.kenny.service.logistics.service;
 
 import com.kenny.service.logistics.json.response.PageResponse;
-import com.kenny.service.logistics.mapper.CarMapper;
+import com.kenny.service.logistics.mapper.fleet.CarMapper;
 import com.kenny.service.logistics.mapper.ProfitMapper;
-import com.kenny.service.logistics.model.Car;
+import com.kenny.service.logistics.model.fleet.Car;
 import com.kenny.service.logistics.model.Profit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

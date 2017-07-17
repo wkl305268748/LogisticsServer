@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-@Api(value = "/v1/user/api", description = "用户接口模块")
-@RequestMapping(value = "/v1/user/api")
+@Api(value = "/v1/user/customer", description = "客户接口模块")
+@RequestMapping(value = "/v1/user/customer")
 @RestController
-public class ApiUserController {
+public class CustomerController {
     @Autowired
     private SmsService smsService;
     @Autowired
@@ -32,24 +32,14 @@ public class ApiUserController {
     @Autowired
     private UserInfoService userInfoService;
 
+    String type = "customer";
+
     @ApiOperation(value = "校验手机号码是否注册")
     @RequestMapping(value = "/check_phone", method = RequestMethod.GET)
     @ResponseBody
     public JsonBean CheckPhone(@ApiParam(value = "需要校验的手机号码", required = true) @RequestParam String phone) {
         try {
-            userService.CheckPhone(phone);
-            return new JsonBean(UserErrorCode.SUCCESS);
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
-
-    @ApiOperation(value = "校验用户名是否注册")
-    @RequestMapping(value = "/check_user", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonBean CheckUser(@ApiParam(value = "需要校验的用户名", required = true) @RequestParam String username) {
-        try {
-            userService.CheckPhone(username);
+            userService.CheckPhone(phone,type);
             return new JsonBean(UserErrorCode.SUCCESS);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
@@ -97,45 +87,12 @@ public class ApiUserController {
             //校验验证码
             smsService.CheckCode(cookie, code);
             //用户创建
-            User user = userService.CreateUser(phone,password);
+            User user = userService.CreateUser(phone,password,type);
             //用户信息创建
             userInfoService.CreateUserInfo(user.getId(),phone,"男",null,null);
             //用户登陆
-            UserToken bean = userLoginService.LoginSms(phone);
+            UserToken bean = userLoginService.LoginSms(phone,type);
             return new JsonBean(UserErrorCode.SUCCESS, bean);
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
-
-    @ApiOperation(value = "用户名密码创建用户")
-    @RequestMapping(value = "/create_user", method = RequestMethod.POST)
-    @ResponseBody
-
-    public JsonBean<UserToken> CreatePass(@ApiParam("用户名") @RequestParam(required = true) String name,
-                                                 @ApiParam("密码") @RequestParam(required = true) String password) {
-        try {
-            //用户创建
-            User user = userService.CreateUser(name, password);
-            //用户信息创建
-            userInfoService.CreateUserInfo(user.getId(),name,"男",null,null);
-            //用户登陆
-            UserToken bean = userLoginService.LoginUserPass(name);
-            return new JsonBean(UserErrorCode.SUCCESS, bean);
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
-
-
-    @ApiOperation(value = "校验用户名与密码")
-    @RequestMapping(value = "/check_user_pass", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonBean CheckUserPass(@ApiParam("用户名") @RequestParam(required = true) String username,
-                                  @ApiParam("密码") @RequestParam(required = true) String password) {
-        try {
-            userService.CheckUserPassword(username, password);
-            return new JsonBean(UserErrorCode.SUCCESS);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -147,7 +104,7 @@ public class ApiUserController {
     public JsonBean CheckPhonePass(@ApiParam("手机号") @RequestParam(required = true) String phone,
                                    @ApiParam("密码") @RequestParam(required = true) String password) {
         try {
-            userService.CheckPhonePassword(phone, password);
+            userService.CheckPhonePassword(phone, password,type);
             return new JsonBean(UserErrorCode.SUCCESS);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
@@ -178,23 +135,8 @@ public class ApiUserController {
 
         try {
             //校验密码
-            userService.CheckPhonePassword(phone, password);
-            return new JsonBean(UserErrorCode.SUCCESS, userLoginService.LoginPhonePass(phone));
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
-
-    @ApiOperation(value = "用户名和密码登录")
-    @RequestMapping(value = "/login_user", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonBean<UserToken> login_user(@ApiParam("用户名") @RequestParam(required = true) String username,
-                                          @ApiParam("密码") @RequestParam(required = true) String password) {
-
-        try {
-            //校验密码
-            userService.CheckUserPassword(username, password);
-            return new JsonBean(UserErrorCode.SUCCESS, userLoginService.LoginUserPass(username));
+            userService.CheckPhonePassword(phone, password,type);
+            return new JsonBean(UserErrorCode.SUCCESS, userLoginService.LoginPhonePass(phone,type));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -209,7 +151,7 @@ public class ApiUserController {
         try {
             //校验验证码
             smsService.CheckCode(cookie, code);
-            return new JsonBean(UserErrorCode.SUCCESS, userLoginService.LoginSms(phone));
+            return new JsonBean(UserErrorCode.SUCCESS, userLoginService.LoginSms(phone,type));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -277,7 +219,7 @@ public class ApiUserController {
     public JsonBean<UserInfo> info_phone(@ApiParam("用户登录令牌") @RequestParam(required = true)String token,
                                             @ApiParam("用户手机号") @RequestParam(required = true)String phone){
         try {
-            return new JsonBean(UserErrorCode.SUCCESS,userInfoService.GetUserInfoByPhone(phone));
+            return new JsonBean(UserErrorCode.SUCCESS,userInfoService.GetUserInfoByPhone(phone,type));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }

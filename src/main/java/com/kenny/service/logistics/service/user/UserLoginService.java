@@ -30,8 +30,8 @@ public class UserLoginService {
      * @param phone
      * @return
      */
-    public UserToken LoginSms(String phone) throws ErrorCodeException {
-        User user = userMapper.selectUserByPhone(phone);
+    public UserToken LoginSms(String phone,String type) throws ErrorCodeException {
+        User user = userMapper.selectByPhone(phone,type);
         UserToken token = Login(user);
         return token;
     }
@@ -45,13 +45,13 @@ public class UserLoginService {
      * @param username
      * @return
      */
-    public UserToken LoginUserPass(String username) throws ErrorCodeException {
-        User user = userMapper.selectUserByPhone(username);
+    public UserToken LoginUserPass(String username,String type) throws ErrorCodeException {
+        User user = userMapper.selectByPhone(username,type);
         //1、校验用户是否存在
         if (user == null)
             throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
         //2、校验用户是否封禁
-        if (user.getIsDisable())
+        if (user.getIs_disable())
             throw new ErrorCodeException(UserErrorCode.USER_BLOCKED);
         UserToken token = Login(user);
         return token;
@@ -66,13 +66,13 @@ public class UserLoginService {
      * @param phone
      * @return
      */
-    public UserToken LoginPhonePass(String phone) throws ErrorCodeException {
-        User user = userMapper.selectUserByPhone(phone);
+    public UserToken LoginPhonePass(String phone,String type) throws ErrorCodeException {
+        User user = userMapper.selectByPhone(phone,type);
         //1、校验用户是否存在
         if (user == null)
             throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
         //2、校验用户是否封禁
-        if (user.getIsDisable())
+        if (user.getIs_disable())
             throw new ErrorCodeException(UserErrorCode.USER_BLOCKED);
 
         UserToken token = Login(user);
@@ -81,13 +81,13 @@ public class UserLoginService {
 
     public UserToken Login(User user) throws ErrorCodeException {
         //1、删除已有的token
-        userTokenMapper.deleteTokenByUserId(user.getId());
+        userTokenMapper.deleteByUserId(user.getId());
 
         //2、生成新的token 加入数据库
         String token = createToken(user.getUsername());
         UserToken userToken = new UserToken();
         userToken.setToken(token);
-        userToken.setUserId(user.getId());
+        userToken.setUser_id(user.getId());
         userToken.setTime(new Date());
         userTokenMapper.insert(userToken);
 
@@ -102,7 +102,7 @@ public class UserLoginService {
      */
     public void Logout(String token) throws ErrorCodeException {
         UserToken userToken = userTokenMapper.selectByToken(token);
-        int result = userTokenMapper.deleteTokenByUserId(userToken.getUserId());
+        int result = userTokenMapper.deleteByUserId(userToken.getUser_id());
         if (result <= 0)
             throw new ErrorCodeException(UserErrorCode.DB_ERROR);
     }
@@ -123,8 +123,7 @@ public class UserLoginService {
         //3、判断token是否超时
 
         //校验用户
-        User user = userMapper.selectByPrimaryKey(userToken.getUserId());
-        userService.CheckUser(user);
+        User user = userMapper.selectByPrimaryKey(userToken.getUser_id());
         return user;
     }
 

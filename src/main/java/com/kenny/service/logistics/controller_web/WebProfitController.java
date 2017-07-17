@@ -1,7 +1,6 @@
 package com.kenny.service.logistics.controller_web;
 
 
-import com.kenny.service.logistics.service.CarService;
 import com.kenny.service.logistics.service.ProfitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

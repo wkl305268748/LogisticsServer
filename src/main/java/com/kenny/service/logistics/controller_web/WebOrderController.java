@@ -1,9 +1,15 @@
 package com.kenny.service.logistics.controller_web;
 
 
-import com.kenny.service.logistics.model.OrderCustomer;
-import com.kenny.service.logistics.model.OrderTaking;
+import com.kenny.service.logistics.exception.ErrorCodeException;
+import com.kenny.service.logistics.model.order.OrderCustomer;
+import com.kenny.service.logistics.model.order.OrderTaking;
+import com.kenny.service.logistics.model.system.Defind;
 import com.kenny.service.logistics.service.*;
+import com.kenny.service.logistics.service.fleet.CarService;
+import com.kenny.service.logistics.service.fleet.DriverService;
+import com.kenny.service.logistics.service.order.*;
+import com.kenny.service.logistics.util.FileUtil;
 import com.kenny.service.logistics.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,13 +42,17 @@ public class WebOrderController {
     OrderSignService orderSignService;
     @Autowired
     ProfitService profitService;
+    @Autowired
+    OrderService orderService;
+    @Autowired
+    OrderStatusService orderStatusService;
 
     private static final int PAGESIZE = 10;
 
     @RequestMapping("/all")
     public String all(ModelMap map,
                       @RequestParam(value = "page",required = false,defaultValue = "1") Integer page) {
-        map.addAttribute("data", orderCustomerService.getOrderCustomerAll(PAGESIZE,(page - 1)*PAGESIZE));
+        map.addAttribute("data", orderCustomerService.selectPage((page - 1)*PAGESIZE,PAGESIZE));
         if(MessageUtil.is_message) {
             map.addAttribute("message", MessageUtil.message);
             MessageUtil.is_message = false;
@@ -65,8 +75,8 @@ public class WebOrderController {
 
 
     @RequestMapping("/edit")
-    public String edit(ModelMap map,@RequestParam(value = "id") Integer id) {
-        map.addAttribute("data",orderCustomerService.getOrderCustomerById(id));
+    public String edit(ModelMap map,@RequestParam(value = "id") Integer id) throws ErrorCodeException {
+        map.addAttribute("data",orderCustomerService.selectByPrimaryKey(id));
         return "order/edit";
     }
 
@@ -82,8 +92,8 @@ public class WebOrderController {
                                 @RequestParam(value = "dispatching_type")String dispatching_type,
                                 @RequestParam(value = "send_time")Date send_time,
                                 @RequestParam(value = "recive_time")Date recive_time,
-                                @RequestParam(value = "remark",required = false)String remark){
-        orderCustomerService.updateOrderCustomer(id,send_name,send_phone,send_addr,recive_name,recive_phone,recive_addr,dispatching_type,send_time,recive_time,remark);
+                                @RequestParam(value = "remark",required = false)String remark) throws ErrorCodeException {
+        orderCustomerService.update(id,send_name,send_phone,send_addr,"",recive_name,recive_phone,recive_addr,"",dispatching_type,send_time,recive_time,remark);
 
         MessageUtil.is_message = true;
         MessageUtil.message = "修改成功！";
@@ -93,7 +103,7 @@ public class WebOrderController {
 
     @RequestMapping("/delete")
     public String delete(@RequestParam(value = "id") Integer id) {
-        orderCustomerService.deleteOrderCustomerById(id);
+        orderCustomerService.deleteByPrimaryKey(id);
         MessageUtil.is_message = true;
         MessageUtil.message = "删除成功！";
         return "redirect:all";
@@ -124,24 +134,24 @@ public class WebOrderController {
 
     @RequestMapping("/pending")
     public String pending(ModelMap map,
-                          @RequestParam(value = "page",required = false,defaultValue = "1") Integer page) {
-        map.addAttribute("data",orderCustomerService.getOrderCustomerWait(PAGESIZE,(page - 1)*PAGESIZE));
+                          @RequestParam(value = "page",required = false,defaultValue = "1") Integer page) throws ErrorCodeException {
+        map.addAttribute("data",orderService.selectPageByStatus((page - 1)*PAGESIZE,PAGESIZE, Defind.ORDER_PLACE));
         return "order/pending";
     }
 
     @RequestMapping("/pending_info")
     public String pending_info(ModelMap map,
-                               @RequestParam(value = "id") Integer id) {
-        map.addAttribute("data",orderCustomerService.getOrderCustomerById(id));
+                               @RequestParam(value = "id") Integer id) throws ErrorCodeException {
+        map.addAttribute("data",orderCustomerService.selectByPrimaryKey(id));
         return "order/pending_info";
     }
 
     @RequestMapping("/pending_success")
     public String pending_success(ModelMap map,
-                                  @RequestParam(value = "id") Integer id) {
-        map.addAttribute("pending",orderCustomerService.getOrderCustomerById(id));
-        map.addAttribute("car",carService.getCars());
-        map.addAttribute("driver",driverService.getDrivers());
+                                  @RequestParam(value = "id") Integer id) throws ErrorCodeException {
+        map.addAttribute("pending",orderCustomerService.selectByPrimaryKey(id));
+        map.addAttribute("car",carService.selectPage(0,100).getItem());
+        map.addAttribute("driver",driverService.selectPage(0,100).getItem());
         return "order/pending_success";
     }
 
@@ -151,9 +161,11 @@ public class WebOrderController {
                                          @RequestParam(value = "car_id") Integer car_id,
                                          @RequestParam(value = "driver_id") Integer driver_id,
                                          @RequestParam(value = "pay") Integer pay,
-                                         @RequestParam(value = "recive") Integer recive) {
-        OrderTaking orderTaking = orderTakingService.createOrderTaking(order_customer_id,car_id,driver_id,pay,recive);
-        OrderCustomer orderCustomer = orderCustomerService.SuccessOrderCustomer(order_customer_id);
+                                         @RequestParam(value = "recive") Integer recive) throws ErrorCodeException {
+        OrderTaking orderTaking = orderTakingService.taking(order_customer_id,car_id,driver_id,pay,recive);
+        OrderCustomer orderCustomer = orderCustomerService.selectByPrimaryKey(order_customer_id);
+        orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_TAKING", 1);
+        orderCustomerService.updateStatus(order_customer_id,"ORDER_TAKING");
         profitService.addProfit(orderCustomer.getOrder_number(),orderTaking.getId(),pay,recive);
 
         MessageUtil.is_message = true;
@@ -163,15 +175,17 @@ public class WebOrderController {
 
     @RequestMapping("/pending_ignor")
     public String pending_ignor(ModelMap map,
-                                @RequestParam(value = "id") Integer id) {
-        orderCustomerService.IgnorOrderCustomer(id);
+                                @RequestParam(value = "id") Integer id) throws ErrorCodeException {
+        OrderCustomer orderCustomer = orderCustomerService.selectByPrimaryKey(id);
+        orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_REFUSE", 1);
+        orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_REFUSE");
         return "redirect:pending";
     }
 
     @RequestMapping("/taking_all")
     public String taking_all(ModelMap map,
-                              @RequestParam(value = "page",required = false,defaultValue = "1") Integer page) {
-        map.addAttribute("data",orderTakingService.getOrderTakings(PAGESIZE,(page - 1)*PAGESIZE));
+                              @RequestParam(value = "page",required = false,defaultValue = "1") Integer page) throws ErrorCodeException {
+        map.addAttribute("data",orderService.selectPageByStatus((page - 1)*PAGESIZE,PAGESIZE,Defind.ORDER_TAKING));
         if(MessageUtil.is_message) {
             map.addAttribute("message", MessageUtil.message);
             MessageUtil.is_message = false;
@@ -181,9 +195,11 @@ public class WebOrderController {
 
     @RequestMapping("/taking_info")
     public String taking_info(ModelMap map,
-                              @RequestParam(value = "id") Integer id) {
-        map.addAttribute("data",orderTakingService.getOrderTakingById(id));
-        map.addAttribute("order_sign",orderSignService.getByTakingid(id));
+                              @RequestParam(value = "id") Integer id) throws ErrorCodeException {
+        OrderTaking orderTaking = orderTakingService.selectByPrimaryKey(id);
+
+        map.addAttribute("data",orderTakingService.selectByPrimaryKey(id));
+        map.addAttribute("order_sign",orderSignService.selectByOrderCustomer(orderTaking.getFk_order_customer_id()));
 
         return "order/taking_info";
     }
@@ -191,11 +207,16 @@ public class WebOrderController {
     @RequestMapping("/taking_finish")
     public String taking_finish(@RequestParam(value = "order_taking_id") Integer order_taking_id,
                                 @RequestParam(value = "order_img") MultipartFile order_img,
-                                HttpServletRequest request) throws IOException {
+                                HttpServletRequest request) throws IOException, ErrorCodeException {
         //增加sign表
-        orderSignService.createOrderSign(order_taking_id,order_img,request);
-        //完成
-        orderTakingService.finishOrderTaking(order_taking_id);
+        OrderTaking orderTaking = orderTakingService.selectByPrimaryKey(order_taking_id);
+        //
+        String name = FileUtil.saveImg(order_img);
+        orderSignService.insert(order_taking_id,orderTaking.getFk_order_customer_id(),request.getScheme()+"://"+ request.getServerName()+":"+request.getServerPort()+"/web/img/"+name);
+
+        OrderCustomer orderCustomer = orderCustomerService.selectByPrimaryKey(orderTaking.getFk_order_customer_id());
+        orderStatusService.insert(orderCustomer.getOrder_number(), Defind.ORDER_SIGN, 1);
+        orderCustomerService.updateStatus(orderCustomer.getId(),Defind.ORDER_SIGN);
         //
         MessageUtil.is_message = true;
         MessageUtil.message = "签收成功！";

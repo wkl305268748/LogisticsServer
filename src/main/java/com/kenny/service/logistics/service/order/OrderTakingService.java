@@ -1,5 +1,9 @@
 package com.kenny.service.logistics.service.order;
 
+import com.kenny.service.logistics.mapper.order.OrderCustomerMapper;
+import com.kenny.service.logistics.mapper.order.OrderStatusMapper;
+import com.kenny.service.logistics.model.order.OrderCustomer;
+import com.kenny.service.logistics.model.order.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,22 +18,36 @@ import com.kenny.service.logistics.mapper.order.OrderTakingMapper;
 public class OrderTakingService{
 	@Autowired
 	private OrderTakingMapper orderTakingMapper;
+	@Autowired
+	private OrderCustomerMapper orderCustomerMapper;
 
-	public OrderTaking insert(Integer fk_order_customer_id,Integer fk_car_id,Integer fk_driver_id,Integer recive,Integer pay,String status,Date time){
+	//接受订单
+	public OrderTaking taking(Integer fk_order_customer_id,
+							  Integer fk_car_id,
+							  Integer fk_driver_id,
+							  Integer recive,
+							  Integer pay){
 		OrderTaking orderTaking = new OrderTaking();
 		orderTaking.setFk_order_customer_id(fk_order_customer_id);
 		orderTaking.setFk_car_id(fk_car_id);
 		orderTaking.setFk_driver_id(fk_driver_id);
 		orderTaking.setRecive(recive);
 		orderTaking.setPay(pay);
-		orderTaking.setStatus(status);
-		orderTaking.setTime(time);
+		orderTaking.setTime(new Date());
 		orderTakingMapper.insert(orderTaking);
+
 		return orderTaking;
 	}
 
-	public OrderTaking update(Integer id,Integer fk_order_customer_id,Integer fk_car_id,Integer fk_driver_id,Integer recive,Integer pay,String status,Date time) throws ErrorCodeException{
+	//修改接收的订单
+	public OrderTaking update(Integer id,
+							  Integer fk_order_customer_id,
+							  Integer fk_car_id,
+							  Integer fk_driver_id,
+							  Integer recive,
+							  Integer pay) throws ErrorCodeException{
 		OrderTaking orderTaking = orderTakingMapper.selectByPrimaryKey(id);
+		OrderCustomer orderCustomer = orderCustomerMapper.selectByPrimaryKey(fk_order_customer_id);
 		if(orderTaking == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
 		}
@@ -38,8 +56,6 @@ public class OrderTakingService{
 		orderTaking.setFk_driver_id(fk_driver_id);
 		orderTaking.setRecive(recive);
 		orderTaking.setPay(pay);
-		orderTaking.setStatus(status);
-		orderTaking.setTime(time);
 		orderTakingMapper.update(orderTaking);
 		return orderTaking;
 	}

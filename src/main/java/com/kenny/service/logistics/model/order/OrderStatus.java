@@ -12,6 +12,8 @@ public class OrderStatus{
 	private String order_number;
 	@ApiModelProperty("订单当前状态信息")
 	private String status;
+	@ApiModelProperty("操作的用户标识")
+	private Integer fk_user_id;
 	@ApiModelProperty("")
 	private Date time;
 
@@ -37,6 +39,14 @@ public class OrderStatus{
 
 	public void setStatus(String status){
 		this.status = status;
+	}
+
+	public Integer getFk_user_id(){
+		return fk_user_id;
+	}
+
+	public void setFk_user_id(Integer fk_user_id){
+		this.fk_user_id = fk_user_id;
 	}
 
 	public Date getTime(){

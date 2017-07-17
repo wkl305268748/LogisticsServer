@@ -28,8 +28,8 @@ public class SmsService {
     @Autowired
     private SmsMapper codeMapper;
 
-    private int sendTime = 60 * 1000;       //60秒
-    private int overTime = 5 * 60 * 1000;   //5分钟
+    private int sendTime = 60 * 1000;       //重发时间：60秒
+    private int overTime = 5 * 60 * 1000;   //失效时间：5分钟
 
     /**
      * 发送短信
@@ -76,7 +76,7 @@ public class SmsService {
         code.setCookie(cookie);
         code.setPhone(phone);
         code.setSendtime(new Date());
-        code.setCodeTypeId(codeType.getId());
+        code.setCode_type_id(codeType.getId());
         code.setIs_submit(false);
         codeMapper.insert(code);
 

@@ -2,10 +2,10 @@ package com.kenny.service.logistics.controller_web;
 
 
 import com.kenny.service.logistics.json.response.WebMenuResponse;
-import com.kenny.service.logistics.service.CarService;
-import com.kenny.service.logistics.service.DriverService;
-import com.kenny.service.logistics.service.OrderCustomerService;
-import com.kenny.service.logistics.service.OrderTakingService;
+import com.kenny.service.logistics.service.fleet.CarService;
+import com.kenny.service.logistics.service.fleet.DriverService;
+import com.kenny.service.logistics.service.order.OrderCustomerService;
+import com.kenny.service.logistics.service.order.OrderTakingService;
 import com.kenny.service.logistics.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -86,10 +86,10 @@ public class WebMenuController {
 
     @RequestMapping("/home")
     public String home(ModelMap map) {
-        map.addAttribute("car",carService.getCarsAll(0,1).getTotal());
-        map.addAttribute("driver",driverService.getDriversAll(0,1).getTotal());
-        map.addAttribute("order_customer_wait",orderCustomerService.getOrderCustomerWait(0,1).getTotal());
-        map.addAttribute("order_taking",orderTakingService.getOrderTakings(0,1).getTotal());
+        map.addAttribute("car",carService.selectPage(0,1).getTotal());
+        map.addAttribute("driver",driverService.selectPage(0,1).getTotal());
+        map.addAttribute("order_customer_wait",orderCustomerService.selectPage(0,1).getTotal());
+        map.addAttribute("order_taking",orderTakingService.selectPage(0,1).getTotal());
         return "web/home";
     }
 

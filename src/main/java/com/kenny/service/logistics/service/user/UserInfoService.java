@@ -99,9 +99,9 @@ public class UserInfoService {
      * @param phone
      * @return
      */
-    public UserInfo GetUserInfoByPhone(String phone) throws ErrorCodeException {
+    public UserInfo GetUserInfoByPhone(String phone,String type) throws ErrorCodeException {
         //通过phone查找user
-        User user = userMapper.selectUserByPhone(phone);
+        User user = userMapper.selectByPhone(phone,type);
         //user
         if (user == null)
             throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);

@@ -165,9 +165,9 @@
                             <tbody>
                             <tr th:each="list : ${data.item}" >
                                 <td>
-                                    <a th:href="@{taking_info(id=${list.id})}" th:text="${list.orderCustomer.order_number}"></a>
+                                    <a th:href="@{taking_info(id=${list.orderCustomer.id})}" th:text="${list.orderCustomer.order_number}"></a>
                                     <h6 th:text="'下单时间：' + ${#dates.format(list.orderCustomer.time,'yyyy-MM-dd HH:mm')}"></h6>
-                                    <h6 th:text="'接单时间：' + ${#dates.format(list.time,'yyyy-MM-dd HH:mm')}"></h6>
+                                    <h6 th:text="'接单时间：' + ${#dates.format(list.orderCustomer.time,'yyyy-MM-dd HH:mm')}"></h6>
                                 </td>
                                 <td>
                                     <h6 th:text="${list.orderCustomer.send_name} + '|' + ${list.orderCustomer.send_phone}"></h6>
@@ -175,16 +175,16 @@
                                 </td>
                                 <td>
                                     <h6 th:text="${list.driver.name} +'|' + ${list.driver.phone}"></h6>
-                                    <h6 th:text="'车牌号：'+${list.car.car_plate}"></h6>
+                                    <h6 th:text="'车牌号：'+${list.car.plate}"></h6>
                                 </td>
                                 <td> 无定位 </td>
-                                <td th:switch="${list.status}">
-                                    <span th:case="send" th:text="已发货" class="label label-warning"></span>
-                                    <span th:case="finish" th:text="已完成" class="label label-success"></span>
+                                <td th:switch="${list.orderCustomer.status}">
+                                    <span th:case="ORDER_TAKING" th:text="已发货" class="label label-warning"></span>
+                                    <span th:case="ORDER_SIGN" th:text="已完成" class="label label-success"></span>
                                 </td>
 
                                 <td>
-                                    <a th:if="${list.status eq 'send'}" class="btn btn-circle green-jungle"  data-toggle="modal" href="#responsive" th:onclick="'onfinish('+${list.id}+')'"><i class="fa fa fa-truck"></i> 签收运单 </a>
+                                    <a th:if="${list.orderCustomer.status eq 'ORDER_TAKING'}" class="btn btn-circle green-jungle"  data-toggle="modal" href="#responsive" th:onclick="'onfinish('+${list.orderCustomer.id}+')'"><i class="fa fa fa-truck"></i> 签收运单 </a>
                                 </td>
                             </tr>
                             </tbody>
