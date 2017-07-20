@@ -1,6 +1,8 @@
 package com.kenny.service.logistics.controller.fleet;
 
 import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.service.fleet.DriverLicenseService;
+import com.kenny.service.logistics.service.fleet.LicenseService;
 import com.kenny.service.logistics.service.user.UserDriverService;
 import com.kenny.service.logistics.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ public class DriverController {
     private DriverService driverService;
     @Autowired
     private UserDriverService userDriverService;
+    @Autowired
+    private DriverLicenseService driverLicenseService;
+    @Autowired
+    private LicenseService licenseService;
 
     @ApiOperation(value = "增加Driver")
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -59,16 +65,17 @@ public class DriverController {
                                      @ApiParam(value = "", required = false) @RequestParam(value = "remark", required = false) String remark,
                                      @ApiParam(value = "", required = false) @RequestParam(value = "other_license[]", required = false) String other_license) {
 
-
-        try {
-            User user = userDriverService.insert(phone, password);
-            Driver driver = driverService.insert(name, sex, phone, user.getId(), is_sms, idcard, email, hometown, remark);
-
-            return new JsonBean(ErrorCode.SUCCESS, driver );
-
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
+        licenseService.insertByDriver(other_license,0);
+        return new JsonBean(ErrorCode.SUCCESS );
+//        try {
+//            User user = userDriverService.insert(phone, password);
+//            Driver driver = driverService.insert(name, sex, phone, user.getId(), is_sms, idcard, email, hometown, remark);
+//            licenseService.insertByDriver(other_license,driver.getId());
+//            return new JsonBean(ErrorCode.SUCCESS, driver );
+//
+//        } catch (ErrorCodeException e) {
+//            return new JsonBean(e.getErrorCode());
+//        }
     }
 
     @ApiOperation(value = "修改指定的Driver")

@@ -1,9 +1,0 @@
-2017/7/8 v2.0 数据库版本变更记录
-1、增加tb_order_goods表,删除了tb_goods、tb_customer_goods
-2、增加tb_order_status表
-3、增加tb_order_status_values表
-4、增加tb_system_defind
-5、增加tb_system_defind_type
-6、修改了tb_car里面除了id/remark/time/visible的所有字段
-7、增加了tb_driver大部分字段，绑定驾驶证外键，增加账户密码
-8、增加了用户和短信表,tb_user,tb_user_info,tb_user_token,tb_sms,tb_sms_type

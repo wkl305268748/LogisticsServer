@@ -28,8 +28,9 @@ public class LicenseController{
 	                                @ApiParam(value = "有效日期止",required = true)@RequestParam(value = "unvalide_date",required = true)Date unvalide_date,
 	                                @ApiParam(value = "附件",required = false)@RequestParam(value = "files",required = false)String files,
 	                                @ApiParam(value = "备注",required = false)@RequestParam(value = "remark",required = false)String remark,
-	                                @ApiParam(value = "",required = false)@RequestParam(value = "time",required = false)Date time){
-		return new JsonBean(ErrorCode.SUCCESS, licenseService.insert(number,type,pass_time,valid_date,unvalide_date,files,remark,time));
+									@ApiParam(value = "司机ID",required = false)@RequestParam(value = "driver_id",required = false)Integer driver_id,
+									@ApiParam(value = "车辆ID",required = false)@RequestParam(value = "car_id",required = false)Integer car_id){
+		return new JsonBean(ErrorCode.SUCCESS, licenseService.insert(number,type,pass_time,valid_date,unvalide_date,files,remark,driver_id,car_id));
 	}
 
 	@ApiOperation(value = "修改指定的License")
