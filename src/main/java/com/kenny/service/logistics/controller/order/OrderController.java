@@ -62,4 +62,5 @@ public class OrderController {
                                                                   @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize) throws ErrorCodeException {
         return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByStatus(offset, pageSize, Defind.ORDER_SIGN));
     }
+
 }

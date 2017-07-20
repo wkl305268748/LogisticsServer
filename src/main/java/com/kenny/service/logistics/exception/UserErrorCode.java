@@ -15,6 +15,7 @@ public class UserErrorCode extends ErrorCode {
     public static final UserErrorCode USER_EXISTS = new UserErrorCode(204,"用户已存在");
     public static final UserErrorCode USER_BLOCKED = new UserErrorCode(205,"用户被封禁");
     public static final UserErrorCode USER_PASS_NULL = new UserErrorCode(206,"用户未设定密码");
+    public static final UserErrorCode USER_PHONE_ERROR = new UserErrorCode(207, "必须为11位手机号");
 
     public static final UserErrorCode CODE_ERROR = new UserErrorCode(301,"验证码错误");
     public static final UserErrorCode CODE_FAST = new UserErrorCode(302,"验证码请求过快");

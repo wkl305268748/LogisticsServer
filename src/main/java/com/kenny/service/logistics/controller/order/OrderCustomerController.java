@@ -49,7 +49,7 @@ public class OrderCustomerController {
                                           @ApiParam(value = "货物列表json", required = false) @RequestParam(value = "goods", required = false) String goods) {
         try {
             User user = userService.getUser(token);
-            OrderCustomer orderCustomer = orderCustomerService.insert(send_name, send_phone, send_addr, send_addr_info, recive_name, recive_phone, recive_addr, recive_addr_info, dispatching_type, send_time, recive_time, goods);
+            OrderCustomer orderCustomer = orderCustomerService.insert(send_name, send_phone, send_addr, send_addr_info, recive_name, recive_phone, recive_addr, recive_addr_info, dispatching_type, send_time, recive_time, user.getId(),goods);
             orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_PLACE", user.getId());
             orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_PLACE");
             return new JsonBean(UserErrorCode.SUCCESS, orderCustomer);

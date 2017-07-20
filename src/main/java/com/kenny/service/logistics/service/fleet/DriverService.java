@@ -1,6 +1,8 @@
 package com.kenny.service.logistics.service.fleet;
 
+import com.kenny.service.logistics.mapper.fleet.DriverLicenseMapper;
 import com.kenny.service.logistics.mapper.fleet.DriverMapper;
+import com.kenny.service.logistics.mapper.fleet.LicenseMapper;
 import com.kenny.service.logistics.model.fleet.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class DriverService{
 		driver.setEmail(email);
 		driver.setHometown(hometown);
 		driver.setRemark(remark);
+		driver.setVisible(true);
 		driverMapper.insert(driver);
 		return driver;
 	}
@@ -58,14 +61,23 @@ public class DriverService{
 
 	public PageResponse<Driver> selectPage(Integer offset,Integer pageSize){
 		PageResponse<Driver> response = new PageResponse();
-		response.setItem(driverMapper.selectPage(offset,pageSize));
-		response.setTotal(driverMapper.count());
+		response.setItem(driverMapper.selectPageByVisible(offset,pageSize,true));
+		response.setTotal(driverMapper.countByVisible((true)));
 		response.setOffset(offset);
 		response.setPageSize(pageSize);
 		return response;
 	}
 
+	/**
+	 * 删除车辆
+	 * @param id
+	 * @return
+	 */
 	public int deleteByPrimaryKey(Integer id){
-		return driverMapper.deleteByPrimaryKey(id);
+		Driver driver = driverMapper.selectByPrimaryKey(id);
+		if(driver == null)
+			return 0;
+		driver.setVisible(true);
+		return driverMapper.update(driver);
 	}
 }

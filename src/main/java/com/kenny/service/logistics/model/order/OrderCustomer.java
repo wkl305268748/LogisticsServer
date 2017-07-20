@@ -36,6 +36,8 @@ public class OrderCustomer{
 	private String dispatching_type;
 	@ApiModelProperty("订单状态，关联status表")
 	private String status;
+	@ApiModelProperty("下单的用户")
+	private Integer fk_user_id;
 	@ApiModelProperty("")
 	private String remark;
 	@ApiModelProperty("")
@@ -177,4 +179,11 @@ public class OrderCustomer{
 		this.time = time;
 	}
 
+	public Integer getFk_user_id() {
+		return fk_user_id;
+	}
+
+	public void setFk_user_id(Integer fk_user_id) {
+		this.fk_user_id = fk_user_id;
+	}
 }

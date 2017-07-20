@@ -6,6 +6,7 @@ import com.kenny.service.logistics.mapper.order.OrderGoodsMapper;
 import com.kenny.service.logistics.mapper.order.OrderStatusMapper;
 import com.kenny.service.logistics.model.order.OrderGoods;
 import com.kenny.service.logistics.model.order.OrderStatus;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,7 @@ public class OrderCustomerService {
                                 String dispatching_type,
                                 Date send_time,
                                 Date recive_time,
+                                Integer user_id,
                                 String goods) {
         OrderCustomer orderCustomer = new OrderCustomer();
         //流水号
@@ -57,6 +59,7 @@ public class OrderCustomerService {
         orderCustomer.setRecive_time(recive_time);
         orderCustomer.setDispatching_type(dispatching_type);
         orderCustomer.setTime(new Date());
+        orderCustomer.setFk_user_id(user_id);
         orderCustomerMapper.insert(orderCustomer);
 
         //添加货物
