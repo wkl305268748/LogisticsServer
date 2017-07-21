@@ -38,10 +38,10 @@ public interface UserMapper {
     @Select("SELECT COUNT(*) WHERE type=#{type} FROM tb_user")
     int countByType(@Param(value = "type") String type);
 
-    @Select("SELECT * FROM tb_user WHERE username=#{username} AND type=#{type}")
+    @Select("SELECT * FROM tb_user WHERE username=#{username} AND type=#{type} AND is_valid = 1")
     User selectByUserName(@Param(value = "username") String username,@Param(value = "type") String type);
 
-    @Select("SELECT * FROM tb_user WHERE phone=#{phone} AND type=#{type}")
+    @Select("SELECT * FROM tb_user WHERE phone=#{phone} AND type=#{type} AND is_valid = 1")
     User selectByPhone(@Param(value = "phone") String phone,@Param(value = "type") String type);
 
 }
