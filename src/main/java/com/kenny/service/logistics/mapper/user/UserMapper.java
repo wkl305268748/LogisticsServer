@@ -35,7 +35,7 @@ public interface UserMapper {
                                 @Param(value = "pageSize") Integer pageSize,
                                 @Param(value = "type") String type);
 
-    @Select("SELECT COUNT(*) WHERE type=#{type} FROM tb_user")
+    @Select("SELECT COUNT(*) FROM tb_user WHERE type=#{type}")
     int countByType(@Param(value = "type") String type);
 
     @Select("SELECT * FROM tb_user WHERE username=#{username} AND type=#{type} AND is_valid = 1")

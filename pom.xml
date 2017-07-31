@@ -77,13 +77,27 @@
             <version>1.9.22</version>
         </dependency>
 
-        <!--阿里大于-->
+        <!--阿里短信-->
         <dependency>
-            <groupId>com.taobao.api</groupId>
-            <artifactId>Alidayu</artifactId>
-            <version>1455552377940-20160607</version>
+            <groupId>aliyun.java.core</groupId>
+            <artifactId>aliyun</artifactId>
+            <version>3.2.3</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/taobao-sdk.jar</systemPath>
+            <systemPath>${basedir}/lib/aliyun-java-sdk-core-3.2.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>aliyun.java</groupId>
+            <artifactId>aliyun</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/aliyun-java-sdk-dysmsapi-1.0.0-SANPSHOT.jar</systemPath>
+        </dependency>
+
+        <!--七牛云-->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.2.0, 7.2.99]</version>
         </dependency>
 
     </dependencies>

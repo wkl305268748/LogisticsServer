@@ -25,15 +25,16 @@ public class UserManagerService {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-
-
     /**
      * 创建用户
      *
      * @param phone
      * @return
      */
-    public User insert(String username,String phone,String password,String type) throws ErrorCodeException {
+    public User insert(String username,
+                       String phone,
+                       String password,
+                       String type) throws ErrorCodeException {
         //参数判断
         if (phone.length() != 11)
             throw new ErrorCodeException(UserErrorCode.PARAM_ERROR);
@@ -84,10 +85,38 @@ public class UserManagerService {
         return user;
     }
 
+    public UserSet selectByPrimaryKeyEx(Integer id) throws ErrorCodeException{
+        User user = userMapper.selectByPrimaryKey(id);
+        if(user == null){
+            throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+        }
+        UserSet userSet = new UserSet();
+        userSet.setUser(user);
+        userSet.setUserInfo(userInfoMapper.selectByUserId(user.getId()));
+        return userSet;
+    }
+
     public PageResponse<User> selectPage(Integer offset,Integer pageSize){
         PageResponse<User> response = new PageResponse();
         response.setItem(userMapper.selectPage(offset,pageSize));
         response.setTotal(userMapper.count());
+        response.setOffset(offset);
+        response.setPageSize(pageSize);
+        return response;
+    }
+
+    public PageResponse<UserSet> selectPageByTypeEx(Integer offset,Integer pageSize,String type){
+        PageResponse<UserSet> response = new PageResponse();
+
+        List<UserSet> userSets = new ArrayList<>();
+        for(User user: userMapper.selectPageByType(offset,pageSize,type)){
+            UserSet userSet = new UserSet();
+            userSet.setUser(user);
+            userSet.setUserInfo(userInfoMapper.selectByUserId(user.getId()));
+            userSets.add(userSet);
+        }
+        response.setItem(userSets);
+        response.setTotal(userMapper.countByType(type));
         response.setOffset(offset);
         response.setPageSize(pageSize);
         return response;

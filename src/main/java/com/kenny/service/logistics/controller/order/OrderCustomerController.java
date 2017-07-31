@@ -1,19 +1,25 @@
 package com.kenny.service.logistics.controller.order;
 
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kenny.service.logistics.exception.ErrorCode;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.model.order.OrderCustomer;
+import com.kenny.service.logistics.model.order.OrderGoods;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.service.order.*;
+import com.kenny.service.logistics.service.user.UserCustomerService;
 import com.kenny.service.logistics.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -30,10 +36,13 @@ public class OrderCustomerController {
     UserService userService;
     @Autowired
     OrderStatusService orderStatusService;
+    @Autowired
+    UserCustomerService userCustomerService;
 
     @ApiOperation(value = "增加OrderCustomer")
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public JsonBean<OrderCustomer> insert(@ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token,
                                           @ApiParam(value = "发件人姓名", required = true) @RequestParam(value = "send_name", required = true) String send_name,
                                           @ApiParam(value = "发件人手机", required = true) @RequestParam(value = "send_phone", required = true) String send_phone,
@@ -46,14 +55,22 @@ public class OrderCustomerController {
                                           @ApiParam(value = "预计发送时间", required = true) @RequestParam(value = "send_time", required = true) Date send_time,
                                           @ApiParam(value = "限时到达时间", required = true) @RequestParam(value = "recive_time", required = true) Date recive_time,
                                           @ApiParam(value = "配送还是自提", required = true) @RequestParam(value = "dispatching_type", required = true) String dispatching_type,
-                                          @ApiParam(value = "货物列表json", required = false) @RequestParam(value = "goods", required = false) String goods) {
+                                          @ApiParam(value = "运费", required = true) @RequestParam(value = "freight", required = true) Float freight,
+                                          @ApiParam(value = "保险", required = true) @RequestParam(value = "safes", required = true) Float safes,
+                                          @ApiParam(value = "货物列表json", required = false) @RequestParam(value = "goods[]", required = false) String goods) {
+
         try {
             User user = userService.getUser(token);
-            OrderCustomer orderCustomer = orderCustomerService.insert(send_name, send_phone, send_addr, send_addr_info, recive_name, recive_phone, recive_addr, recive_addr_info, dispatching_type, send_time, recive_time, user.getId(),goods);
+            if(user.getType().equals(UserCustomerService.type))
+                userCustomerService.checkMoney(token,(int)(freight + safes));
+            OrderCustomer orderCustomer = orderCustomerService.insert(send_name, send_phone, send_addr, send_addr_info, recive_name, recive_phone, recive_addr, recive_addr_info, dispatching_type, send_time, recive_time, user.getId(),freight,safes,goods);
             orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_PLACE", user.getId());
             orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_PLACE");
+
+            if(user.getType().equals(UserCustomerService.type))
+                userCustomerService.reduceMoney(token,(int)(freight + safes),orderCustomer.getOrder_number());
             return new JsonBean(UserErrorCode.SUCCESS, orderCustomer);
-        } catch (ErrorCodeException e) {
+        } catch (ErrorCodeException e){
             return new JsonBean(e.getErrorCode());
         }
     }
@@ -115,4 +132,10 @@ public class OrderCustomerController {
         }
     }
 
+    @ApiOperation(value = "删除指定的OrderCustomer")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public JsonBean<OrderCustomer> deleteByPrimaryKey(@ApiParam(value = "查询主键", required = true) @PathVariable() Integer id){
+        return new JsonBean(ErrorCode.SUCCESS, orderCustomerService.deleteByPrimaryKey(id));
+    }
 }

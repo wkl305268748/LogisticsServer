@@ -5,6 +5,8 @@ import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.mapper.user.UserMapper;
 import com.kenny.service.logistics.mapper.user.UserTokenMapper;
 import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.user.UserInfo;
+import com.kenny.service.logistics.model.user.UserSet;
 import com.kenny.service.logistics.model.user.UserToken;
 import com.kenny.service.logistics.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,11 @@ import java.util.Date;
 @Service
 public class UserAdminService {
     @Autowired
-    private UserMapper userMapper;
+    private UserBaseService userBaseService;
     @Autowired
-    private UserTokenMapper userTokenMapper;
+    private UserInfoService userInfoService;
 
-    private final String type = "admin";
-
+    private String type = "admin";
     /**
      * 登录
      * @param username
@@ -33,26 +34,17 @@ public class UserAdminService {
      * @throws ErrorCodeException
      */
     public UserToken login(String username,String password) throws ErrorCodeException {
-        User user = userMapper.selectByUserName(username,type);
-        if(user == null)
-            throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
-        if(!password.equals(user.getPassword()))
-            throw new ErrorCodeException(UserErrorCode.PASS_ERROR);
-        if(user.getIs_disable())
-            throw new ErrorCodeException(UserErrorCode.USER_BLOCKED);
-
-        //1、删除已有的token
-        userTokenMapper.deleteByUserId(user.getId());
-        //2、生成新的token 加入数据库
-        String token = createToken(user.getUsername());
-        UserToken userToken = new UserToken();
-        userToken.setToken(token);
-        userToken.setUser_id(user.getId());
-        userToken.setTime(new Date());
-        userTokenMapper.insert(userToken);
-        return userToken;
+        return userBaseService.loginUserName(username,password,type);
     }
 
+    public UserSet getUserEx(String token) throws ErrorCodeException {
+        return userBaseService.getUserByTokenEx(token);
+    }
+
+    public UserInfo updateUserInfo(String token,String nickname, String sex, String img, Date birthday,String company, int money) throws ErrorCodeException {
+        User user = userBaseService.getUserByToken(token);
+        return userInfoService.update(user.getId(),nickname,sex,img,birthday,company,money);
+    }
     /**
      * 退出登陆
      *
@@ -60,13 +52,6 @@ public class UserAdminService {
      * @return
      */
     public void logout(String token) throws ErrorCodeException {
-        UserToken userToken = userTokenMapper.selectByToken(token);
-        int result = userTokenMapper.deleteByUserId(userToken.getUser_id());
-        if (result <= 0)
-            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
-    }
-
-    private String createToken(String name) {
-        return MD5Util.MD5_16(name + new Date().getTime());
+        userBaseService.logout(token);
     }
 }

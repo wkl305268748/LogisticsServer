@@ -18,7 +18,8 @@ import java.util.Date;
 @Service
 public class UserDriverService {
     @Autowired
-    private UserMapper userMapper;
+    private UserBaseService userBaseService;
+
     private final String type = "driver";
 
     /**
@@ -28,42 +29,18 @@ public class UserDriverService {
      * @return
      */
     public User insert(String phone,String password) throws ErrorCodeException {
-        //参数判断
-        if (phone.length() != 11)
-            throw new ErrorCodeException(UserErrorCode.USER_PHONE_ERROR);
-
-        //用户存在判断
-        User user = userMapper.selectByPhone(phone,type);
-        if (user != null)
-            throw new ErrorCodeException(UserErrorCode.USER_EXISTS);
-
-        user = new User();
-        user.setPhone(phone);
-        user.setPassword(password);
-        user.setIs_disable(false);
-        user.setUsername(phone);
-        user.setType(type);
-        user.setRegtime(new Date());
-        user.setIs_valid(true);
-        int result = userMapper.insert(user);
-        if (result <= 0)
-            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
-        return user;
+        return userBaseService.insertByPhone(phone,password,type);
     }
 
+    /*
     public User selectByPrimaryKey(int user_id){
-        return userMapper.selectByPrimaryKey(user_id);
-    }
+    }*/
 
     /**
      * 删除用户
      * @param user_id
      */
     public void deleteByPrimaryKey(int user_id){
-        User user = userMapper.selectByPrimaryKey(user_id);
-        if (user == null)
-            return;
-        user.setIs_valid(false);
-        userMapper.update(user);
+        userBaseService.deleteByPrimaryKey(user_id);
     }
 }

@@ -1,5 +1,6 @@
 package com.kenny.service.logistics.controller.fleet;
 
+import com.kenny.service.logistics.model.fleet.DriverSet;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.service.fleet.DriverLicenseService;
 import com.kenny.service.logistics.service.fleet.LicenseService;
@@ -63,19 +64,19 @@ public class DriverController {
                                      @ApiParam(value = "邮箱", required = false) @RequestParam(value = "email", required = false) String email,
                                      @ApiParam(value = "籍贯", required = false) @RequestParam(value = "hometown", required = false) String hometown,
                                      @ApiParam(value = "", required = false) @RequestParam(value = "remark", required = false) String remark,
+                                     @ApiParam(value = "", required = false) @RequestParam(value = "license", required = false) String license,
                                      @ApiParam(value = "", required = false) @RequestParam(value = "other_license[]", required = false) String other_license) {
 
-        licenseService.insertByDriver(other_license,0);
-        return new JsonBean(ErrorCode.SUCCESS );
-//        try {
-//            User user = userDriverService.insert(phone, password);
-//            Driver driver = driverService.insert(name, sex, phone, user.getId(), is_sms, idcard, email, hometown, remark);
-//            licenseService.insertByDriver(other_license,driver.getId());
-//            return new JsonBean(ErrorCode.SUCCESS, driver );
-//
-//        } catch (ErrorCodeException e) {
-//            return new JsonBean(e.getErrorCode());
-//        }
+        try {
+            User user = userDriverService.insert(phone, password);
+            Driver driver = driverService.insert(name, sex, phone, user.getId(), is_sms, idcard, email, hometown, remark);
+            licenseService.insertByDriver(other_license,driver.getId());
+            driverLicenseService.insertByDriver(license,driver.getId());
+            return new JsonBean(ErrorCode.SUCCESS, driver );
+
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
     }
 
     @ApiOperation(value = "修改指定的Driver")
@@ -109,12 +110,31 @@ public class DriverController {
         }
     }
 
+    @ApiOperation(value = "获取指定的Driver带证件信息")
+    @RequestMapping(value = "/ex/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<DriverSet> selectByPrimaryKeyEx(@ApiParam(value = "查询主键", required = true) @PathVariable() Integer id) {
+        try {
+            return new JsonBean(ErrorCode.SUCCESS, driverService.selectByPrimaryKeyEx(id));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
     @ApiOperation(value = "列出所有的有效Driver")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ResponseBody
     public JsonBean<PageResponse<Driver>> selectPage(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
                                                      @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         return new JsonBean(ErrorCode.SUCCESS, driverService.selectPage(offset, pageSize));
+    }
+
+    @ApiOperation(value = "列出所有的有效Driver")
+    @RequestMapping(value = "/ex/page", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<PageResponse<DriverSet>> selectPageEx(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                        @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        return new JsonBean(ErrorCode.SUCCESS, driverService.selectPageEx(offset, pageSize));
     }
 
     @ApiOperation(value = "删除指定的Driver")

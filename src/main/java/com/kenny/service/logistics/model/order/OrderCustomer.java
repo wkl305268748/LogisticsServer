@@ -34,6 +34,12 @@ public class OrderCustomer{
 	private Date recive_time;
 	@ApiModelProperty("配送还是自提")
 	private String dispatching_type;
+	@ApiModelProperty("运费")
+	private Float freight;
+	@ApiModelProperty("保险费用")
+	private Float safes;
+	@ApiModelProperty("合计费用")
+	private Float total;
 	@ApiModelProperty("订单状态，关联status表")
 	private String status;
 	@ApiModelProperty("下单的用户")
@@ -185,5 +191,29 @@ public class OrderCustomer{
 
 	public void setFk_user_id(Integer fk_user_id) {
 		this.fk_user_id = fk_user_id;
+	}
+
+	public Float getFreight() {
+		return freight;
+	}
+
+	public void setFreight(Float freight) {
+		this.freight = freight;
+	}
+
+	public Float getSafes() {
+		return safes;
+	}
+
+	public void setSafes(Float safes) {
+		this.safes = safes;
+	}
+
+	public Float getTotal() {
+		return total;
+	}
+
+	public void setTotal(Float total) {
+		this.total = total;
 	}
 }

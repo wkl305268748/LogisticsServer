@@ -7,6 +7,7 @@ import com.kenny.service.logistics.mapper.user.SmsMapper;
 import com.kenny.service.logistics.mapper.user.SmsTypeMapper;
 import com.kenny.service.logistics.model.user.Sms;
 import com.kenny.service.logistics.model.user.SmsType;
+import com.kenny.service.logistics.service.util.SmsSendService;
 import com.kenny.service.logistics.util.AliSmsUtil;
 import com.kenny.service.logistics.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class SmsService {
     private SmsTypeMapper codeTypeMapper;
     @Autowired
     private SmsMapper codeMapper;
+    @Autowired
+    private SmsSendService smsSendService;
 
     private int sendTime = 60 * 1000;       //重发时间：60秒
     private int overTime = 5 * 60 * 1000;   //失效时间：5分钟
@@ -55,20 +58,7 @@ public class SmsService {
         String number = createCode();
         String cookie = createCookie(phone, number);
 
-        //通过type获取短信类型
-        SmsType codeType = codeTypeMapper.selectByType(type);
-        if (codeType == null)
-            throw new ErrorCodeException(UserErrorCode.CODE_TYPE_ERROR);
-
-        //转换为短信发送规则
-        String key[] = codeType.getMessage().split("&");
-        String values[] = codeType.getValues().split("&");
-        Map<String, String> template = new HashMap<>();
-        for (int i = 0; i < key.length; i++)
-            template.put(key[i], values[i]);
-
-        //发送短信
-        AliSmsUtil.getInstance().sendCode(phone, codeType.getSigname(), template, codeType.getTemplate_id(), number);
+        smsSendService.UserRegistString(phone,number);
 
         //存储一条发送信息
         Sms code = new Sms();
@@ -76,7 +66,7 @@ public class SmsService {
         code.setCookie(cookie);
         code.setPhone(phone);
         code.setSendtime(new Date());
-        code.setCode_type_id(codeType.getId());
+        code.setCode_type_id(1);
         code.setIs_submit(false);
         codeMapper.insert(code);
 

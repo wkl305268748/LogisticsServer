@@ -22,17 +22,40 @@ public class UserInfoService {
     @Autowired
     private UserMapper userMapper;
 
+    public UserInfo insertByRegist(int user_id) throws ErrorCodeException {
+        UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
+        if (userInfo != null) {
+            return userInfo;
+        }
+        //创建用户信息
+        userInfo = new UserInfo();
+        userInfo.setNickname("");
+        userInfo.setImg("");
+        userInfo.setSex("男");
+        userInfo.setUser_id(user_id);
+        userInfo.setBirthday(new Date());
+        userInfo.setCompany("");
+        userInfo.setMoney(0);
+        int result = userInfoMapper.insert(userInfo);
+        if (result <= 0)
+            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
+
+        return userInfo;
+    }
+
     /**
      * 创建用户信息
      */
-    public UserInfo CreateUserInfo(int user_id, String nickname, String sex, String img, Date birthday) throws ErrorCodeException {
+    public UserInfo insert(int user_id, String nickname, String sex, String img, Date birthday, String company, int money) throws ErrorCodeException {
 
         UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
-        if (userInfo != null){
+        if (userInfo != null) {
             userInfo.setNickname(nickname);
             userInfo.setImg(img);
             userInfo.setSex(sex);
             userInfo.setBirthday(birthday);
+            userInfo.setCompany(company);
+            userInfo.setMoney(money);
             userInfoMapper.update(userInfo);
         }
         //创建用户信息
@@ -42,6 +65,8 @@ public class UserInfoService {
         userInfo.setSex(sex);
         userInfo.setUser_id(user_id);
         userInfo.setBirthday(birthday);
+        userInfo.setCompany(company);
+        userInfo.setMoney(money);
         int result = userInfoMapper.insert(userInfo);
         if (result <= 0)
             throw new ErrorCodeException(UserErrorCode.DB_ERROR);
@@ -73,8 +98,7 @@ public class UserInfoService {
      * @param img
      * @return
      */
-    public UserInfo UpdateUserInfo(int user_id, String nickname, String sex, String img, Date birthday) throws ErrorCodeException {
-        //查找user_info
+    public UserInfo update(int user_id, String nickname, String sex, String img, Date birthday,String company, int money) throws ErrorCodeException {
         UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
         //userinfo不存在
         if (userInfo == null) {
@@ -85,11 +109,49 @@ public class UserInfoService {
         userInfo.setSex(sex);
         userInfo.setImg(img);
         userInfo.setBirthday(birthday);
-        //修改user_info
+        userInfo.setCompany(company);
+        userInfo.setMoney(money);
         int result = userInfoMapper.update(userInfo);
         if (result <= 0)
             throw new ErrorCodeException(UserErrorCode.DB_ERROR);
+        return userInfo;
+    }
 
+    //充值
+    public UserInfo updateAddMoney(int user_id, int money) throws ErrorCodeException {
+        UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
+        if (userInfo == null) {
+            throw new ErrorCodeException(UserErrorCode.USER_INOF_NO_EXISTS);
+        }
+        userInfo.setMoney(userInfo.getMoney() + money);
+        int result = userInfoMapper.update(userInfo);
+        if (result <= 0)
+            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
+        return userInfo;
+    }
+
+    //消费
+    public UserInfo updateReduceMoney(int user_id, int money) throws ErrorCodeException {
+        UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
+        if (userInfo == null) {
+            throw new ErrorCodeException(UserErrorCode.USER_INOF_NO_EXISTS);
+        }
+        if(userInfo.getMoney() < money)
+            throw new ErrorCodeException(UserErrorCode.MONEY_NO_FULL);
+        userInfo.setMoney(userInfo.getMoney() - money);
+        int result = userInfoMapper.update(userInfo);
+        if (result <= 0)
+            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
+        return userInfo;
+    }
+
+    public UserInfo checkMoney(int user_id, int money) throws ErrorCodeException {
+        UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
+        if (userInfo == null) {
+            throw new ErrorCodeException(UserErrorCode.USER_INOF_NO_EXISTS);
+        }
+        if(userInfo.getMoney() < money)
+            throw new ErrorCodeException(UserErrorCode.MONEY_NO_FULL);
         return userInfo;
     }
 
@@ -99,9 +161,9 @@ public class UserInfoService {
      * @param phone
      * @return
      */
-    public UserInfo GetUserInfoByPhone(String phone,String type) throws ErrorCodeException {
+    public UserInfo GetUserInfoByPhone(String phone, String type) throws ErrorCodeException {
         //通过phone查找user
-        User user = userMapper.selectByPhone(phone,type);
+        User user = userMapper.selectByPhone(phone, type);
         //user
         if (user == null)
             throw new ErrorCodeException(UserErrorCode.USER_NO_EXISTS);
@@ -113,7 +175,7 @@ public class UserInfoService {
         return userInfo;
     }
 
-    public void DeleteUserInfo(int user_id){
+    public void DeleteUserInfo(int user_id) {
         userInfoMapper.deleteByUserId(user_id);
     }
 

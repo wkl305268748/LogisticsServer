@@ -24,11 +24,29 @@ public class LicenseService {
         if(json == null)
             json = "";
         json = "[" + json + "]";
-        Gson gson = new GsonBuilder().serializeNulls().create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd").create();
         System.out.println(json);
         List<License> licenses = gson.fromJson(json, new TypeToken<List<License>>() {}.getType());
         for (License license : licenses) {
             license.setFk_driver_id(driver_id);
+            license.setTime(new Date());
+            license.setFiles(license.getFiles().toString());
+            licenseMapper.insert(license);
+        }
+        return licenses;
+    }
+
+    public List<License> insertByCar(String json, Integer car_id) {
+        if(json == null)
+            json = "";
+        json = "[" + json + "]";
+        Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd").create();
+        System.out.println(json);
+        List<License> licenses = gson.fromJson(json, new TypeToken<List<License>>() {}.getType());
+        for (License license : licenses) {
+            license.setFk_car_id(car_id);
+            license.setTime(new Date());
+            license.setFiles(license.getFiles().toString());
             licenseMapper.insert(license);
         }
         return licenses;

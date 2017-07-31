@@ -19,12 +19,12 @@ public interface DriverMapper {
     @Select("SELECT * FROM tb_driver WHERE id=#{id}")
     Driver selectByPrimaryKey(@Param(value = "id") Integer id);
 
-    @Select("SELECT * FROM tb_driver WHERE visible=#{visible} limit #{offset},#{pageSize}")
+    @Select("SELECT * FROM tb_driver WHERE visible=#{visible} order by time desc limit #{offset},#{pageSize}")
     List<Driver> selectPageByVisible(@Param(value = "offset") Integer offset,
                                      @Param(value = "pageSize") Integer pageSize,
                                      @Param(value = "visible") Boolean visible);
 
-    @Select("SELECT COUNT(*) WHERE visible=#{visible} FROM tb_driver")
+    @Select("SELECT COUNT(*) FROM tb_driver WHERE visible=#{visible} order by time desc")
     int countByVisible(@Param(value = "visible") Boolean visible);
 
     @Delete("DELETE FROM tb_driver WHERE id=#{id}")

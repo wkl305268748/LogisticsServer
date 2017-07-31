@@ -27,4 +27,7 @@ public interface DriverLicenseMapper{
 	@Delete("DELETE FROM tb_driver_license WHERE id=#{id}")
 	int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
+
+	@Select("SELECT * FROM tb_driver_license WHERE fk_driver_id=#{fk_driver_id}")
+	DriverLicense selectByDriverId(@Param(value = "fk_driver_id") Integer fk_driver_id);
 }

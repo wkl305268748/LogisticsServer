@@ -18,7 +18,7 @@ import com.kenny.service.logistics.model.order.OrderSign;
 import com.kenny.service.logistics.service.order.OrderSignService;
 
 @Api(value = "/v1/order/sign", description = "定单签收表")
-@RequestMapping(value = " /v1/order/sign")
+@RequestMapping(value = "/v1/order/sign")
 @RestController
 public class OrderSignController{
 	@Autowired
@@ -36,7 +36,6 @@ public class OrderSignController{
 	@RequestMapping(value = "",method = RequestMethod.POST)
 	@ResponseBody
 	public JsonBean<OrderSign> Insert(@ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token,
-									  @ApiParam(value = "订单处理表id",required = false)@RequestParam(value = "fk_order_taking_id",required = false)Integer fk_order_taking_id,
 	                                  @ApiParam(value = "订单表id",required = false)@RequestParam(value = "fk_order_customer_id",required = false)Integer fk_order_customer_id,
 	                                  @ApiParam(value = "签收照片",required = false)@RequestParam(value = "order_img",required = false)String order_img){
 		try {
@@ -44,7 +43,7 @@ public class OrderSignController{
 			OrderCustomer orderCustomer = orderCustomerService.selectByPrimaryKey(fk_order_customer_id);
 			orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_SIGN", user.getId());
 			orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_SIGN");
-			return new JsonBean(ErrorCode.SUCCESS, orderSignService.insert(fk_order_taking_id,fk_order_customer_id,order_img));
+			return new JsonBean(ErrorCode.SUCCESS, orderSignService.insert(-1,fk_order_customer_id,order_img));
 		} catch (ErrorCodeException e) {
 			return new JsonBean(e.getErrorCode());
 		}

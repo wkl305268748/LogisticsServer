@@ -11,7 +11,7 @@ public class SystemDefind{
 	@ApiModelProperty("")
 	private String name;
 	@ApiModelProperty("系统配置的类型")
-	private String type;
+	private String type_code;
 
 	public Integer getId(){
 		return id;
@@ -29,12 +29,11 @@ public class SystemDefind{
 		this.name = name;
 	}
 
-	public String getType(){
-		return type;
+	public String getType_code() {
+		return type_code;
 	}
 
-	public void setType(String type){
-		this.type = type;
+	public void setType_code(String type_code) {
+		this.type_code = type_code;
 	}
-
 }

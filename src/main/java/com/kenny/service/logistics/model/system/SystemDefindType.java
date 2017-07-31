@@ -10,6 +10,8 @@ public class SystemDefindType{
 	private Integer id;
 	@ApiModelProperty("")
 	private String name;
+	@ApiModelProperty("")
+	private String code;
 
 	public Integer getId(){
 		return id;
@@ -27,4 +29,11 @@ public class SystemDefindType{
 		this.name = name;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 }

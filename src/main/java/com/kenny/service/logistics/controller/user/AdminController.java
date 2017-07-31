@@ -3,10 +3,7 @@ package com.kenny.service.logistics.controller.user;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
-import com.kenny.service.logistics.model.user.Sms;
-import com.kenny.service.logistics.model.user.User;
-import com.kenny.service.logistics.model.user.UserInfo;
-import com.kenny.service.logistics.model.user.UserToken;
+import com.kenny.service.logistics.model.user.*;
 import com.kenny.service.logistics.service.user.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,5 +47,33 @@ public class AdminController {
         }
     }
 
+    @ApiOperation(value = "获取用户所有信息")
+    @RequestMapping(value = "/ex/info", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<UserSet> InfoEx(@ApiParam("用户登录令牌") @RequestParam(required = true) String token) {
+
+        try {
+            return new JsonBean(UserErrorCode.SUCCESS,userAdminService.getUserEx(token));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+    @ApiOperation(value = "修改用户信息")
+    @RequestMapping(value = "/info", method = RequestMethod.PUT)
+    @ResponseBody
+    public JsonBean<UserInfo> updateInfo(@ApiParam("用户登录令牌") @RequestParam(required = true) String token,
+                                         @ApiParam("") @RequestParam(required = false) String nickname,
+                                         @ApiParam("") @RequestParam(required = false) String sex,
+                                         @ApiParam("") @RequestParam(required = false) String img,
+                                         @ApiParam("") @RequestParam(required = false) Date birthday,
+                                         @ApiParam("") @RequestParam(required = false) String company,
+                                         @ApiParam("") @RequestParam(required = false) int money) {
+        try {
+            return new JsonBean(UserErrorCode.SUCCESS,userAdminService.updateUserInfo(token,nickname,sex,img,birthday,company,money));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
 }
 

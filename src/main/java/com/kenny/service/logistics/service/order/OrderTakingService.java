@@ -36,6 +36,7 @@ public class OrderTakingService{
 		orderTaking.setTime(new Date());
 		orderTakingMapper.insert(orderTaking);
 
+
 		return orderTaking;
 	}
 

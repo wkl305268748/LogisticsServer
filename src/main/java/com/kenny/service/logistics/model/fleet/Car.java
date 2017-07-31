@@ -42,9 +42,9 @@ public class Car{
 	private Date factory_time;
 	@ApiModelProperty("购买日期")
 	private Date buy_time;
-	@ApiModelProperty("")
+	@ApiModelProperty("购买价格")
 	private Integer buy_price;
-	@ApiModelProperty("")
+	@ApiModelProperty("年审日期")
 	private Date limited_time;
 	@ApiModelProperty("二级维护有效期")
 	private Date tow_maintain_time;

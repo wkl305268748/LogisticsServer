@@ -17,11 +17,11 @@ public interface CarMapper{
 	@Select("SELECT * FROM tb_car WHERE id=#{id}")
 	Car selectByPrimaryKey(@Param(value = "id") Integer id);
 
-	@Select("SELECT * FROM tb_car limit #{offset},#{pageSize}")
+	@Select("SELECT * FROM tb_car WHERE visible = 1 ORDER BY time DESC limit #{offset},#{pageSize}")
 	List<Car> selectPage(@Param(value = "offset") Integer offset,
                          @Param(value = "pageSize") Integer pageSize);
 
-	@Select("SELECT COUNT(*) FROM tb_car")
+	@Select("SELECT COUNT(*) FROM tb_car WHERE visible = 1")
 	int count();
 
 	@Delete("DELETE FROM tb_car WHERE id=#{id}")

@@ -1,5 +1,7 @@
 package com.kenny.service.logistics.service.fleet;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.kenny.service.logistics.mapper.fleet.DriverLicenseMapper;
 import com.kenny.service.logistics.model.fleet.DriverLicense;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,21 @@ import com.kenny.service.logistics.exception.ErrorCodeException;
 public class DriverLicenseService{
 	@Autowired
 	private DriverLicenseMapper driverLicenseMapper;
+
+	public DriverLicense insertByDriver(String json,Integer fk_driver_id){
+		DriverLicense driverLicense = null;
+		if(json == null)
+			return null;
+		if (!json.equals("")) {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy/MM/dd").create();
+			driverLicense = gson.fromJson(json,DriverLicense.class);
+			driverLicense.setFk_driver_id(fk_driver_id);
+			driverLicense.setTime(new Date());
+			driverLicense.setFiles(driverLicense.getFiles().toString());
+			driverLicenseMapper.insert(driverLicense);
+		}
+		return driverLicense;
+	}
 
 	public DriverLicense insert(Integer fk_driver_id, String number, String level, Date valid_time, Date unvalid_time, Date pass_time, String work_license, String ic_number, String files, Date time){
 		DriverLicense driverLicense = new DriverLicense();

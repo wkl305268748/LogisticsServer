@@ -2,10 +2,12 @@ package com.kenny.service.logistics.service.order;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kenny.service.logistics.exception.OrderErrorCode;
 import com.kenny.service.logistics.mapper.order.OrderGoodsMapper;
 import com.kenny.service.logistics.mapper.order.OrderStatusMapper;
 import com.kenny.service.logistics.model.order.OrderGoods;
 import com.kenny.service.logistics.model.order.OrderStatus;
+import com.kenny.service.logistics.model.system.Defind;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,8 @@ public class OrderCustomerService {
                                 Date send_time,
                                 Date recive_time,
                                 Integer user_id,
+                                Float freight,
+                                Float safes,
                                 String goods) {
         OrderCustomer orderCustomer = new OrderCustomer();
         //流水号
@@ -60,17 +64,26 @@ public class OrderCustomerService {
         orderCustomer.setDispatching_type(dispatching_type);
         orderCustomer.setTime(new Date());
         orderCustomer.setFk_user_id(user_id);
+        orderCustomer.setFreight(freight);
+        orderCustomer.setSafes(safes);
+        orderCustomer.setTotal(freight + safes);
         orderCustomerMapper.insert(orderCustomer);
 
-        //添加货物
-        if(goods!=null) {
-            Gson gson = new Gson();
-            List<OrderGoods> goodsList = gson.fromJson(goods, new TypeToken<List<OrderGoods>>() {
-            }.getType());
-            for (OrderGoods good : goodsList) {
-                good.setFk_order_customer_id(orderCustomer.getId());
-                orderGoodsMapper.insert(good);
+        try {
+            if (goods != null) {
+                goods = "[" + goods + "]";
+                Gson gson = new Gson();
+                List<OrderGoods> goodsList = gson.fromJson(goods, new TypeToken<List<OrderGoods>>() {
+                }.getType());
+                //添加货物
+                for (OrderGoods good : goodsList) {
+                    good.setFk_order_customer_id(orderCustomer.getId());
+                    orderGoodsMapper.insert(good);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(goods);
         }
         return orderCustomer;
     }
@@ -109,7 +122,7 @@ public class OrderCustomerService {
         //货物修改
         //删除所有这个订单的货物
         orderGoodsMapper.deleteByOrderCustomer(id);
-        if(goods!=null) {
+        if (goods != null) {
             Gson gson = new Gson();
             List<OrderGoods> goodsList = gson.fromJson(goods, new TypeToken<List<OrderGoods>>() {
             }.getType());
@@ -122,7 +135,7 @@ public class OrderCustomerService {
     }
 
     //修改订单
-    public OrderCustomer updateStatus(Integer id,String status) throws ErrorCodeException {
+    public OrderCustomer updateStatus(Integer id, String status) throws ErrorCodeException {
         OrderCustomer orderCustomer = orderCustomerMapper.selectByPrimaryKey(id);
         if (orderCustomer == null) {
             throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
@@ -149,7 +162,7 @@ public class OrderCustomerService {
         return response;
     }
 
-    public int deleteByPrimaryKey(Integer id) {
+    public int deleteByPrimaryKey(Integer id){
         return orderCustomerMapper.deleteByPrimaryKey(id);
     }
 

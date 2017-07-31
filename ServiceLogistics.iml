@@ -99,13 +99,26 @@
     <orderEntry type="library" name="Maven: xerces:xercesImpl:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: xml-apis:xml-apis:1.4.01" level="project" />
     <orderEntry type="module-library">
-      <library name="Maven: com.taobao.api:Alidayu:1455552377940-20160607">
+      <library name="Maven: aliyun.java.core:aliyun:3.2.3">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/taobao-sdk.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/aliyun-java-sdk-core-3.2.3.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: aliyun.java:aliyun:1.0.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/aliyun-java-sdk-dysmsapi-1.0.0-SANPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Maven: com.qiniu:qiniu-java-sdk:7.2.7" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.8.0" level="project" />
+    <orderEntry type="library" name="Maven: com.qiniu:happy-dns-java:0.1.4" level="project" />
   </component>
 </module>

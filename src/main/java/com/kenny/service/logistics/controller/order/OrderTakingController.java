@@ -1,12 +1,22 @@
 package com.kenny.service.logistics.controller.order;
 
+import com.kenny.service.logistics.model.fleet.Driver;
 import com.kenny.service.logistics.model.order.OrderCustomer;
+import com.kenny.service.logistics.model.profit.Profit;
 import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.user.UserSet;
+import com.kenny.service.logistics.service.fleet.DriverService;
+import com.kenny.service.logistics.service.order.OrderContractService;
 import com.kenny.service.logistics.service.order.OrderCustomerService;
 import com.kenny.service.logistics.service.order.OrderStatusService;
+import com.kenny.service.logistics.service.profit.ProfitService;
+import com.kenny.service.logistics.service.user.UserCustomerService;
+import com.kenny.service.logistics.service.user.UserManagerService;
 import com.kenny.service.logistics.service.user.UserService;
+import com.kenny.service.logistics.service.util.SmsSendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import com.kenny.service.logistics.json.JsonBean;
@@ -17,7 +27,7 @@ import com.kenny.service.logistics.model.order.OrderTaking;
 import com.kenny.service.logistics.service.order.OrderTakingService;
 
 @Api(value = "/v1/order/taking", description = "订单处理表")
-@RequestMapping(value = " /v1/order/taking")
+@RequestMapping(value = "/v1/order/taking")
 @RestController
 public class OrderTakingController{
 	@Autowired
@@ -28,10 +38,22 @@ public class OrderTakingController{
 	UserService userService;
 	@Autowired
 	OrderStatusService orderStatusService;
+	@Autowired
+	ProfitService profitService;
+	@Autowired
+	DriverService driverService;
+	@Autowired
+	SmsSendService smsSendService;
+	@Autowired
+	OrderContractService orderContractService;
+	@Autowired
+	UserManagerService userManagerService;
+
 
 	@ApiOperation(value = "增加OrderTaking")
 	@RequestMapping(value = "",method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional
 	public JsonBean<OrderTaking> insert(@ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token,
 										@ApiParam(value = "订单外键",required = false)@RequestParam(value = "fk_order_customer_id",required = false)Integer fk_order_customer_id,
 	                                    @ApiParam(value = "车辆外键",required = false)@RequestParam(value = "fk_car_id",required = false)Integer fk_car_id,
@@ -43,6 +65,17 @@ public class OrderTakingController{
 			OrderCustomer orderCustomer = orderCustomerService.selectByPrimaryKey(fk_order_customer_id);
 			orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_TAKING", user.getId());
 			orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_TAKING");
+			//增加财务信息
+			profitService.insert(orderCustomer.getId(),orderCustomer.getOrder_number(),recive,pay);
+
+			UserSet userSet = userManagerService.selectByPrimaryKeyEx(orderCustomer.getFk_user_id());
+			//增加合同信息
+			orderContractService.create(orderCustomer.getId(),orderCustomer.getOrder_number(),userSet.getUserInfo().getCompany());
+			//向司机发送短信
+			Driver driver = driverService.selectByPrimaryKey(fk_driver_id);
+			if(driver.getIs_sms())
+				smsSendService.OrderToDriver(driver.getPhone(),orderCustomer.getOrder_number(),orderCustomer.getSend_addr(),orderCustomer.getRecive_addr());
+
 			return new JsonBean(ErrorCode.SUCCESS, orderTakingService.taking(fk_order_customer_id,fk_car_id,fk_driver_id,recive,pay));
 		} catch (ErrorCodeException e) {
 			return new JsonBean(e.getErrorCode());

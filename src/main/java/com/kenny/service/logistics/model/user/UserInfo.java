@@ -3,8 +3,9 @@ package com.kenny.service.logistics.model.user;
 import java.util.Date;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
+import io.swagger.models.auth.In;
 
-@ApiModel("")
+@ApiModel("用户信息表")
 public class UserInfo{
 	@ApiModelProperty("")
 	private Integer id;
@@ -18,6 +19,10 @@ public class UserInfo{
 	private String img;
 	@ApiModelProperty("")
 	private Date birthday;
+	@ApiModelProperty("公司名称")
+	private String company;
+	@ApiModelProperty("账户余额")
+	private Integer money;
 
 	public Integer getId(){
 		return id;
@@ -67,4 +72,19 @@ public class UserInfo{
 		this.birthday = birthday;
 	}
 
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public Integer getMoney() {
+		return money;
+	}
+
+	public void setMoney(Integer money) {
+		this.money = money;
+	}
 }

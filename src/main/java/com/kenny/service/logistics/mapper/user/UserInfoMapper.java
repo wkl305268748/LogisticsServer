@@ -11,11 +11,11 @@ import java.util.List;
 @Mapper
 public interface UserInfoMapper {
 
-    @Insert("INSERT INTO tb_user_info(user_id,nickname,sex,img,birthday) VALUES(#{user_id},#{nickname},#{sex},#{img},#{birthday})")
+    @Insert("INSERT INTO tb_user_info(user_id,nickname,sex,img,birthday,company,money) VALUES(#{user_id},#{nickname},#{sex},#{img},#{birthday},#{company},#{money})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(UserInfo userInfo);
 
-    @Update("UPDATE tb_user_info SET user_id=#{user_id},nickname=#{nickname},sex=#{sex},img=#{img},birthday=#{birthday} WHERE id=#{id}")
+    @Update("UPDATE tb_user_info SET user_id=#{user_id},nickname=#{nickname},sex=#{sex},img=#{img},birthday=#{birthday},company=#{company},money=#{money} WHERE id=#{id}")
     int update(UserInfo userInfo);
 
     @Select("SELECT * FROM tb_user_info WHERE id=#{id}")
