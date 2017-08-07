@@ -8,6 +8,7 @@ import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.model.user.UserInfo;
 import com.kenny.service.logistics.model.user.UserSet;
+import com.kenny.service.logistics.service.system.SystemConfigService;
 import com.kenny.service.logistics.service.user.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,10 @@ public class ManagerController {
     UserCustomerService userCustomerService;
     @Autowired
     UserMoneyService userMoneyService;
+    @Autowired
+    SystemConfigService systemConfigService;
+    @Autowired
+    UserAdminService userAdminService;
 
     @ApiOperation(value = "获取用户列表")
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -75,21 +80,31 @@ public class ManagerController {
                                       @ApiParam("性别") @RequestParam(required = false) String sex,
                                       @ApiParam("上传图像地址") @RequestParam(required = false) String img,
                                       @ApiParam("公司名称") @RequestParam String company,
-                                      @ApiParam("金额") @RequestParam Integer money) {
+                                      @ApiParam("金额") @RequestParam Float money) {
         try {
             User user = userCustomerService.insertUserName(username,password);
             userInfoService.insert(user.getId(),nickname,sex,img,null,company,money);
+            systemConfigService.init(user.getId());
             return new JsonBean(ErrorCode.SUCCESS,user);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
     }
 
+
+    @ApiOperation(value = "删除用户")
+    @RequestMapping(value = "/customer/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public JsonBean CustomerDelete(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id) {
+        userManagerService.deleteByPrimaryKey(id);
+        return new JsonBean(UserErrorCode.SUCCESS);
+    }
+
     @ApiOperation(value = "用户充值")
     @RequestMapping(value = "/customer/money/{id}", method = RequestMethod.POST)
     @ResponseBody
     public JsonBean CustomerMoney(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id,
-                                  @ApiParam("金额") @RequestParam Integer money) {
+                                  @ApiParam("金额") @RequestParam Float money) {
         try {
             //充值
             userInfoService.updateAddMoney(id,money);
@@ -101,33 +116,11 @@ public class ManagerController {
         }
     }
 
-    @ApiOperation(value = "通过ID获取用户")
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "客户重置密码")
+    @RequestMapping(value = "/customer/password/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public JsonBean<User> UserGet(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id) {
-        try {
-            return new JsonBean(UserErrorCode.SUCCESS, userManagerService.selectByPrimaryKey(id));
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
-
-    @ApiOperation(value = "通过ID获取用户信息")
-    @RequestMapping(value = "/users/{id}/info", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonBean<UserInfo> UserInfoGet(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id) {
-        try {
-            return new JsonBean(UserErrorCode.SUCCESS, userInfoService.GetUserInfo(id));
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
-
-    @ApiOperation(value = "重置密码")
-    @RequestMapping(value = "/users/{id}/password", method = RequestMethod.PUT)
-    @ResponseBody
-    public JsonBean<User> UserPass(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id,
-                                   @ApiParam(value = "密码", required = true) @RequestParam String password) {
+    public JsonBean CustomerPassword(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id,
+                                     @ApiParam(value = "密码", required = true) @RequestParam String password) {
         try {
             return new JsonBean(UserErrorCode.SUCCESS, userManagerService.resetPassword(id, password));
         } catch (ErrorCodeException e) {
@@ -135,29 +128,42 @@ public class ManagerController {
         }
     }
 
-    @ApiOperation(value = "修改用户信息")
-    @RequestMapping(value = "/users/{id}/info", method = RequestMethod.PUT)
+
+    @ApiOperation(value = "增加客户类型用户")
+    @RequestMapping(value = "/admin", method = RequestMethod.POST)
     @ResponseBody
-    public JsonBean<UserInfo> UserEditInfo(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id,
-                                           @ApiParam(value = "昵称", required = true) @RequestParam String nickname,
-                                           @ApiParam(value = "性别", required = true) @RequestParam String sex,
-                                           @ApiParam(value = "头像", required = true) @RequestParam String img,
-                                           @ApiParam(value = "生日", required = true) @RequestParam long birthday,
-                                           @ApiParam("") @RequestParam(required = false) String company,
-                                           @ApiParam("") @RequestParam(required = false) int money) {
+    public JsonBean<User> AdminAdd(@ApiParam("账户") @RequestParam String username,
+                                  @ApiParam("密码") @RequestParam String password,
+                                  @ApiParam("昵称") @RequestParam(required = false) String nickname,
+                                  @ApiParam("性别") @RequestParam(required = false) String sex,
+                                  @ApiParam("上传图像地址") @RequestParam(required = false) String img) {
         try {
-            return new JsonBean(UserErrorCode.SUCCESS, userInfoService.update(id, nickname, sex, img, new Date(birthday),company,money));
+            User user = userAdminService.insertUserName(username,password);
+            userInfoService.insert(user.getId(),nickname,sex,img,null,"",0f);
+            return new JsonBean(ErrorCode.SUCCESS,user);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
     }
 
+
     @ApiOperation(value = "删除用户")
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/admin/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public JsonBean UserDelete(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id) {
+    public JsonBean AdminDelete(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id) {
         userManagerService.deleteByPrimaryKey(id);
-        userInfoService.DeleteUserInfo(id);
         return new JsonBean(UserErrorCode.SUCCESS);
+    }
+
+    @ApiOperation(value = "管理员重置密码")
+    @RequestMapping(value = "/admin/password/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonBean AdminPassword(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id,
+                                     @ApiParam(value = "密码", required = true) @RequestParam String password) {
+        try {
+            return new JsonBean(UserErrorCode.SUCCESS, userManagerService.resetPassword(id, password));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
     }
 }

@@ -14,6 +14,16 @@ public class SystemConfig{
 	private String code;
 	@ApiModelProperty("值")
 	private String value;
+	@ApiModelProperty("")
+	private Integer belong_user_id;
+
+	public SystemConfig(){}
+	public SystemConfig(String name, String code, String value, Integer belong_user_id) {
+		this.name = name;
+		this.code = code;
+		this.value = value;
+		this.belong_user_id = belong_user_id;
+	}
 
 	public Integer getId(){
 		return id;
@@ -45,6 +55,14 @@ public class SystemConfig{
 
 	public void setValue(String value){
 		this.value = value;
+	}
+
+	public Integer getBelong_user_id(){
+		return belong_user_id;
+	}
+
+	public void setBelong_user_id(Integer belong_user_id){
+		this.belong_user_id = belong_user_id;
 	}
 
 }

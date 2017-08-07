@@ -40,8 +40,17 @@ public class UserAdminService {
     public UserSet getUserEx(String token) throws ErrorCodeException {
         return userBaseService.getUserByTokenEx(token);
     }
+    /**
+     * 根据用户名密码创建用户
+     *
+     * @param username
+     * @return
+     */
+    public User insertUserName(String username,String password) throws ErrorCodeException {
+        return userBaseService.insertByUserName(username,password,type);
+    }
 
-    public UserInfo updateUserInfo(String token,String nickname, String sex, String img, Date birthday,String company, int money) throws ErrorCodeException {
+    public UserInfo updateUserInfo(String token,String nickname, String sex, String img, Date birthday,String company, Float money) throws ErrorCodeException {
         User user = userBaseService.getUserByToken(token);
         return userInfoService.update(user.getId(),nickname,sex,img,birthday,company,money);
     }
@@ -53,5 +62,10 @@ public class UserAdminService {
      */
     public void logout(String token) throws ErrorCodeException {
         userBaseService.logout(token);
+    }
+
+
+    public void updatePassword(String token, String old_password, String new_password) throws ErrorCodeException {
+        userBaseService.updatePassword(token,old_password,new_password);
     }
 }

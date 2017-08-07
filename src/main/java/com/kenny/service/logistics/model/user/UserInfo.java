@@ -22,7 +22,7 @@ public class UserInfo{
 	@ApiModelProperty("公司名称")
 	private String company;
 	@ApiModelProperty("账户余额")
-	private Integer money;
+	private Float money;
 
 	public Integer getId(){
 		return id;
@@ -80,11 +80,11 @@ public class UserInfo{
 		this.company = company;
 	}
 
-	public Integer getMoney() {
+	public Float getMoney() {
 		return money;
 	}
 
-	public void setMoney(Integer money) {
+	public void setMoney(Float money) {
 		this.money = money;
 	}
 }

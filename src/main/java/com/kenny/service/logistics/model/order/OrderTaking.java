@@ -15,9 +15,9 @@ public class OrderTaking{
 	@ApiModelProperty("司机外键")
 	private Integer fk_driver_id;
 	@ApiModelProperty("应付账款")
-	private Integer recive;
+	private Float recive;
 	@ApiModelProperty("应收账款")
-	private Integer pay;
+	private Float pay;
 	@ApiModelProperty("关联status表")
 	private String status;
 	@ApiModelProperty("")
@@ -55,19 +55,19 @@ public class OrderTaking{
 		this.fk_driver_id = fk_driver_id;
 	}
 
-	public Integer getRecive(){
+	public Float getRecive(){
 		return recive;
 	}
 
-	public void setRecive(Integer recive){
+	public void setRecive(Float recive){
 		this.recive = recive;
 	}
 
-	public Integer getPay(){
+	public Float getPay(){
 		return pay;
 	}
 
-	public void setPay(Integer pay){
+	public void setPay(Float pay){
 		this.pay = pay;
 	}
 

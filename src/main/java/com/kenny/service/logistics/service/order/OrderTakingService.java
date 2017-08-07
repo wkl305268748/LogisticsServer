@@ -25,9 +25,9 @@ public class OrderTakingService{
 	public OrderTaking taking(Integer fk_order_customer_id,
 							  Integer fk_car_id,
 							  Integer fk_driver_id,
-							  Integer recive,
-							  Integer pay){
-		OrderTaking orderTaking = new OrderTaking();
+							  Float recive,
+							  Float pay){
+ 		OrderTaking orderTaking = new OrderTaking();
 		orderTaking.setFk_order_customer_id(fk_order_customer_id);
 		orderTaking.setFk_car_id(fk_car_id);
 		orderTaking.setFk_driver_id(fk_driver_id);
@@ -35,8 +35,6 @@ public class OrderTakingService{
 		orderTaking.setPay(pay);
 		orderTaking.setTime(new Date());
 		orderTakingMapper.insert(orderTaking);
-
-
 		return orderTaking;
 	}
 
@@ -45,8 +43,8 @@ public class OrderTakingService{
 							  Integer fk_order_customer_id,
 							  Integer fk_car_id,
 							  Integer fk_driver_id,
-							  Integer recive,
-							  Integer pay) throws ErrorCodeException{
+							  Float recive,
+							  Float pay) throws ErrorCodeException{
 		OrderTaking orderTaking = orderTakingMapper.selectByPrimaryKey(id);
 		OrderCustomer orderCustomer = orderCustomerMapper.selectByPrimaryKey(fk_order_customer_id);
 		if(orderTaking == null){

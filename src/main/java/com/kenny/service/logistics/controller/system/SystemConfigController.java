@@ -1,5 +1,7 @@
 package com.kenny.service.logistics.controller.system;
 
+import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.service.user.UserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +19,22 @@ import com.kenny.service.logistics.service.system.SystemConfigService;
 public class SystemConfigController{
 	@Autowired
 	private SystemConfigService systemConfigService;
+	@Autowired
+	private UserBaseService userBaseService;
 
 	@ApiOperation(value = "增加SystemConfig")
 	@RequestMapping(value = "",method = RequestMethod.POST)
 	@ResponseBody
-	public JsonBean<SystemConfig> Insert(@ApiParam(value = "名称",required = false)@RequestParam(value = "name",required = false)String name,
+	public JsonBean<SystemConfig> Insert(@ApiParam(value = "用户token",required = true)@RequestParam(value = "token",required = true)String token,
+										 @ApiParam(value = "名称",required = false)@RequestParam(value = "name",required = false)String name,
 	                                     @ApiParam(value = "编码",required = false)@RequestParam(value = "code",required = false)String code,
 	                                     @ApiParam(value = "值",required = false)@RequestParam(value = "value",required = false)String value){
-		return new JsonBean(ErrorCode.SUCCESS, systemConfigService.insert(name,code,value));
+		try {
+			User user = userBaseService.getUserByToken(token);
+			return new JsonBean(ErrorCode.SUCCESS, systemConfigService.insert(name,code,value,user.getId()));
+		} catch (ErrorCodeException e) {
+			return new JsonBean(e.getErrorCode());
+		}
 	}
 	@ApiOperation(value = "修改指定的SystemConfig")
 	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
@@ -52,9 +62,15 @@ public class SystemConfigController{
 	@ApiOperation(value = "列出所有的SystemConfig")
 	@RequestMapping(value = "/page",method = RequestMethod.GET)
 	@ResponseBody
-	public JsonBean<PageResponse<SystemConfig>> selectPage(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0")Integer offset,
+	public JsonBean<PageResponse<SystemConfig>> selectPage(@ApiParam(value = "用户token",required = true)@RequestParam(value = "token",required = true)String token,
+														   @ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0")Integer offset,
 	                                                       @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10")Integer pageSize){
-		return new JsonBean(ErrorCode.SUCCESS, systemConfigService.selectPage(offset,pageSize));
+		try {
+			User user = userBaseService.getUserByToken(token);
+			return new JsonBean(ErrorCode.SUCCESS, systemConfigService.selectPageByBelong(offset,pageSize,user.getId()));
+		} catch (ErrorCodeException e) {
+			return new JsonBean(e.getErrorCode());
+		}
 	}
 
 	@ApiOperation(value = "删除指定的SystemConfig")

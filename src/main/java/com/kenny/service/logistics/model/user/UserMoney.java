@@ -5,13 +5,13 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel("用户金额表，用来记录用户消费充值记录")
-public class UserMoney{
+public class  UserMoney{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("用户外键")
 	private Integer fk_user_id;
 	@ApiModelProperty("")
-	private Integer money;
+	private Float money;
 	@ApiModelProperty("类型in/out 充值、消费")
 	private String type;
 	@ApiModelProperty("")
@@ -35,11 +35,11 @@ public class UserMoney{
 		this.fk_user_id = fk_user_id;
 	}
 
-	public Integer getMoney(){
+	public Float getMoney(){
 		return money;
 	}
 
-	public void setMoney(Integer money){
+	public void setMoney(Float money){
 		this.money = money;
 	}
 

@@ -27,15 +27,15 @@ public interface UserMapper {
     int count();
 
     @Delete("DELETE FROM tb_user WHERE id=#{id}")
-    int deleteByPrimaryKey(@Param(value = "id") Integer id);
+    int  deleteByPrimaryKey(@Param(value = "id") Integer id);
 
 
-    @Select("SELECT * FROM tb_user WHERE type=#{type} limit #{offset},#{pageSize}")
+    @Select("SELECT * FROM tb_user WHERE type=#{type} AND is_valid = 1 limit #{offset},#{pageSize}")
     List<User> selectPageByType(@Param(value = "offset") Integer offset,
                                 @Param(value = "pageSize") Integer pageSize,
                                 @Param(value = "type") String type);
 
-    @Select("SELECT COUNT(*) FROM tb_user WHERE type=#{type}")
+    @Select("SELECT COUNT(*) FROM tb_user WHERE type=#{type} AND is_valid = 1")
     int countByType(@Param(value = "type") String type);
 
     @Select("SELECT * FROM tb_user WHERE username=#{username} AND type=#{type} AND is_valid = 1")

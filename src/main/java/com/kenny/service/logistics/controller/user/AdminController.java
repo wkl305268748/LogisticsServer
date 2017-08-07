@@ -68,9 +68,24 @@ public class AdminController {
                                          @ApiParam("") @RequestParam(required = false) String img,
                                          @ApiParam("") @RequestParam(required = false) Date birthday,
                                          @ApiParam("") @RequestParam(required = false) String company,
-                                         @ApiParam("") @RequestParam(required = false) int money) {
+                                         @ApiParam("") @RequestParam(required = false) Float money) {
         try {
             return new JsonBean(UserErrorCode.SUCCESS,userAdminService.updateUserInfo(token,nickname,sex,img,birthday,company,money));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+
+    @ApiOperation(value = "重置密码")
+    @RequestMapping(value = "/password", method = RequestMethod.PUT)
+    @ResponseBody
+    public JsonBean UpdatePassword(@ApiParam("用户登录令牌") @RequestParam(required = true) String token,
+                                   @ApiParam("历史密码") @RequestParam(required = true) String old_password,
+                                   @ApiParam("新密码") @RequestParam(required = true) String new_password) {
+        try {
+            userAdminService.updatePassword(token, old_password, new_password);
+            return new JsonBean(UserErrorCode.SUCCESS);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }

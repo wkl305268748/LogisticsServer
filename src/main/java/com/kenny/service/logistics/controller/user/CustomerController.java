@@ -3,10 +3,7 @@ package com.kenny.service.logistics.controller.user;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
-import com.kenny.service.logistics.model.user.Sms;
-import com.kenny.service.logistics.model.user.User;
-import com.kenny.service.logistics.model.user.UserInfo;
-import com.kenny.service.logistics.model.user.UserToken;
+import com.kenny.service.logistics.model.user.*;
 import com.kenny.service.logistics.service.user.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -112,13 +109,13 @@ public class CustomerController {
 
 
     @ApiOperation(value = "重置密码")
-    @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
+    @RequestMapping(value = "/password", method = RequestMethod.PUT)
     @ResponseBody
-    public JsonBean ResetPassword(@ApiParam("用户登录令牌") @RequestParam(required = true) String token,
-                                  @ApiParam("重置密码") @RequestParam(required = true) String password) {
+    public JsonBean UpdatePassword(@ApiParam("用户登录令牌") @RequestParam(required = true) String token,
+                                  @ApiParam("历史密码") @RequestParam(required = true) String old_password,
+                                  @ApiParam("新密码") @RequestParam(required = true) String new_password) {
         try {
-            User user = userLoginService.CheckToken(token);
-            userService.ResetPassword(user.getId(), password);
+            userCustomerService.updatePassword(token, old_password, new_password);
             return new JsonBean(UserErrorCode.SUCCESS);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
@@ -197,13 +194,13 @@ public class CustomerController {
     }
 
 
-    @ApiOperation(value = "获取用户信息")
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @ApiOperation(value = "获取用户所有信息")
+    @RequestMapping(value = "/ex/info", method = RequestMethod.GET)
     @ResponseBody
-    public JsonBean<UserInfo> info_get(@ApiParam("用户登录令牌") @RequestParam(required = true) String token) {
+    public JsonBean<UserSet> InfoEx(@ApiParam("用户登录令牌") @RequestParam(required = true) String token) {
+
         try {
-            User user = userLoginService.CheckToken(token);
-            return new JsonBean(UserErrorCode.SUCCESS, userInfoService.GetUserInfo(user.getId()));
+            return new JsonBean(UserErrorCode.SUCCESS,userCustomerService.getUserByTokenEx(token));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -218,7 +215,7 @@ public class CustomerController {
                                         @ApiParam("上传图像地址") @RequestParam(required = false) String img,
                                         @ApiParam("生日") @RequestParam(required = false) Date birthday,
                                         @ApiParam("") @RequestParam(required = false) String company,
-                                        @ApiParam("") @RequestParam(required = false) int money) {
+                                        @ApiParam("") @RequestParam(required = false) Float money) {
         try {
             User user = userLoginService.CheckToken(token);
             return new JsonBean(UserErrorCode.SUCCESS, userInfoService.update(user.getId(), nickname, sex, img, birthday, company, money));

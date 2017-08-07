@@ -1,6 +1,8 @@
 package com.kenny.service.logistics.mapper.order;
 
 import org.apache.ibatis.annotations.*;
+
+import java.util.Date;
 import java.util.List;
 import com.kenny.service.logistics.model.order.OrderCustomer;
 
@@ -51,4 +53,12 @@ public interface OrderCustomerMapper{
 
 	@Select("SELECT COUNT(*) FROM tb_order_customer INNER JOIN tb_user ON tb_order_customer.fk_user_id = tb_user.id WHERE tb_user.type = #{user_type}")
 	int countByUserType(@Param(value = "user_type") String user_type);
+
+	//按天统计
+	@Select("SELECT COUNT(*) FROM tb_order_customer WHERE date_format(time,'%Y-%m-%d') = date_format(#{day},'%Y-%m-%d')")
+	int countByDay(@Param(value = "day")Date day);
+
+
+	@Select("SELECT COUNT(*) FROM tb_order_customer WHERE date_format(time,'%Y-%m-%d') = date_format(#{day},'%Y-%m-%d') AND fk_user_id = #{fk_user_id}")
+	int countByDayAndUser(@Param(value = "day")Date day,@Param(value = "fk_user_id")Integer fk_user_id);
 }

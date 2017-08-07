@@ -21,23 +21,24 @@ public class ProfitService{
 	@Autowired
 	private ProfitStatusMapper profitStatusMapper;
 
-	public Profit insert(Integer fk_order_customer_id,String order_number,Integer recive,Integer pay){
+	public Profit insert(Integer fk_order_customer_id,String order_number,Float recive,Float pay, Integer belong_user_id){
 		Profit profit = new Profit();
 		profit.setFk_order_customer_id(fk_order_customer_id);
 		profit.setOrder_number(order_number);
 		profit.setRecive(recive);
 		profit.setPay(pay);
-		profit.setRecive_now(0);
-		profit.setPay_now(0);
+		profit.setRecive_now(0f);
+		profit.setPay_now(0f);
 		profit.setIs_recive(false);
 		profit.setIs_pay(false);
 		profit.setProfit(recive - pay);
 		profit.setTime(new Date());
+		profit.setBelong_user_id(belong_user_id);
 		profitMapper.insert(profit);
 		return profit;
 	}
 
-	public Profit update(Integer id,Integer fk_order_customer_id,String order_number,Integer recive,Integer pay,Integer recive_now,Integer pay_now,Boolean is_recive,Boolean is_pay) throws ErrorCodeException{
+	public Profit update(Integer id,Integer fk_order_customer_id,String order_number,Float recive,Float pay,Float recive_now,Float pay_now,Boolean is_recive,Boolean is_pay) throws ErrorCodeException{
 		Profit profit = profitMapper.selectByPrimaryKey(id);
 		if(profit == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
@@ -54,13 +55,13 @@ public class ProfitService{
 		return profit;
 	}
 
-	public Profit pay(Integer id,Integer pay) throws ErrorCodeException{
+	public Profit pay(int id,Float pay) throws ErrorCodeException{
 		Profit profit = profitMapper.selectByPrimaryKey(id);
 		if(profit == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
 		}
 
-		int pay_now = profit.getPay_now() + pay;
+		Float pay_now = profit.getPay_now() + pay;
 		if(pay_now >= profit.getPay()) {
 			profit.setPay_now(profit.getPay());
 			profit.setIs_pay(true);
@@ -79,13 +80,13 @@ public class ProfitService{
 		return profit;
 	}
 
-	public Profit recive(Integer id,Integer recive) throws ErrorCodeException{
+	public Profit recive(Integer id,Float recive) throws ErrorCodeException{
 		Profit profit = profitMapper.selectByPrimaryKey(id);
 		if(profit == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
 		}
 
-		int recive_now = profit.getRecive_now() + recive;
+		Float recive_now = profit.getRecive_now() + recive;
 		if(recive_now >= profit.getRecive()) {
 			profit.setRecive_now(profit.getRecive());
 			profit.setIs_recive(true);
@@ -112,10 +113,10 @@ public class ProfitService{
 		return profit;
 	}
 
-	public PageResponse<Profit> selectPage(Integer offset,Integer pageSize){
+	public PageResponse<Profit> selectPageByBelongUser(Integer offset,Integer pageSize,Integer belong_user_id){
 		PageResponse<Profit> response = new PageResponse();
-		response.setItem(profitMapper.selectPage(offset,pageSize));
-		response.setTotal(profitMapper.count());
+		response.setItem(profitMapper.selectPageByBelongUser(offset,pageSize,belong_user_id));
+		response.setTotal(profitMapper.countByBelongUser(belong_user_id));
 		response.setOffset(offset);
 		response.setPageSize(pageSize);
 		return response;

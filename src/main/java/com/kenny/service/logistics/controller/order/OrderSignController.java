@@ -8,6 +8,7 @@ import com.kenny.service.logistics.service.order.OrderTakingService;
 import com.kenny.service.logistics.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import com.kenny.service.logistics.json.JsonBean;
@@ -35,6 +36,7 @@ public class OrderSignController{
 	@ApiOperation(value = "增加OrderSign")
 	@RequestMapping(value = "",method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional
 	public JsonBean<OrderSign> Insert(@ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token,
 	                                  @ApiParam(value = "订单表id",required = false)@RequestParam(value = "fk_order_customer_id",required = false)Integer fk_order_customer_id,
 	                                  @ApiParam(value = "签收照片",required = false)@RequestParam(value = "order_img",required = false)String order_img){
@@ -43,7 +45,7 @@ public class OrderSignController{
 			OrderCustomer orderCustomer = orderCustomerService.selectByPrimaryKey(fk_order_customer_id);
 			orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_SIGN", user.getId());
 			orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_SIGN");
-			return new JsonBean(ErrorCode.SUCCESS, orderSignService.insert(-1,fk_order_customer_id,order_img));
+			return new JsonBean(ErrorCode.SUCCESS, orderSignService.insert(fk_order_customer_id,order_img));
 		} catch (ErrorCodeException e) {
 			return new JsonBean(e.getErrorCode());
 		}
@@ -62,7 +64,7 @@ public class OrderSignController{
 			User user = userService.getUser(token);
 			OrderCustomer orderCustomer = orderCustomerService.selectByPrimaryKey(fk_order_customer_id);
 			orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_EDIT_SIGN", user.getId());
-			return new JsonBean(ErrorCode.SUCCESS, orderSignService.update(id,fk_order_taking_id,fk_order_customer_id,order_img));
+			return new JsonBean(ErrorCode.SUCCESS, orderSignService.update(id,order_img));
 		} catch (ErrorCodeException e) {
 			return new JsonBean(e.getErrorCode());
 		}

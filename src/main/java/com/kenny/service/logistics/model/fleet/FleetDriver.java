@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel("")
-public class Driver{
+public class FleetDriver{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("姓名")
@@ -28,6 +28,12 @@ public class Driver{
 	private String remark;
 	@ApiModelProperty("")
 	private Date time;
+	@ApiModelProperty("所属用户的ID")
+	private Integer belong_user_id;
+	@ApiModelProperty("银行卡号")
+	private String bank_number;
+	@ApiModelProperty("开户行")
+	private String bank_addr;
 	@ApiModelProperty("")
 	private Boolean visible;
 
@@ -117,6 +123,30 @@ public class Driver{
 
 	public void setTime(Date time){
 		this.time = time;
+	}
+
+	public Integer getBelong_user_id(){
+		return belong_user_id;
+	}
+
+	public void setBelong_user_id(Integer belong_user_id){
+		this.belong_user_id = belong_user_id;
+	}
+
+	public String getBank_number(){
+		return bank_number;
+	}
+
+	public void setBank_number(String bank_number){
+		this.bank_number = bank_number;
+	}
+
+	public String getBank_addr(){
+		return bank_addr;
+	}
+
+	public void setBank_addr(String bank_addr){
+		this.bank_addr = bank_addr;
 	}
 
 	public Boolean getVisible(){

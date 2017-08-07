@@ -15,11 +15,11 @@ public class OrderGoods{
 	@ApiModelProperty("货物的体积")
 	private String size;
 	@ApiModelProperty("货物总重量，单位吨")
-	private Integer weight;
+	private Float weight;
 	@ApiModelProperty("件数")
 	private Integer number;
 	@ApiModelProperty("运费")
-	private Integer freight;
+	private Float freight;
 	@ApiModelProperty("货物备注")
 	private String remark;
 
@@ -55,11 +55,11 @@ public class OrderGoods{
 		this.size = size;
 	}
 
-	public Integer getWeight(){
+	public Float getWeight(){
 		return weight;
 	}
 
-	public void setWeight(Integer weight){
+	public void setWeight(Float weight){
 		this.weight = weight;
 	}
 
@@ -71,11 +71,11 @@ public class OrderGoods{
 		this.number = number;
 	}
 
-	public Integer getFreight(){
+	public Float getFreight(){
 		return freight;
 	}
 
-	public void setFreight(Integer freight){
+	public void setFreight(Float freight){
 		this.freight = freight;
 	}
 

@@ -15,11 +15,20 @@ public class SystemConfigService{
 	@Autowired
 	private SystemConfigMapper systemConfigMapper;
 
-	public SystemConfig insert(String name,String code,String value){
+	public void init(Integer belong_user_id){
+		systemConfigMapper.insert(new SystemConfig("公司名称","company","",belong_user_id));
+		systemConfigMapper.insert(new SystemConfig("公司银行户名","company_bank_name","",belong_user_id));
+		systemConfigMapper.insert(new SystemConfig("公司银行账号","company_bank_number","",belong_user_id));
+		systemConfigMapper.insert(new SystemConfig("公司银行","company_bank","",belong_user_id));
+		systemConfigMapper.insert(new SystemConfig("公司银行行点","company_bank_addr","",belong_user_id));
+	}
+
+	public SystemConfig insert(String name,String code,String value,Integer belong_user_id){
 		SystemConfig systemConfig = new SystemConfig();
 		systemConfig.setName(name);
 		systemConfig.setCode(code);
 		systemConfig.setValue(value);
+		systemConfig.setBelong_user_id(belong_user_id);
 		systemConfigMapper.insert(systemConfig);
 		return systemConfig;
 	}
@@ -42,10 +51,10 @@ public class SystemConfigService{
 		return systemConfig;
 	}
 
-	public PageResponse<SystemConfig> selectPage(Integer offset,Integer pageSize){
+	public PageResponse<SystemConfig> selectPageByBelong(Integer offset,Integer pageSize,Integer belong_user_id){
 		PageResponse<SystemConfig> response = new PageResponse();
-		response.setItem(systemConfigMapper.selectPage(offset,pageSize));
-		response.setTotal(systemConfigMapper.count());
+		response.setItem(systemConfigMapper.selectPageByBelongUser(offset,pageSize,belong_user_id));
+		response.setTotal(systemConfigMapper.countByBelongUser(belong_user_id));
 		response.setOffset(offset);
 		response.setPageSize(pageSize);
 		return response;
@@ -55,8 +64,8 @@ public class SystemConfigService{
 		return systemConfigMapper.deleteByPrimaryKey(id);
 	}
 
-	public String getValueByCode(String code){
-		SystemConfig systemConfig = systemConfigMapper.selectByCode(code);
+	public String getValueByCode(Integer belong_user_id,String code){
+		SystemConfig systemConfig = systemConfigMapper.selectByCodeAndBelong(code,belong_user_id);
 		if(systemConfig == null){
 			return "";
 		}

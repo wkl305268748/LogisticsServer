@@ -29,7 +29,7 @@ public class OrderController {
     UserBaseService userBaseService;
 
     @ApiOperation(value = "列出所有的Order")
-    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    @RequestMapping(value = "/page/all", method = RequestMethod.GET)
     @ResponseBody
     public JsonBean<PageResponse<OrderSet>> selectPage(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
                                                        @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize) throws ErrorCodeException {
@@ -44,7 +44,7 @@ public class OrderController {
     }
 
     @ApiOperation(value = "根据Token列出所有的Order")
-    @RequestMapping(value = "/page/token", method = RequestMethod.GET)
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ResponseBody
     public JsonBean<PageResponse<OrderSet>> selectPageByToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
                                                               @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,

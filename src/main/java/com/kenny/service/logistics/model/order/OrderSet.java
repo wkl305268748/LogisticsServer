@@ -1,11 +1,7 @@
 package com.kenny.service.logistics.model.order;
 
-import com.kenny.service.logistics.model.fleet.Car;
-import com.kenny.service.logistics.model.fleet.Driver;
-import com.kenny.service.logistics.model.order.OrderCustomer;
-import com.kenny.service.logistics.model.order.OrderSign;
-import com.kenny.service.logistics.model.order.OrderStatus;
-import com.kenny.service.logistics.model.order.OrderTaking;
+import com.kenny.service.logistics.model.fleet.FleetCar;
+import com.kenny.service.logistics.model.fleet.FleetDriver;
 import com.kenny.service.logistics.model.profit.Profit;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.model.user.UserInfo;
@@ -29,9 +25,9 @@ public class OrderSet {
     //订单操作状态
     List<OrderStatus> orderStatuses;
     //订单车辆
-    Driver driver;
+    FleetDriver fleetDriver;
     //订单司机
-    Car car;
+    FleetCar fleetCar;
     //订单用户
     User user;
     //订单用户
@@ -71,20 +67,20 @@ public class OrderSet {
         this.orderStatuses = orderStatuses;
     }
 
-    public Driver getDriver() {
-        return driver;
+    public FleetDriver getFleetDriver() {
+        return fleetDriver;
     }
 
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+    public void setFleetDriver(FleetDriver fleetDriver) {
+        this.fleetDriver = fleetDriver;
     }
 
-    public Car getCar() {
-        return car;
+    public FleetCar getFleetCar() {
+        return fleetCar;
     }
 
-    public void setCar(Car car) {
-        this.car = car;
+    public void setFleetCar(FleetCar fleetCar) {
+        this.fleetCar = fleetCar;
     }
 
     public User getUser() {

@@ -105,6 +105,15 @@ public class UserManagerService {
         return response;
     }
 
+    public PageResponse<User> selectPageByType(Integer offset,Integer pageSize,String type){
+        PageResponse<User> response = new PageResponse();
+        response.setItem(userMapper.selectPageByType(offset,pageSize,type));
+        response.setTotal(userMapper.countByType(type));
+        response.setOffset(offset);
+        response.setPageSize(pageSize);
+        return response;
+    }
+
     public PageResponse<UserSet> selectPageByTypeEx(Integer offset,Integer pageSize,String type){
         PageResponse<UserSet> response = new PageResponse();
 
@@ -123,7 +132,9 @@ public class UserManagerService {
     }
 
     public int deleteByPrimaryKey(Integer id){
-        return userMapper.deleteByPrimaryKey(id);
+        User user = userMapper.selectByPrimaryKey(id);
+        user.setIs_valid(false);
+        return userMapper.update(user);
     }
 
     /**
@@ -158,6 +169,15 @@ public class UserManagerService {
         pageResponse.setPageSize(pageSize);
         pageResponse.setTotal(userMapper.count());
         return pageResponse;
+    }
+
+    public List<String> selectNameByType(Integer offset,Integer pageSize,String type){
+        List<UserSet> users = selectPageByTypeEx(offset,pageSize,type).getItem();
+        List<String> names = new ArrayList<>();
+        for(UserSet user : users){
+            names.add(user.getUserInfo().getCompany());
+        }
+        return names;
     }
 }
 

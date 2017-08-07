@@ -1,20 +1,15 @@
 package com.kenny.service.logistics.service.order;
 
 import com.kenny.service.logistics.exception.ErrorCodeException;
-import com.kenny.service.logistics.mapper.fleet.CarMapper;
-import com.kenny.service.logistics.mapper.fleet.DriverMapper;
+import com.kenny.service.logistics.mapper.fleet.FleetCarMapper;
+import com.kenny.service.logistics.mapper.fleet.FleetDriverMapper;
 import com.kenny.service.logistics.mapper.order.*;
 import com.kenny.service.logistics.mapper.profit.ProfitMapper;
 import com.kenny.service.logistics.mapper.user.UserInfoMapper;
 import com.kenny.service.logistics.mapper.user.UserMapper;
-import com.kenny.service.logistics.model.order.OrderContract;
 import com.kenny.service.logistics.model.order.OrderCustomer;
 import com.kenny.service.logistics.model.order.OrderSet;
 import com.kenny.service.logistics.json.response.PageResponse;
-import com.kenny.service.logistics.model.order.OrderStatus;
-import com.kenny.service.logistics.model.user.UserInfo;
-import com.kenny.service.logistics.service.fleet.CarService;
-import com.kenny.service.logistics.service.fleet.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +28,9 @@ public class OrderService {
 	@Autowired
 	private OrderStatusMapper orderStatusMapper;
 	@Autowired
-	private DriverMapper driverMapper;
+	private FleetDriverMapper fleetDriverMapper;
 	@Autowired
-	private CarMapper carMapper;
+	private FleetCarMapper fleetCarMapper;
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
@@ -193,7 +188,7 @@ public class OrderService {
 	private OrderSet selectByCustomer(OrderCustomer orderCustomer) throws ErrorCodeException {
 		OrderSet orderSet = new OrderSet();
 		orderSet.setOrderCustomer(orderCustomer);
-		orderSet.setOrderStatuses(orderStatusMapper.selectByOrderNumber(orderCustomer.getOrder_number()));
+		orderSet.setOrderStatuses(orderStatusMapper.selectByOrderId(orderCustomer.getId()));
 		orderSet.setOrderTaking(orderTakingMapper.selectByOrderCustomer(orderCustomer.getId()));
 		orderSet.setOrderSign(orderSignMapper.selectByOrderCustomer(orderCustomer.getId()));
 		orderSet.setUser(userMapper.selectByPrimaryKey(orderCustomer.getFk_user_id()));
@@ -201,8 +196,8 @@ public class OrderService {
 		orderSet.setOrderGoods(orderGoodsMapper.selectByOrderCustomerId(orderCustomer.getId()));
 		if(orderSet.getOrderTaking() != null) {
 			orderSet.setOrderContract(orderContractMapper.selectByOrderCustomerId(orderCustomer.getId()));
-			orderSet.setCar(carMapper.selectByPrimaryKey(orderSet.getOrderTaking().getFk_car_id()));
-			orderSet.setDriver(driverMapper.selectByPrimaryKey(orderSet.getOrderTaking().getFk_driver_id()));
+			orderSet.setFleetCar(fleetCarMapper.selectByPrimaryKey(orderSet.getOrderTaking().getFk_car_id()));
+			orderSet.setFleetDriver(fleetDriverMapper.selectByPrimaryKey(orderSet.getOrderTaking().getFk_driver_id()));
 			orderSet.setProfit(profitMapper.selectPageByOrderCustomer(orderCustomer.getId()));
 		}
 		return orderSet;

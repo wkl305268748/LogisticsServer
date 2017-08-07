@@ -29,7 +29,7 @@ public class AliSmsUtil {
         appkey = SystemConfigUtil.getProperty("alidayu.app_key");
     }
 
-    public void sendSms(String phone,String signame, String template_code, Map<String, String> template) throws ErrorCodeException {
+    public void sendSms(String phone,String signame, String template_code, Map<String, String> template){
 
         SendSmsResponse sendSmsResponse = null;
         try {
@@ -64,12 +64,13 @@ public class AliSmsUtil {
             sendSmsResponse = acsClient.getAcsResponse(request);
         } catch (ClientException e) {
             e.printStackTrace();
-            throw new ErrorCodeException(new ErrorCode(0, "阿里短信异常：" + e.getErrCode() + "-" + e.getErrMsg()));
+            //throw new ErrorCodeException(new ErrorCode(0, "阿里短信异常：" + e.getErrCode() + "-" + e.getErrMsg()));
         }
         if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
             //请求成功
         } else {
-            throw new ErrorCodeException(new ErrorCode(0, "阿里短信异常：" + sendSmsResponse.getCode() + " " + sendSmsResponse.getMessage()));
+            System.out.println("阿里短信异常：" + sendSmsResponse.getCode() + " " + sendSmsResponse.getMessage());
+            //throw new ErrorCodeException(new ErrorCode(0, "阿里短信异常：" + sendSmsResponse.getCode() + " " + sendSmsResponse.getMessage()));
         }
     }
 }

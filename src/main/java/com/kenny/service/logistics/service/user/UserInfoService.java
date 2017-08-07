@@ -35,7 +35,7 @@ public class UserInfoService {
         userInfo.setUser_id(user_id);
         userInfo.setBirthday(new Date());
         userInfo.setCompany("");
-        userInfo.setMoney(0);
+        userInfo.setMoney(0f);
         int result = userInfoMapper.insert(userInfo);
         if (result <= 0)
             throw new ErrorCodeException(UserErrorCode.DB_ERROR);
@@ -46,7 +46,7 @@ public class UserInfoService {
     /**
      * 创建用户信息
      */
-    public UserInfo insert(int user_id, String nickname, String sex, String img, Date birthday, String company, int money) throws ErrorCodeException {
+    public UserInfo insert(int user_id, String nickname, String sex, String img, Date birthday, String company, Float money) throws ErrorCodeException {
 
         UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
         if (userInfo != null) {
@@ -98,7 +98,7 @@ public class UserInfoService {
      * @param img
      * @return
      */
-    public UserInfo update(int user_id, String nickname, String sex, String img, Date birthday,String company, int money) throws ErrorCodeException {
+    public UserInfo update(int user_id, String nickname, String sex, String img, Date birthday,String company, Float money) throws ErrorCodeException {
         UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
         //userinfo不存在
         if (userInfo == null) {
@@ -118,7 +118,7 @@ public class UserInfoService {
     }
 
     //充值
-    public UserInfo updateAddMoney(int user_id, int money) throws ErrorCodeException {
+    public UserInfo updateAddMoney(int user_id, Float money) throws ErrorCodeException {
         UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
         if (userInfo == null) {
             throw new ErrorCodeException(UserErrorCode.USER_INOF_NO_EXISTS);
@@ -131,7 +131,7 @@ public class UserInfoService {
     }
 
     //消费
-    public UserInfo updateReduceMoney(int user_id, int money) throws ErrorCodeException {
+    public UserInfo updateReduceMoney(int user_id, Float money) throws ErrorCodeException {
         UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
         if (userInfo == null) {
             throw new ErrorCodeException(UserErrorCode.USER_INOF_NO_EXISTS);
@@ -145,7 +145,7 @@ public class UserInfoService {
         return userInfo;
     }
 
-    public UserInfo checkMoney(int user_id, int money) throws ErrorCodeException {
+    public UserInfo checkMoney(int user_id, Float money) throws ErrorCodeException {
         UserInfo userInfo = userInfoMapper.selectByUserId(user_id);
         if (userInfo == null) {
             throw new ErrorCodeException(UserErrorCode.USER_INOF_NO_EXISTS);
@@ -174,10 +174,5 @@ public class UserInfoService {
             throw new ErrorCodeException(UserErrorCode.DATA_NULL);
         return userInfo;
     }
-
-    public void DeleteUserInfo(int user_id) {
-        userInfoMapper.deleteByUserId(user_id);
-    }
-
 }
 

@@ -61,14 +61,14 @@ public class OrderCustomerController {
 
         try {
             User user = userService.getUser(token);
-            if(user.getType().equals(UserCustomerService.type))
-                userCustomerService.checkMoney(token,(int)(freight + safes));
+//            if(user.getType().equals(UserCustomerService.type))
+//                userCustomerService.checkMoney(token,(Float)(freight + safes));
             OrderCustomer orderCustomer = orderCustomerService.insert(send_name, send_phone, send_addr, send_addr_info, recive_name, recive_phone, recive_addr, recive_addr_info, dispatching_type, send_time, recive_time, user.getId(),freight,safes,goods);
             orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_PLACE", user.getId());
             orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_PLACE");
 
-            if(user.getType().equals(UserCustomerService.type))
-                userCustomerService.reduceMoney(token,(int)(freight + safes),orderCustomer.getOrder_number());
+//            if(user.getType().equals(UserCustomerService.type))
+//                userCustomerService.reduceMoney(token,(Float)(freight + safes),orderCustomer.getOrder_number());
             return new JsonBean(UserErrorCode.SUCCESS, orderCustomer);
         } catch (ErrorCodeException e){
             return new JsonBean(e.getErrorCode());

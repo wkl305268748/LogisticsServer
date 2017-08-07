@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel("")
-public class DriverLicense{
+public class FleetDriverLicense{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("司机表外键")
@@ -25,7 +25,7 @@ public class DriverLicense{
 	@ApiModelProperty("IC卡号")
 	private String ic_number;
 	@ApiModelProperty("附件列表")
-	private Object files;
+	private String files;
 	@ApiModelProperty("")
 	private Date time;
 
@@ -101,11 +101,11 @@ public class DriverLicense{
 		this.ic_number = ic_number;
 	}
 
-	public Object getFiles() {
+	public String getFiles(){
 		return files;
 	}
 
-	public void setFiles(Object files) {
+	public void setFiles(String files){
 		this.files = files;
 	}
 

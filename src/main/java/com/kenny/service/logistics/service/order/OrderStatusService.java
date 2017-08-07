@@ -1,5 +1,6 @@
 package com.kenny.service.logistics.service.order;
 
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -33,8 +34,8 @@ public class OrderStatusService{
 		return orderStatus;
 	}
 
-	public List<OrderStatus> selectByOrderNumber(String order_number) throws ErrorCodeException{
-		List<OrderStatus> orderStatus = orderStatusMapper.selectByOrderNumber(order_number);
+	public List<OrderStatus> selectByOrderId(Integer order_id) throws ErrorCodeException{
+		List<OrderStatus> orderStatus = orderStatusMapper.selectByOrderId(order_id);
 		return orderStatus;
 	}
 

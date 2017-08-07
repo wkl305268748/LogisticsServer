@@ -67,6 +67,10 @@ public class UserCustomerService {
         return userBaseService.insertByPhone(phone,password,type);
     }
 
+    public void updatePassword(String token, String old_password, String new_password) throws ErrorCodeException {
+        userBaseService.updatePassword(token,old_password,new_password);
+    }
+
     /**
      * 根据用户名密码创建用户
      *
@@ -77,20 +81,30 @@ public class UserCustomerService {
         return userBaseService.insertByUserName(username,password,type);
     }
 
+    //根据token获取用户
     public User getUserByToken(String token) throws ErrorCodeException {
         return userBaseService.getUserByToken(token);
     }
 
+    //根据token获取用户ex
+    public UserSet getUserByTokenEx(String token) throws ErrorCodeException {
+        return userBaseService.getUserByTokenEx(token);
+    }
+
     //减少金钱
-    public void reduceMoney(String token,int money,String remark) throws ErrorCodeException {
+    public void reduceMoney(String token,Float money,String remark) throws ErrorCodeException {
         User user = userBaseService.getUserByToken(token);
         userInfoService.updateReduceMoney(user.getId(),money);
         userMoneyService.insert(user.getId(),money,"out",remark);
     }
 
     //校验金钱
-    public void checkMoney(String token,int money) throws ErrorCodeException {
+    public void checkMoney(String token,Float money) throws ErrorCodeException {
         userInfoService.checkMoney(userBaseService.getUserByToken(token).getId(),money);
+    }
+
+    public int getCount(){
+        return userBaseService.getCount(type);
     }
 
 }

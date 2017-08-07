@@ -41,16 +41,16 @@ public class OrderContractService{
 	 * @param order_number
 	 * @return
 	 */
-	public OrderContract create(Integer fk_order_customer_id,String order_number,String aname){
+	public OrderContract create(Integer fk_order_customer_id,String order_number,String aname,Integer belong_user_id){
 		OrderContract orderContract = new OrderContract();
 		orderContract.setFk_order_customer_id(fk_order_customer_id);
 		orderContract.setOrder_number(order_number);
 		orderContract.setContract_number("HT-"+order_number);
 		orderContract.setAname(aname);
-		orderContract.setBname(systemConfigService.getValueByCode("company"));
-		orderContract.setBbank_name(systemConfigService.getValueByCode("company_bank_name"));
-		orderContract.setBbank_number(systemConfigService.getValueByCode("company_bank_number"));
-		orderContract.setBbank(systemConfigService.getValueByCode("company_bank"));
+		orderContract.setBname(systemConfigService.getValueByCode(belong_user_id,"company"));
+		orderContract.setBbank_name(systemConfigService.getValueByCode(belong_user_id,"company_bank_name"));
+		orderContract.setBbank_number(systemConfigService.getValueByCode(belong_user_id,"company_bank_number"));
+		orderContract.setBbank(systemConfigService.getValueByCode(belong_user_id,"company_bank_addr"));
 		orderContract.setTime(new Date());
 		orderContractMapper.insert(orderContract);
 		return orderContract;

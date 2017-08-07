@@ -158,16 +158,13 @@ public class UserBaseService {
         return user;
     }
 
-    /**
-     * 重置密码
-     *
-     * @param id
-     * @param password
-     * @return
-     */
-    public User updatePassword(int id, String password) throws ErrorCodeException {
-        User user = userMapper.selectByPrimaryKey(id);
-        user.setPassword(password);
+
+    //重置密码
+    public User updatePassword(String token, String old_password, String new_password) throws ErrorCodeException {
+        User user = getUserByToken(token);
+        if(!user.getPassword().equals(old_password))
+            throw new ErrorCodeException(UserErrorCode.PASS_ERROR);
+        user.setPassword(new_password);
         int result = userMapper.update(user);
         if (result <= 0)
             throw new ErrorCodeException(UserErrorCode.DB_ERROR);
@@ -291,6 +288,10 @@ public class UserBaseService {
             return;
         user.setIs_valid(false);
         userMapper.update(user);
+    }
+
+    public int getCount(String type){
+        return userMapper.countByType(type);
     }
 
     private String createToken(String name) {

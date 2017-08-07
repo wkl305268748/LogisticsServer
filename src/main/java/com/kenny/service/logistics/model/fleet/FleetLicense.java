@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel("")
-public class License{
+public class FleetLicense{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("证件编号")
@@ -19,10 +19,10 @@ public class License{
 	@ApiModelProperty("有效日期止")
 	private Date unvalide_date;
 	@ApiModelProperty("附件")
-	private Object files;
-	@ApiModelProperty("司机外键")
+	private String files;
+	@ApiModelProperty("")
 	private Integer fk_driver_id;
-	@ApiModelProperty("车外键")
+	@ApiModelProperty("")
 	private Integer fk_car_id;
 	@ApiModelProperty("备注")
 	private String remark;
@@ -77,12 +77,28 @@ public class License{
 		this.unvalide_date = unvalide_date;
 	}
 
-	public Object getFiles() {
+	public String getFiles(){
 		return files;
 	}
 
-	public void setFiles(Object files) {
+	public void setFiles(String files){
 		this.files = files;
+	}
+
+	public Integer getFk_driver_id(){
+		return fk_driver_id;
+	}
+
+	public void setFk_driver_id(Integer fk_driver_id){
+		this.fk_driver_id = fk_driver_id;
+	}
+
+	public Integer getFk_car_id(){
+		return fk_car_id;
+	}
+
+	public void setFk_car_id(Integer fk_car_id){
+		this.fk_car_id = fk_car_id;
 	}
 
 	public String getRemark(){
@@ -101,19 +117,4 @@ public class License{
 		this.time = time;
 	}
 
-	public Integer getFk_driver_id() {
-		return fk_driver_id;
-	}
-
-	public void setFk_driver_id(Integer fk_driver_id) {
-		this.fk_driver_id = fk_driver_id;
-	}
-
-	public Integer getFk_car_id() {
-		return fk_car_id;
-	}
-
-	public void setFk_car_id(Integer fk_car_id) {
-		this.fk_car_id = fk_car_id;
-	}
 }

@@ -8,8 +8,6 @@ import io.swagger.annotations.ApiModel;
 public class OrderSign{
 	@ApiModelProperty("")
 	private Integer id;
-	@ApiModelProperty("订单处理表id")
-	private Integer fk_order_taking_id;
 	@ApiModelProperty("订单表id")
 	private Integer fk_order_customer_id;
 	@ApiModelProperty("签收照片")
@@ -23,14 +21,6 @@ public class OrderSign{
 
 	public void setId(Integer id){
 		this.id = id;
-	}
-
-	public Integer getFk_order_taking_id(){
-		return fk_order_taking_id;
-	}
-
-	public void setFk_order_taking_id(Integer fk_order_taking_id){
-		this.fk_order_taking_id = fk_order_taking_id;
 	}
 
 	public Integer getFk_order_customer_id(){

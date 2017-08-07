@@ -23,7 +23,7 @@ public class ProfitStatusController{
 	@ResponseBody
 	public JsonBean<ProfitStatus> Insert(@ApiParam(value = "",required = false)@RequestParam(value = "fk_profit_id",required = false)Integer fk_profit_id,
 	                                     @ApiParam(value = "pay或者recive",required = false)@RequestParam(value = "type",required = false)String type,
-	                                     @ApiParam(value = "收款或者付款的钱",required = false)@RequestParam(value = "value",required = false)Integer value){
+	                                     @ApiParam(value = "收款或者付款的钱",required = false)@RequestParam(value = "value",required = false)Float value){
 		return new JsonBean(ErrorCode.SUCCESS, profitStatusService.insert(fk_profit_id,type,value));
 	}
 

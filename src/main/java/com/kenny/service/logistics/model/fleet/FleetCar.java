@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel("")
-public class Car{
+public class FleetCar{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("车牌号如皖A5504")
@@ -62,6 +62,8 @@ public class Car{
 	private String remark;
 	@ApiModelProperty("")
 	private Date time;
+	@ApiModelProperty("所属用户的外键")
+	private Integer belong_user_id;
 	@ApiModelProperty("是否存在")
 	private Boolean visible;
 
@@ -287,6 +289,14 @@ public class Car{
 
 	public void setTime(Date time){
 		this.time = time;
+	}
+
+	public Integer getBelong_user_id(){
+		return belong_user_id;
+	}
+
+	public void setBelong_user_id(Integer belong_user_id){
+		this.belong_user_id = belong_user_id;
 	}
 
 	public Boolean getVisible(){

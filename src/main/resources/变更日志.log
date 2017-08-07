@@ -1,0 +1,33 @@
+2017/8/7
+--------数据库变更---------
+1、增加了tb_finance_recharge表
+2、增加了tb_finance_recharge_status表
+3、增加了tb_auth表
+4、增加了tb_auth_user表
+5、增加了tb_auth_user_type表
+6、修改表tb_car:
+修改名称为tb_fleet_car
+增加belong_user_id int字段
+7、修改表tb_driver:
+修改名称为tb_fleet_driver
+增加belong_user_id int字段
+增加bank_number varchar字段
+增加bank_addr varchar字段
+8、修改tb_license为tb_fleet_license
+9、修改tb_driver_license为tb_fleet_driver_license
+10、修改表tb_system_config：
+增加belong_user_id int字段
+11、修改tb_order_status
+增加fk_order_id字段
+12、修改tb_profit为：
+增加belong_user_id int字段
+13、修改tb_order_sign为：
+删除order_taking字段
+----------代码变更------------
+1、car和driver变为私人增删改查
+2、driver增加银行字段
+3、system_config变为私人增删改查
+4、order_status改为id查询
+5、order_sign去除taking字段
+6、profit变为私人增删改查
+7、增加统计类

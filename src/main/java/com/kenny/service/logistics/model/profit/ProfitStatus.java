@@ -13,7 +13,7 @@ public class ProfitStatus{
 	@ApiModelProperty("pay或者recive")
 	private String type;
 	@ApiModelProperty("收款或者付款的钱")
-	private Integer value;
+	private Float value;
 	@ApiModelProperty("操作的时间")
 	private Date time;
 
@@ -41,11 +41,11 @@ public class ProfitStatus{
 		this.type = type;
 	}
 
-	public Integer getValue(){
+	public Float getValue(){
 		return value;
 	}
 
-	public void setValue(Integer value){
+	public void setValue(Float value){
 		this.value = value;
 	}
 

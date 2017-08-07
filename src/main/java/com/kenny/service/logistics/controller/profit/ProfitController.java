@@ -1,5 +1,7 @@
 package com.kenny.service.logistics.controller.profit;
 
+import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.service.user.UserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import com.kenny.service.logistics.service.profit.ProfitService;
 public class ProfitController{
 	@Autowired
 	private ProfitService profitService;
+	@Autowired
+	private UserBaseService userBaseService;
 
 	@ApiOperation(value = "修改指定的Profit")
 	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
@@ -24,10 +28,10 @@ public class ProfitController{
 	public JsonBean<Profit> update(@ApiParam(value = "查询主键", required = true)@PathVariable()Integer id,
 	                               @ApiParam(value = "",required = false)@RequestParam(value = "fk_order_customer_id",required = false)Integer fk_order_customer_id,
 	                               @ApiParam(value = "",required = false)@RequestParam(value = "order_number",required = false)String order_number,
-	                               @ApiParam(value = "",required = false)@RequestParam(value = "recive",required = false)Integer recive,
-	                               @ApiParam(value = "",required = false)@RequestParam(value = "pay",required = false)Integer pay,
-	                               @ApiParam(value = "",required = false)@RequestParam(value = "recive_now",required = false)Integer recive_now,
-	                               @ApiParam(value = "",required = false)@RequestParam(value = "pay_now",required = false)Integer pay_now,
+	                               @ApiParam(value = "",required = false)@RequestParam(value = "recive",required = false)Float recive,
+	                               @ApiParam(value = "",required = false)@RequestParam(value = "pay",required = false)Float pay,
+	                               @ApiParam(value = "",required = false)@RequestParam(value = "recive_now",required = false)Float recive_now,
+	                               @ApiParam(value = "",required = false)@RequestParam(value = "pay_now",required = false)Float pay_now,
 	                               @ApiParam(value = "",required = false)@RequestParam(value = "is_recive",required = false)Boolean is_recive,
 	                               @ApiParam(value = "",required = false)@RequestParam(value = "is_pay",required = false)Boolean is_pay){
 		try{
@@ -41,7 +45,7 @@ public class ProfitController{
 	@RequestMapping(value = "/pay/{id}",method = RequestMethod.PUT)
 	@ResponseBody
 	public JsonBean<Profit> pay(@ApiParam(value = "查询主键", required = true)@PathVariable()Integer id,
-								@ApiParam(value = "",required = false)@RequestParam(value = "pay",required = false)Integer pay){
+								@ApiParam(value = "",required = false)@RequestParam(value = "pay",required = false)Float pay){
 		try{
 			return new JsonBean(ErrorCode.SUCCESS, profitService.pay(id,pay));
 		}catch(ErrorCodeException e){
@@ -53,7 +57,7 @@ public class ProfitController{
 	@RequestMapping(value = "/recive/{id}",method = RequestMethod.PUT)
 	@ResponseBody
 	public JsonBean<Profit> recive(@ApiParam(value = "查询主键", required = true)@PathVariable()Integer id,
-									@ApiParam(value = "",required = false)@RequestParam(value = "recive",required = false)Integer recive){
+									@ApiParam(value = "",required = false)@RequestParam(value = "recive",required = false)Float recive){
 		try{
 			return new JsonBean(ErrorCode.SUCCESS, profitService.recive(id,recive));
 		}catch(ErrorCodeException e){
@@ -75,9 +79,15 @@ public class ProfitController{
 	@ApiOperation(value = "列出所有的Profit")
 	@RequestMapping(value = "/page",method = RequestMethod.GET)
 	@ResponseBody
-	public JsonBean<PageResponse<Profit>> selectPage(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0")Integer offset,
+	public JsonBean<PageResponse<Profit>> selectPage(@ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token,
+													 @ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0")Integer offset,
 	                                                 @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10")Integer pageSize){
-		return new JsonBean(ErrorCode.SUCCESS, profitService.selectPage(offset,pageSize));
+		try {
+			User user = userBaseService.getUserByToken(token);
+			return new JsonBean(ErrorCode.SUCCESS, profitService.selectPageByBelongUser(offset,pageSize,user.getId()));
+		} catch (ErrorCodeException e) {
+			return new JsonBean(e.getErrorCode());
+		}
 	}
 
 	@ApiOperation(value = "删除指定的Profit")

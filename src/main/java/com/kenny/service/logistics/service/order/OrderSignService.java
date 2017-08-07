@@ -20,11 +20,9 @@ public class OrderSignService{
 	@Autowired
 	private OrderSignMapper orderSignMapper;
 
-	public OrderSign insert(Integer fk_order_taking_id,
-							Integer fk_order_customer_id,
+	public OrderSign insert(Integer fk_order_customer_id,
 							String order_img){
 		OrderSign orderSign = new OrderSign();
-		orderSign.setFk_order_taking_id(fk_order_taking_id);
 		orderSign.setFk_order_customer_id(fk_order_customer_id);
 		orderSign.setOrder_img(order_img);
 		orderSign.setTime(new Date());
@@ -34,15 +32,11 @@ public class OrderSignService{
 	}
 
 	public OrderSign update(Integer id,
-							Integer fk_order_taking_id,
-							Integer fk_order_customer_id,
 							String order_img) throws ErrorCodeException{
 		OrderSign orderSign = orderSignMapper.selectByPrimaryKey(id);
 		if(orderSign == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
 		}
-		orderSign.setFk_order_taking_id(fk_order_taking_id);
-		orderSign.setFk_order_customer_id(fk_order_customer_id);
 		orderSign.setOrder_img(order_img);
 		orderSign.setTime(new Date());
 		orderSignMapper.update(orderSign);

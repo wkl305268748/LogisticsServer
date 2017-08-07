@@ -15,7 +15,7 @@ public class UserMoneyService{
 	@Autowired
 	private UserMoneyMapper userMoneyMapper;
 
-	public UserMoney insert(Integer fk_user_id,Integer money,String type,String remark){
+	public UserMoney insert(Integer fk_user_id,Float money,String type,String remark){
 		UserMoney userMoney = new UserMoney();
 		userMoney.setFk_user_id(fk_user_id);
 		userMoney.setMoney(money);
@@ -26,7 +26,7 @@ public class UserMoneyService{
 		return userMoney;
 	}
 
-	public UserMoney update(Integer id,Integer fk_user_id,Integer money,String type,String remark) throws ErrorCodeException{
+	public UserMoney update(Integer id,Integer fk_user_id,Float money,String type,String remark) throws ErrorCodeException{
 		UserMoney userMoney = userMoneyMapper.selectByPrimaryKey(id);
 		if(userMoney == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);

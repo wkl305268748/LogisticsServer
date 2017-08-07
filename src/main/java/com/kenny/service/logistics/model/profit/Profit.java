@@ -13,22 +13,23 @@ public class Profit{
 	@ApiModelProperty("")
 	private String order_number;
 	@ApiModelProperty("")
-	private Integer recive;
+	private Float recive;
 	@ApiModelProperty("")
-	private Integer pay;
+	private Float pay;
 	@ApiModelProperty("")
-	private Integer recive_now;
+	private Float recive_now;
 	@ApiModelProperty("")
-	private Integer pay_now;
+	private Float pay_now;
 	@ApiModelProperty("")
 	private Boolean is_recive;
 	@ApiModelProperty("")
 	private Boolean is_pay;
 	@ApiModelProperty("")
-	private Integer profit;
+	private Float profit;
+	@ApiModelProperty("")
+	private Integer belong_user_id;
 	@ApiModelProperty("")
 	private Date time;
-
 
 	public Integer getId(){
 		return id;
@@ -54,35 +55,35 @@ public class Profit{
 		this.order_number = order_number;
 	}
 
-	public Integer getRecive(){
+	public Float getRecive(){
 		return recive;
 	}
 
-	public void setRecive(Integer recive){
+	public void setRecive(Float recive){
 		this.recive = recive;
 	}
 
-	public Integer getPay(){
+	public Float getPay(){
 		return pay;
 	}
 
-	public void setPay(Integer pay){
+	public void setPay(Float pay){
 		this.pay = pay;
 	}
 
-	public Integer getRecive_now(){
+	public Float getRecive_now(){
 		return recive_now;
 	}
 
-	public void setRecive_now(Integer recive_now){
+	public void setRecive_now(Float recive_now){
 		this.recive_now = recive_now;
 	}
 
-	public Integer getPay_now(){
+	public Float getPay_now(){
 		return pay_now;
 	}
 
-	public void setPay_now(Integer pay_now){
+	public void setPay_now(Float pay_now){
 		this.pay_now = pay_now;
 	}
 
@@ -102,19 +103,28 @@ public class Profit{
 		this.is_pay = is_pay;
 	}
 
-	public Integer getProfit(){
+	public Float getProfit(){
 		return profit;
 	}
 
-	public void setProfit(Integer profit){
+	public void setProfit(Float profit){
 		this.profit = profit;
 	}
 
-	public Date getTime() {
+	public Integer getBelong_user_id(){
+		return belong_user_id;
+	}
+
+	public void setBelong_user_id(Integer belong_user_id){
+		this.belong_user_id = belong_user_id;
+	}
+
+	public Date getTime(){
 		return time;
 	}
 
-	public void setTime(Date time) {
+	public void setTime(Date time){
 		this.time = time;
 	}
+
 }

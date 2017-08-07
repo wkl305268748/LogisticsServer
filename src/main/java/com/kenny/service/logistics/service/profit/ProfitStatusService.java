@@ -15,7 +15,7 @@ public class ProfitStatusService{
 	@Autowired
 	private ProfitStatusMapper profitStatusMapper;
 
-	public ProfitStatus insert(Integer fk_profit_id,String type,Integer value){
+	public ProfitStatus insert(Integer fk_profit_id,String type,Float value){
 		ProfitStatus profitStatus = new ProfitStatus();
 		profitStatus.setFk_profit_id(fk_profit_id);
 		profitStatus.setType(type);
@@ -25,7 +25,7 @@ public class ProfitStatusService{
 		return profitStatus;
 	}
 
-	public ProfitStatus update(Integer id,Integer fk_profit_id,String type,Integer value,Date time) throws ErrorCodeException{
+	public ProfitStatus update(Integer id,Integer fk_profit_id,String type,Float value,Date time) throws ErrorCodeException{
 		ProfitStatus profitStatus = profitStatusMapper.selectByPrimaryKey(id);
 		if(profitStatus == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);

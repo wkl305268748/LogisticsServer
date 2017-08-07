@@ -1,5 +1,6 @@
 package com.kenny.service.logistics.mapper.order;
 
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import com.kenny.service.logistics.model.order.OrderStatus;
 @Mapper
 public interface OrderStatusMapper {
 
-    @Insert("INSERT INTO tb_order_status(order_number,status,fk_user_id,time) VALUES(#{order_number},#{status},#{fk_user_id},#{time})")
+    @Insert("INSERT INTO tb_order_status(fk_order_customer_id,order_number,status,fk_user_id,time) VALUES(#{fk_order_customer_id},#{order_number},#{status},#{fk_user_id},#{time})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(OrderStatus orderStatus);
 
@@ -29,8 +30,8 @@ public interface OrderStatusMapper {
     @Delete("DELETE FROM tb_order_status WHERE id=#{id}")
     int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
-    @Select("SELECT * FROM tb_order_status WHERE order_number=#{order_number}")
-    List<OrderStatus> selectByOrderNumber(@Param(value = "order_number") String order_number);
+    @Select("SELECT * FROM tb_order_status WHERE fk_order_customer_id=#{fk_order_customer_id}")
+    List<OrderStatus> selectByOrderId(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
 
     @Select("SELECT * FROM tb_order_status WHERE status=#{status} limit #{offset},#{pageSize}")
     List<OrderStatus> selectPageByStatus(@Param(value = "offset") Integer offset,
