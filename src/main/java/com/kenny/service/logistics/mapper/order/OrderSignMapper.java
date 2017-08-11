@@ -27,6 +27,9 @@ public interface OrderSignMapper{
 	@Delete("DELETE FROM tb_order_sign WHERE id=#{id}")
 	int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
+	@Delete("DELETE FROM tb_order_sign WHERE fk_order_customer_id=#{fk_order_customer_id}")
+	int deleteByOrderCustomer(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
+
 	@Select("SELECT * FROM tb_order_sign WHERE fk_order_customer_id = #{fk_order_customer_id}")
 	OrderSign selectByOrderCustomer(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
 

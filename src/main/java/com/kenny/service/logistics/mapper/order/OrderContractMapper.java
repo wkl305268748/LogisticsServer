@@ -27,6 +27,9 @@ public interface OrderContractMapper{
 	@Delete("DELETE FROM tb_order_contract WHERE id=#{id}")
 	int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
+	@Delete("DELETE FROM tb_order_contract WHERE fk_order_customer_id=#{fk_order_customer_id}")
+	int deleteByOrderCustomer(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
+
 	@Select("SELECT * FROM tb_order_contract WHERE fk_order_customer_id=#{fk_order_customer_id}")
 	OrderContract selectByOrderCustomerId(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
 }

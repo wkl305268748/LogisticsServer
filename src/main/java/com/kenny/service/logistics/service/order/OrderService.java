@@ -184,6 +184,15 @@ public class OrderService {
 		return selectByCustomer(orderCustomer);
 	}
 
+	public void deleteByPrimaryKey(int order_id){
+		orderCustomerMapper.deleteByPrimaryKey(order_id);
+		orderTakingMapper.deleteByOrderCustomer(order_id);
+		orderSignMapper.deleteByOrderCustomer(order_id);
+		orderContractMapper.deleteByOrderCustomer(order_id);
+		orderGoodsMapper.deleteByOrderCustomer(order_id);
+		orderStatusMapper.deleteByOrderCustomer(order_id);
+	}
+
 	//核心操作，通过订单查询所有东西
 	private OrderSet selectByCustomer(OrderCustomer orderCustomer) throws ErrorCodeException {
 		OrderSet orderSet = new OrderSet();

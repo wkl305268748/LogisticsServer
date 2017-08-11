@@ -102,4 +102,13 @@ public class OrderController {
         return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByStatus(offset, pageSize, Defind.ORDER_SIGN));
     }
 
+
+    @ApiOperation(value = "删除Order")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public JsonBean deleteByPrimaryKey(@ApiParam(value = "查询主键", required = true) @PathVariable() Integer id){
+        orderService.deleteByPrimaryKey(id);
+        return new JsonBean(ErrorCode.SUCCESS);
+    }
+
 }

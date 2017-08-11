@@ -27,6 +27,9 @@ public interface OrderTakingMapper{
 	@Delete("DELETE FROM tb_order_taking WHERE id=#{id}")
 	int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
+	@Delete("DELETE FROM tb_order_taking WHERE fk_order_customer_id=#{fk_order_customer_id}")
+	int deleteByOrderCustomer(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
+
 	@Select("SELECT * FROM tb_order_taking WHERE fk_order_customer_id=#{fk_order_customer_id}")
 	OrderTaking selectByOrderCustomer(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
 
