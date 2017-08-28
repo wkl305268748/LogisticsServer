@@ -1,3 +1,18 @@
+2017/8/16
+--------数据库变更---------
+1、增加了tb_order表
+2、修改tb_order_contract表、tb_order_sign表、tb_order_status表、tb_order_taking表、tb_order_goods表、tb_profit表 fk_order_customer_id为fk_order_id
+3、增加tb_order_customer表 fk_order_id字段
+4、删除tb_order_customer表 serial_number、status、fk_user_id、freight、safes、total字段
+5、删除tb_order_taking表 status字段
+6、增加tb_order_taking表 freight、safes字段
+----------代码变更------------
+1、增加company用户
+2、order关联关系改变
+3、订单可以指定物流公司，物流公司可以看到开放订单和指定订单。
+4、客户下单没有费用统计，物流公司接单时计算费用，同时更新货物运费。
+3、增加客户用户角色
+
 2017/8/7
 --------数据库变更---------
 1、增加了tb_finance_recharge表

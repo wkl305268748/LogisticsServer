@@ -20,9 +20,9 @@ public class OrderContractService{
 	@Autowired
 	private SystemConfigService systemConfigService;
 
-	public OrderContract insert(Integer fk_order_customer_id,String order_number,String contract_number,String aname,String bname,String bbank_name,String bbank_number,String bbank){
+	public OrderContract insert(Integer fk_order_id,String order_number,String contract_number,String aname,String bname,String bbank_name,String bbank_number,String bbank){
 		OrderContract orderContract = new OrderContract();
-		orderContract.setFk_order_customer_id(fk_order_customer_id);
+		orderContract.setFk_order_id(fk_order_id);
 		orderContract.setOrder_number(order_number);
 		orderContract.setContract_number(contract_number);
 		orderContract.setAname(aname);
@@ -37,13 +37,11 @@ public class OrderContractService{
 
 	/**
 	 * 生成合同
-	 * @param fk_order_customer_id
-	 * @param order_number
 	 * @return
 	 */
-	public OrderContract create(Integer fk_order_customer_id,String order_number,String aname,Integer belong_user_id){
+	public OrderContract create(Integer fk_order_id,String order_number,String aname,Integer belong_user_id){
 		OrderContract orderContract = new OrderContract();
-		orderContract.setFk_order_customer_id(fk_order_customer_id);
+		orderContract.setFk_order_id(fk_order_id);
 		orderContract.setOrder_number(order_number);
 		orderContract.setContract_number("HT-"+order_number);
 		orderContract.setAname(aname);

@@ -9,7 +9,7 @@ public class OrderStatus{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("")
-	private Integer fk_order_customer_id;
+	private Integer fk_order_id;
 	@ApiModelProperty("订单编号，随机生成")
 	private String order_number;
 	@ApiModelProperty("订单当前状态信息")
@@ -27,12 +27,12 @@ public class OrderStatus{
 		this.id = id;
 	}
 
-	public Integer getFk_order_customer_id(){
-		return fk_order_customer_id;
+	public Integer getFk_order_id() {
+		return fk_order_id;
 	}
 
-	public void setFk_order_customer_id(Integer fk_order_customer_id){
-		this.fk_order_customer_id = fk_order_customer_id;
+	public void setFk_order_id(Integer fk_order_id) {
+		this.fk_order_id = fk_order_id;
 	}
 
 	public String getOrder_number(){

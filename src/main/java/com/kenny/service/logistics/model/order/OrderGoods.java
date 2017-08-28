@@ -9,7 +9,7 @@ public class OrderGoods{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("订单表ID")
-	private Integer fk_order_customer_id;
+	private Integer fk_order_id;
 	@ApiModelProperty("货物名称")
 	private String name;
 	@ApiModelProperty("货物的体积")
@@ -31,12 +31,12 @@ public class OrderGoods{
 		this.id = id;
 	}
 
-	public Integer getFk_order_customer_id(){
-		return fk_order_customer_id;
+	public Integer getFk_order_id() {
+		return fk_order_id;
 	}
 
-	public void setFk_order_customer_id(Integer fk_order_customer_id){
-		this.fk_order_customer_id = fk_order_customer_id;
+	public void setFk_order_id(Integer fk_order_id) {
+		this.fk_order_id = fk_order_id;
 	}
 
 	public String getName(){

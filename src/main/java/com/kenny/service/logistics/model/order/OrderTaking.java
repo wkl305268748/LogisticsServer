@@ -9,17 +9,19 @@ public class OrderTaking{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("订单外键")
-	private Integer fk_order_customer_id;
+	private Integer fk_order_id;
 	@ApiModelProperty("车辆外键")
 	private Integer fk_car_id;
 	@ApiModelProperty("司机外键")
 	private Integer fk_driver_id;
+	@ApiModelProperty("运费")
+	private Float freight;
+	@ApiModelProperty("保险费用")
+	private Float safes;
 	@ApiModelProperty("应付账款")
 	private Float recive;
 	@ApiModelProperty("应收账款")
 	private Float pay;
-	@ApiModelProperty("关联status表")
-	private String status;
 	@ApiModelProperty("")
 	private Date time;
 
@@ -31,12 +33,12 @@ public class OrderTaking{
 		this.id = id;
 	}
 
-	public Integer getFk_order_customer_id(){
-		return fk_order_customer_id;
+	public Integer getFk_order_id() {
+		return fk_order_id;
 	}
 
-	public void setFk_order_customer_id(Integer fk_order_customer_id){
-		this.fk_order_customer_id = fk_order_customer_id;
+	public void setFk_order_id(Integer fk_order_id) {
+		this.fk_order_id = fk_order_id;
 	}
 
 	public Integer getFk_car_id(){
@@ -71,14 +73,6 @@ public class OrderTaking{
 		this.pay = pay;
 	}
 
-	public String getStatus(){
-		return status;
-	}
-
-	public void setStatus(String status){
-		this.status = status;
-	}
-
 	public Date getTime(){
 		return time;
 	}
@@ -87,4 +81,19 @@ public class OrderTaking{
 		this.time = time;
 	}
 
+	public Float getFreight() {
+		return freight;
+	}
+
+	public void setFreight(Float freight) {
+		this.freight = freight;
+	}
+
+	public Float getSafes() {
+		return safes;
+	}
+
+	public void setSafes(Float safes) {
+		this.safes = safes;
+	}
 }

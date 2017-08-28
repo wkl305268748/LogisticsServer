@@ -5,34 +5,42 @@ import com.kenny.service.logistics.model.fleet.FleetDriver;
 import com.kenny.service.logistics.model.profit.Profit;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.model.user.UserInfo;
+import com.kenny.service.logistics.model.user.UserSet;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * Created by WKL on 2017-7-16.
  */
+@ApiModel("订单综合信息")
 public class OrderSet {
-    //订单信息
+    @ApiModelProperty("订单信息")
+    Order order;
+    @ApiModelProperty("下单信息")
     OrderCustomer orderCustomer;
-    //货物信息
+    @ApiModelProperty("货物信息")
     List<OrderGoods> orderGoods;
-    //派单信息
+    @ApiModelProperty("派单信息")
     OrderTaking orderTaking;
-    //签收信息
+    @ApiModelProperty("签收信息")
     OrderSign orderSign;
-    //合同信息
+    @ApiModelProperty("合同信息")
     OrderContract orderContract;
-    //订单操作状态
+    @ApiModelProperty("订单操作状态")
     List<OrderStatus> orderStatuses;
-    //订单车辆
+    @ApiModelProperty("订单司机")
     FleetDriver fleetDriver;
-    //订单司机
+    @ApiModelProperty("订单车辆")
     FleetCar fleetCar;
-    //订单用户
-    User user;
-    //订单用户
-    UserInfo userInfo;
-    //财务信息
+    @ApiModelProperty("下单用户信息")
+    UserSet customer;
+    @ApiModelProperty("指定接单物流公司信息")
+    UserSet wantCompany;
+    @ApiModelProperty("接单物流公司信息")
+    UserSet company;
+    @ApiModelProperty("财务信息")
     Profit profit;
 
     public OrderCustomer getOrderCustomer() {
@@ -83,14 +91,6 @@ public class OrderSet {
         this.fleetCar = fleetCar;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public List<OrderGoods> getOrderGoods() {
         return orderGoods;
     }
@@ -115,11 +115,35 @@ public class OrderSet {
         this.orderContract = orderContract;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public UserSet getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(UserSet customer) {
+        this.customer = customer;
+    }
+
+    public UserSet getWantCompany() {
+        return wantCompany;
+    }
+
+    public void setWantCompany(UserSet wantCompany) {
+        this.wantCompany = wantCompany;
+    }
+
+    public UserSet getCompany() {
+        return company;
+    }
+
+    public void setCompany(UserSet company) {
+        this.company = company;
     }
 }

@@ -25,7 +25,7 @@ public class FleetDriverLicense{
 	@ApiModelProperty("IC卡号")
 	private String ic_number;
 	@ApiModelProperty("附件列表")
-	private String files;
+	private Object files;
 	@ApiModelProperty("")
 	private Date time;
 
@@ -101,11 +101,11 @@ public class FleetDriverLicense{
 		this.ic_number = ic_number;
 	}
 
-	public String getFiles(){
+	public Object getFiles(){
 		return files;
 	}
 
-	public void setFiles(String files){
+	public void setFiles(Object files){
 		this.files = files;
 	}
 

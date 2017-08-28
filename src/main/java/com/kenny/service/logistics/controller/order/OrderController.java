@@ -40,30 +40,60 @@ public class OrderController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public JsonBean<OrderSet> selectByPrimaryKey(@ApiParam(value = "查询主键", required = true) @PathVariable() Integer id) throws ErrorCodeException {
-        return new JsonBean(ErrorCode.SUCCESS, orderService.selectByPrimaryKey(id));
+        return new JsonBean(ErrorCode.SUCCESS, orderService.selectByPrimaryKeyEx(id));
     }
 
-    @ApiOperation(value = "根据Token列出所有的Order")
-    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    @ApiOperation(value = "根据客户Token列出所有的Order")
+    @RequestMapping(value = "/page/customer", method = RequestMethod.GET)
     @ResponseBody
-    public JsonBean<PageResponse<OrderSet>> selectPageByToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
+    public JsonBean<PageResponse<OrderSet>> selectPageByCustomerToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
                                                               @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
                                                               @ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
         try {
             User user = userBaseService.getUserByToken(token);
-            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByUserId(offset, pageSize, user.getId()));
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByCustomer(offset, pageSize, user.getId()));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
     }
 
-    @ApiOperation(value = "列出所有customer的Order")
-    @RequestMapping(value = "/page/customer", method = RequestMethod.GET)
+    @ApiOperation(value = "根据物流公司Token列出已接单的Order")
+    @RequestMapping(value = "/page/company", method = RequestMethod.GET)
     @ResponseBody
-    public JsonBean<PageResponse<OrderSet>> selectPageByCustomer(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
-                                                                 @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+    public JsonBean<PageResponse<OrderSet>> selectPageByCompanyToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                                     @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                                     @ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
         try {
-            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByCustomer(offset, pageSize));
+            User user = userBaseService.getUserByToken(token);
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByCompany(offset, pageSize, user.getId()));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+    @ApiOperation(value = "根据物流公司Token列出未结单的开放Order")
+    @RequestMapping(value = "/page/company/open", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<PageResponse<OrderSet>> selectPageByCompanyOpenToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                                         @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                                         @ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
+        try {
+            User user = userBaseService.getUserByToken(token);
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByOpenCompany(offset, pageSize));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+    @ApiOperation(value = "根据物流公司Token列出可以接单的Order")
+    @RequestMapping(value = "/page/company/want", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<PageResponse<OrderSet>> selectPageByCompanyWantToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                                         @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                                         @ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
+        try {
+            User user = userBaseService.getUserByToken(token);
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByWantCompany(offset, pageSize, user.getId()));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }

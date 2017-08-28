@@ -20,10 +20,10 @@ public class OrderSignService{
 	@Autowired
 	private OrderSignMapper orderSignMapper;
 
-	public OrderSign insert(Integer fk_order_customer_id,
+	public OrderSign insert(Integer fk_order_id,
 							String order_img){
 		OrderSign orderSign = new OrderSign();
-		orderSign.setFk_order_customer_id(fk_order_customer_id);
+		orderSign.setFk_order_id(fk_order_id);
 		orderSign.setOrder_img(order_img);
 		orderSign.setTime(new Date());
 		orderSignMapper.insert(orderSign);
@@ -62,9 +62,5 @@ public class OrderSignService{
 
 	public int deleteByPrimaryKey(Integer id){
 		return orderSignMapper.deleteByPrimaryKey(id);
-	}
-
-	public OrderSign selectByOrderCustomer(int order_customer_id){
-		return orderSignMapper.selectByOrderCustomer(order_customer_id);
 	}
 }

@@ -3,6 +3,7 @@ package com.kenny.service.logistics.mapper.order;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 import com.kenny.service.logistics.model.order.OrderStatus;
@@ -10,7 +11,7 @@ import com.kenny.service.logistics.model.order.OrderStatus;
 @Mapper
 public interface OrderStatusMapper {
 
-    @Insert("INSERT INTO tb_order_status(fk_order_customer_id,order_number,status,fk_user_id,time) VALUES(#{fk_order_customer_id},#{order_number},#{status},#{fk_user_id},#{time})")
+    @Insert("INSERT INTO tb_order_status(fk_order_id,order_number,status,fk_user_id,time) VALUES(#{fk_order_id},#{order_number},#{status},#{fk_user_id},#{time})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(OrderStatus orderStatus);
 
@@ -30,17 +31,13 @@ public interface OrderStatusMapper {
     @Delete("DELETE FROM tb_order_status WHERE id=#{id}")
     int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
-    @Delete("DELETE FROM tb_order_status WHERE fk_order_customer_id=#{fk_order_customer_id}")
-    int deleteByOrderCustomer(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
+    @Delete("DELETE FROM tb_order_status WHERE fk_order_id=#{fk_order_id}")
+    int deleteByOrderId(@Param(value = "fk_order_id") Integer fk_order_id);
 
-    @Select("SELECT * FROM tb_order_status WHERE fk_order_customer_id=#{fk_order_customer_id}")
-    List<OrderStatus> selectByOrderId(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
+    @Select("SELECT * FROM tb_order_status WHERE fk_order_id=#{fk_order_id}")
+    List<OrderStatus> selectByOrderId(@Param(value = "fk_order_id") Integer fk_order_id);
 
-    @Select("SELECT * FROM tb_order_status WHERE status=#{status} limit #{offset},#{pageSize}")
-    List<OrderStatus> selectPageByStatus(@Param(value = "offset") Integer offset,
-                                         @Param(value = "pageSize") Integer pageSize,
-                                         @Param(value = "status") String status);
-
-    @Select("SELECT COUNT(*) FROM tb_order_status WHERE status=#{status}")
-    int countByStatus(@Param(value = "status") String status);
+    //按天统计指定操作用户和状态的订单数
+    @Select("SELECT COUNT(*) FROM tb_order_status WHERE date_format(time,'%Y-%m-%d') = date_format(#{day},'%Y-%m-%d') AND fk_user_id = #{fk_user_id} AND status=#{status}")
+    int countByDayAndUserAndStatus(@Param(value = "day")Date day, @Param(value = "fk_user_id")Integer fk_user_id, @Param(value = "status")String status);
 }

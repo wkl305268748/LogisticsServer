@@ -4,7 +4,10 @@ import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.model.user.*;
-import com.kenny.service.logistics.service.user.*;
+import com.kenny.service.logistics.service.user.SmsService;
+import com.kenny.service.logistics.service.user.UserCompanyService;
+import com.kenny.service.logistics.service.user.UserCustomerService;
+import com.kenny.service.logistics.service.user.UserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,64 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-@Api(value = "/v1/user/customer", description = "客户接口模块")
-@RequestMapping(value = "/v1/user/customer")
+@Api(value = "/v1/user/company", description = "物流公司接口模块")
+@RequestMapping(value = "/v1/user/company")
 @RestController
-public class CustomerController {
+public class CompanyController {
     @Autowired
-    private SmsService smsService;
-    @Autowired
-    private UserCustomerService userCustomerService;
+    private UserCompanyService userCompanyService;
     @Autowired
     private UserInfoService userInfoService;
-
-    @ApiOperation(value = "校验手机号码是否注册")
-    @RequestMapping(value = "/check_phone", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonBean CheckPhone(@ApiParam(value = "需要校验的手机号码", required = true) @RequestParam String phone) {
-        try {
-            userCustomerService.checkPhoneHas(phone);
-            return new JsonBean(UserErrorCode.SUCCESS);
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
-
-    @ApiOperation(value = "发送注册验证码")
-    @RequestMapping(value = "/send_register_sms", method = RequestMethod.POST)
-    @ResponseBody
-    public JsonBean<Sms> SmsSend(@ApiParam(value = "需要发送短信的手机号", required = true) @RequestParam String phone) {
-
-        try {
-            userCustomerService.checkPhoneHas(phone);
-            return new JsonBean(UserErrorCode.SUCCESS, smsService.SendRegistMessage(phone));
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
-
-    @ApiOperation(value = "短信验证码创建用户")
-    @RequestMapping(value = "/register_sms", method = RequestMethod.POST)
-    @ResponseBody
-
-    public JsonBean<UserToken> Register(@ApiParam("与验证码绑定的cookie") @RequestParam(required = true) String cookie,
-                                        @ApiParam("验证码") @RequestParam(required = true) String code,
-                                        @ApiParam("手机号码") @RequestParam(required = true) String phone,
-                                        @ApiParam("密码") @RequestParam(required = false) String password) {
-        try {
-            //校验验证码
-            smsService.CheckCode(cookie, code);
-            //用户创建
-            User user = userCustomerService.insertUserName(phone, password);
-            //用户信息创建
-            userInfoService.insertByRegist(user.getId());
-            //用户登陆
-            UserToken bean = userCustomerService.login(phone, password);
-            return new JsonBean(UserErrorCode.SUCCESS, bean);
-        } catch (ErrorCodeException e) {
-            return new JsonBean(e.getErrorCode());
-        }
-    }
 
     @ApiOperation(value = "重置密码")
     @RequestMapping(value = "/password", method = RequestMethod.PUT)
@@ -79,7 +32,7 @@ public class CustomerController {
                                    @ApiParam("历史密码") @RequestParam(required = true) String old_password,
                                    @ApiParam("新密码") @RequestParam(required = true) String new_password) {
         try {
-            userCustomerService.updatePassword(token, old_password, new_password);
+            userCompanyService.updatePassword(token, old_password, new_password);
             return new JsonBean(UserErrorCode.SUCCESS);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
@@ -94,7 +47,7 @@ public class CustomerController {
                                      @ApiParam("密码") @RequestParam(required = true) String password) {
 
         try {
-            return new JsonBean(UserErrorCode.SUCCESS, userCustomerService.login(phone, password));
+            return new JsonBean(UserErrorCode.SUCCESS, userCompanyService.login(phone, password));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -107,27 +60,11 @@ public class CustomerController {
                                        @ApiParam("密码") @RequestParam(required = true) String password) {
 
         try {
-            return new JsonBean(UserErrorCode.SUCCESS, userCustomerService.login(username, password));
+            return new JsonBean(UserErrorCode.SUCCESS, userCompanyService.login(username, password));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
     }
-
-//    @ApiOperation(value = "短信验证码登录")
-//    @RequestMapping(value = "/login_sms", method = RequestMethod.POST)
-//    @ResponseBody
-//    public JsonBean<UserToken> login_sms(@ApiParam("与验证码绑定的cookie") @RequestParam(required = true) String cookie,
-//                                         @ApiParam("验证码") @RequestParam(required = true) String code,
-//                                         @ApiParam("手机号码") @RequestParam(required = true) String phone) {
-//        try {
-//            //校验验证码
-//            smsService.CheckCode(cookie, code);
-//            return new JsonBean(UserErrorCode.SUCCESS, userCustomerService.login(phone, type));
-//        } catch (ErrorCodeException e) {
-//            return new JsonBean(e.getErrorCode());
-//        }
-//    }
-
 
     @ApiOperation(value = "退出登录")
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -135,7 +72,7 @@ public class CustomerController {
     public JsonBean LogOut(@ApiParam("用户登录令牌") @RequestParam(required = true) String token) {
 
         try {
-            userCustomerService.logout(token);
+            userCompanyService.logout(token);
             return new JsonBean(UserErrorCode.SUCCESS);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
@@ -148,7 +85,7 @@ public class CustomerController {
     @ResponseBody
     public JsonBean<User> Token(@ApiParam("用户登录令牌") @RequestParam(required = true) String token) {
         try {
-            return new JsonBean(UserErrorCode.SUCCESS, userCustomerService.getUserByToken(token));
+            return new JsonBean(UserErrorCode.SUCCESS, userCompanyService.getUserByToken(token));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -161,7 +98,7 @@ public class CustomerController {
     public JsonBean<UserSet> InfoEx(@ApiParam("用户登录令牌") @RequestParam(required = true) String token) {
 
         try {
-            return new JsonBean(UserErrorCode.SUCCESS,userCustomerService.getUserByTokenEx(token));
+            return new JsonBean(UserErrorCode.SUCCESS,userCompanyService.getUserByTokenEx(token));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -178,7 +115,7 @@ public class CustomerController {
                                         @ApiParam("") @RequestParam(required = false) String company,
                                         @ApiParam("") @RequestParam(required = false) Float money) {
         try {
-            User user = userCustomerService.getUserByToken(token);
+            User user = userCompanyService.getUserByToken(token);
             return new JsonBean(UserErrorCode.SUCCESS, userInfoService.update(user.getId(), nickname, sex, img, birthday, company, money));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());

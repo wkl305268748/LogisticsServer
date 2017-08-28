@@ -8,8 +8,8 @@ import io.swagger.annotations.ApiModel;
 public class OrderCustomer{
 	@ApiModelProperty("")
 	private Integer id;
-	@ApiModelProperty("流水号")
-	private String serial_number;
+	@ApiModelProperty("订单id")
+	private Integer fk_order_id;
 	@ApiModelProperty("订单号")
 	private String order_number;
 	@ApiModelProperty("发件人姓名")
@@ -34,16 +34,6 @@ public class OrderCustomer{
 	private Date recive_time;
 	@ApiModelProperty("配送还是自提")
 	private String dispatching_type;
-	@ApiModelProperty("运费")
-	private Float freight;
-	@ApiModelProperty("保险费用")
-	private Float safes;
-	@ApiModelProperty("合计费用")
-	private Float total;
-	@ApiModelProperty("订单状态，关联status表")
-	private String status;
-	@ApiModelProperty("下单的用户")
-	private Integer fk_user_id;
 	@ApiModelProperty("")
 	private String remark;
 	@ApiModelProperty("")
@@ -55,14 +45,6 @@ public class OrderCustomer{
 
 	public void setId(Integer id){
 		this.id = id;
-	}
-
-	public String getSerial_number(){
-		return serial_number;
-	}
-
-	public void setSerial_number(String serial_number){
-		this.serial_number = serial_number;
 	}
 
 	public String getOrder_number(){
@@ -161,14 +143,6 @@ public class OrderCustomer{
 		this.dispatching_type = dispatching_type;
 	}
 
-	public String getStatus(){
-		return status;
-	}
-
-	public void setStatus(String status){
-		this.status = status;
-	}
-
 	public String getRemark(){
 		return remark;
 	}
@@ -185,35 +159,11 @@ public class OrderCustomer{
 		this.time = time;
 	}
 
-	public Integer getFk_user_id() {
-		return fk_user_id;
+	public Integer getFk_order_id() {
+		return fk_order_id;
 	}
 
-	public void setFk_user_id(Integer fk_user_id) {
-		this.fk_user_id = fk_user_id;
-	}
-
-	public Float getFreight() {
-		return freight;
-	}
-
-	public void setFreight(Float freight) {
-		this.freight = freight;
-	}
-
-	public Float getSafes() {
-		return safes;
-	}
-
-	public void setSafes(Float safes) {
-		this.safes = safes;
-	}
-
-	public Float getTotal() {
-		return total;
-	}
-
-	public void setTotal(Float total) {
-		this.total = total;
+	public void setFk_order_id(Integer fk_order_id) {
+		this.fk_order_id = fk_order_id;
 	}
 }

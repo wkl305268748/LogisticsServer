@@ -31,7 +31,9 @@ public class OrderCustomerService {
     private OrderGoodsMapper orderGoodsMapper;
 
     //创建订单
-    public OrderCustomer insert(String send_name,
+    public OrderCustomer insert(Integer order_id,
+                                String order_number,
+                                String send_name,
                                 String send_phone,
                                 String send_addr,
                                 String send_addr_info,
@@ -42,15 +44,11 @@ public class OrderCustomerService {
                                 String dispatching_type,
                                 Date send_time,
                                 Date recive_time,
-                                Integer user_id,
-                                Float freight,
-                                Float safes,
                                 String goods) {
         OrderCustomer orderCustomer = new OrderCustomer();
-        //流水号
-        orderCustomer.setSerial_number(createSerialNumber());
         //单号
-        orderCustomer.setOrder_number(createOrderNumber());
+        orderCustomer.setFk_order_id(order_id);
+        orderCustomer.setOrder_number(order_number);
         orderCustomer.setSend_name(send_name);
         orderCustomer.setSend_addr(send_addr);
         orderCustomer.setSend_addr_info(send_addr_info);
@@ -63,10 +61,6 @@ public class OrderCustomerService {
         orderCustomer.setRecive_time(recive_time);
         orderCustomer.setDispatching_type(dispatching_type);
         orderCustomer.setTime(new Date());
-        orderCustomer.setFk_user_id(user_id);
-        orderCustomer.setFreight(freight);
-        orderCustomer.setSafes(safes);
-        orderCustomer.setTotal(freight + safes);
         orderCustomerMapper.insert(orderCustomer);
 
         try {
@@ -77,7 +71,7 @@ public class OrderCustomerService {
                 }.getType());
                 //添加货物
                 for (OrderGoods good : goodsList) {
-                    good.setFk_order_customer_id(orderCustomer.getId());
+                    good.setFk_order_id(orderCustomer.getFk_order_id());
                     orderGoodsMapper.insert(good);
                 }
             }
@@ -121,29 +115,19 @@ public class OrderCustomerService {
 
         //货物修改
         //删除所有这个订单的货物
-        orderGoodsMapper.deleteByOrderCustomer(id);
+        orderGoodsMapper.deleteByOrderId(id);
         if (goods != null) {
             Gson gson = new Gson();
             List<OrderGoods> goodsList = gson.fromJson(goods, new TypeToken<List<OrderGoods>>() {
             }.getType());
             for (OrderGoods good : goodsList) {
-                good.setFk_order_customer_id(orderCustomer.getId());
+                good.setFk_order_id(orderCustomer.getFk_order_id());
                 orderGoodsMapper.insert(good);
             }
         }
         return orderCustomer;
     }
 
-    //修改订单
-    public OrderCustomer updateStatus(Integer id, String status) throws ErrorCodeException {
-        OrderCustomer orderCustomer = orderCustomerMapper.selectByPrimaryKey(id);
-        if (orderCustomer == null) {
-            throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
-        }
-        orderCustomer.setStatus(status);
-        orderCustomerMapper.update(orderCustomer);
-        return orderCustomer;
-    }
 
     public OrderCustomer selectByPrimaryKey(Integer id) throws ErrorCodeException {
         OrderCustomer orderCustomer = orderCustomerMapper.selectByPrimaryKey(id);
@@ -164,32 +148,5 @@ public class OrderCustomerService {
 
     public int deleteByPrimaryKey(Integer id){
         return orderCustomerMapper.deleteByPrimaryKey(id);
-    }
-
-    /**
-     * 随机创建订单流水号
-     *
-     * @return
-     */
-    private String createSerialNumber() {
-        Random random = new Random(System.currentTimeMillis());
-        String number = new Date().getTime() + "";
-        for (int i = 0; i < 5; i++)
-            number = number + random.nextInt(9);
-        return number;
-    }
-
-    /**
-     * 随机创建订单号
-     *
-     * @return
-     */
-    private String createOrderNumber() {
-        Random random = new Random(System.currentTimeMillis());
-        SimpleDateFormat myFmt = new SimpleDateFormat("yyyyMMddHHmm");
-        String number = myFmt.format(new Date());
-        for (int i = 0; i < 5; i++)
-            number = number + random.nextInt(9);
-        return number;
     }
 }

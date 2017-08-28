@@ -7,6 +7,7 @@ import com.kenny.service.logistics.model.count.CountMap;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.service.order.OrderCountService;
 import com.kenny.service.logistics.service.user.UserBaseService;
+import com.kenny.service.logistics.service.user.UserCompanyService;
 import com.kenny.service.logistics.service.user.UserCustomerService;
 import com.kenny.service.logistics.service.user.UserManagerService;
 import io.swagger.annotations.Api;
@@ -33,6 +34,8 @@ public class OrderCountController {
     @Autowired
     OrderCountService orderCountService;
     @Autowired
+    UserCompanyService userCompanyService;
+    @Autowired
     UserManagerService userManagerService;
 
     @ApiOperation(value = "统计所有数据")
@@ -41,6 +44,7 @@ public class OrderCountController {
     public JsonBean<Map> All(){
         Map<String,Object> countMaps = new HashMap<>();
         countMaps.put("customer",userCustomerService.getCount());
+        countMaps.put("company",userCompanyService.getCount());
         countMaps.put("order_all",orderCountService.getAllCount());
         countMaps.put("order_place",orderCountService.getPlaceCount());
         countMaps.put("order_taking",orderCountService.getTakingCount());
@@ -50,11 +54,11 @@ public class OrderCountController {
     }
 
     @ApiOperation(value = "按账户统计订单总数量")
-    @RequestMapping(value = "order/customer", method = RequestMethod.GET)
+    @RequestMapping(value = "order/company", method = RequestMethod.GET)
     @ResponseBody
-    public JsonBean<Map> OrderCustomer() throws ErrorCodeException {
+    public JsonBean<Map> OrderCompany() throws ErrorCodeException {
 
-        return new JsonBean(ErrorCode.SUCCESS,orderCountService.getOrderCustomerMap(0,10,"customer"));
+        return new JsonBean(ErrorCode.SUCCESS,orderCountService.getOrderCompanyMap(0,10));
     }
 
     @ApiOperation(value = "统计各状态订单总数量")
@@ -112,6 +116,39 @@ public class OrderCountController {
             cal.setTime(new Date());
             cal.set(Calendar.DATE, cal.get(Calendar.DATE) - 7);
             return new JsonBean(ErrorCode.SUCCESS,orderCountService.getOrderCrateDayByUserId(user.getId(),cal.getTime(),new Date()));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+    @ApiOperation(value = "（公司统计）统计所有数据")
+    @RequestMapping(value = "company/all", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<Map> CompanyAll(@ApiParam(value = "token", required = true) @RequestParam(value = "token", required = true)String token){
+        Map<String,Object> countMaps = new HashMap<>();
+        try {
+            User user = userCustomerService.getUserByToken(token);
+            countMaps.put("order_all",orderCountService.getCompanyAllCount(user.getId()));
+            countMaps.put("order_place",orderCountService.getCompanyPlaceCount(user.getId()));
+            countMaps.put("order_taking",orderCountService.getCompanyTakingCount(user.getId()));
+            countMaps.put("order_sign",orderCountService.getCompanySignCount(user.getId()));
+            countMaps.put("order_refuse",orderCountService.getCompanyRefuseCount(user.getId()));
+            return new JsonBean(ErrorCode.SUCCESS,countMaps);
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+    @ApiOperation(value = "（公司统计）公司按天统计最近7天范围内订单数量、处理订单量")
+    @RequestMapping(value = "company/order/day7", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<Map> CompanyOrderDay7(@ApiParam(value = "token", required = true) @RequestParam(value = "token", required = true)String token){
+        try {
+            User user = userCompanyService.getUserByToken(token);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.set(Calendar.DATE, cal.get(Calendar.DATE) - 7);
+            return new JsonBean(ErrorCode.SUCCESS,orderCountService.getOrderTakingDayByUserId(user.getId(),cal.getTime(),new Date()));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }

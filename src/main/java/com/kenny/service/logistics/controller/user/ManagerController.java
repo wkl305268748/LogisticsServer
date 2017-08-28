@@ -5,6 +5,7 @@ import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
+import com.kenny.service.logistics.json.response.SelectOptionResponse;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.model.user.UserInfo;
 import com.kenny.service.logistics.model.user.UserSet;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -63,6 +65,21 @@ public class ManagerController {
         return new JsonBean(UserErrorCode.SUCCESS, userManagerService.selectPageByTypeEx(offset, pageSize, "customer"));
     }
 
+    @ApiOperation(value = "获取物流公司类型用户详细信息列表")
+    @RequestMapping(value = "/ex/company", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<PageResponse<UserSet>> CompanyInfoListEx(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                              @ApiParam(value = "每页数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        return new JsonBean(UserErrorCode.SUCCESS, userManagerService.selectPageByTypeEx(offset, pageSize, "company"));
+    }
+
+    @ApiOperation(value = "获取物流公司列表（下拉菜单选项）")
+    @RequestMapping(value = "company/select", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<List<SelectOptionResponse>> CompanyInfoListSelect() {
+        return new JsonBean(UserErrorCode.SUCCESS, userManagerService.selectPageBySelectOption("company"));
+    }
+
     @ApiOperation(value = "获取管理员类型用户详细信息列表")
     @RequestMapping(value = "/ex/admin", method = RequestMethod.GET)
     @ResponseBody
@@ -96,6 +113,14 @@ public class ManagerController {
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public JsonBean CustomerDelete(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id) {
+        userManagerService.deleteByPrimaryKey(id);
+        return new JsonBean(UserErrorCode.SUCCESS);
+    }
+
+    @ApiOperation(value = "删除公司")
+    @RequestMapping(value = "/company/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public JsonBean CompanyDelete(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id) {
         userManagerService.deleteByPrimaryKey(id);
         return new JsonBean(UserErrorCode.SUCCESS);
     }

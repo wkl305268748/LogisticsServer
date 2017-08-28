@@ -1,5 +1,6 @@
 package com.kenny.service.logistics.controller.fleet;
 
+import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.model.fleet.FleetDriverSet;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.service.fleet.FleetDriverLicenseService;
@@ -9,6 +10,7 @@ import com.kenny.service.logistics.service.user.UserDriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import com.kenny.service.logistics.json.JsonBean;
@@ -73,18 +75,21 @@ public class FleetDriverController {
                                           @ApiParam(value = "", required = false) @RequestParam(value = "remark", required = false) String remark,
                                           @ApiParam(value = "银行卡号",required = false)@RequestParam(value = "bank_number",required = false)String bank_number,
                                           @ApiParam(value = "开户行",required = false)@RequestParam(value = "bank_addr",required = false)String bank_addr,
-                                          @ApiParam(value = "", required = false) @RequestParam(value = "license", required = false) String license,
+                                          @ApiParam(value = "", required = false) @RequestParam(value = "driver_license", required = false) String driver_license,
                                           @ApiParam(value = "", required = false) @RequestParam(value = "other_license[]", required = false) String other_license) {
 
         try {
             User user = userBaseService.getUserByToken(token);
             User driverUser = userDriverService.insert(phone, password);
             FleetDriver fleetDriver = fleetDriverService.insert(name, sex, phone, driverUser.getId(), is_sms, idcard, email, hometown, remark, user.getId(),bank_number,bank_addr);
-            fleetLicenseService.insertByDriver(other_license, fleetDriver.getId());
-            fleetDriverLicenseService.insertByDriver(license, fleetDriver.getId());
+            if(other_license != null)
+                fleetLicenseService.insertByDriver(other_license, fleetDriver.getId());
+            if(driver_license != null)
+                fleetDriverLicenseService.insertByDriver(driver_license, fleetDriver.getId());
             return new JsonBean(ErrorCode.SUCCESS, fleetDriver);
 
         } catch (ErrorCodeException e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new JsonBean(e.getErrorCode());
         }
     }

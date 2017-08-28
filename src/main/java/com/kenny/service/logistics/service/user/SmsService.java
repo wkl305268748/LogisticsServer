@@ -34,14 +34,24 @@ public class SmsService {
     private int sendTime = 60 * 1000;       //重发时间：60秒
     private int overTime = 5 * 60 * 1000;   //失效时间：5分钟
 
+    //发送注册短信
+    public Sms SendRegistMessage(String phone) throws ErrorCodeException {
+        int type = 0;
+        String number = createCode();
+        //发送短信
+        smsSendService.UserRegistString(phone,number);
+        return SendMessage(phone,number,type);
+    }
+
     /**
      * 发送短信
-     *
-     * @param phone 手机号
-     * @param type  短信类型
+     * @param phone
+     * @param number
+     * @param type
      * @return
+     * @throws ErrorCodeException
      */
-    public Sms SendMessage(String phone, String type) throws ErrorCodeException {
+    public Sms SendMessage(String phone,String number,int type) throws ErrorCodeException {
         //手机号参数判断
         if (phone.length() != 11)
             throw new ErrorCodeException(UserErrorCode.PARAM_ERROR);
@@ -55,10 +65,7 @@ public class SmsService {
         }
 
         //随机生成验证码和Cookie
-        String number = createCode();
         String cookie = createCookie(phone, number);
-
-        smsSendService.UserRegistString(phone,number);
 
         //存储一条发送信息
         Sms code = new Sms();
@@ -66,7 +73,7 @@ public class SmsService {
         code.setCookie(cookie);
         code.setPhone(phone);
         code.setSendtime(new Date());
-        code.setCode_type_id(1);
+        code.setCode_type_id(type);
         code.setIs_submit(false);
         codeMapper.insert(code);
 

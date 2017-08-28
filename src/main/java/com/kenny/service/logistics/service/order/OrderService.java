@@ -7,18 +7,27 @@ import com.kenny.service.logistics.mapper.order.*;
 import com.kenny.service.logistics.mapper.profit.ProfitMapper;
 import com.kenny.service.logistics.mapper.user.UserInfoMapper;
 import com.kenny.service.logistics.mapper.user.UserMapper;
+import com.kenny.service.logistics.model.order.Order;
 import com.kenny.service.logistics.model.order.OrderCustomer;
 import com.kenny.service.logistics.model.order.OrderSet;
 import com.kenny.service.logistics.json.response.PageResponse;
+import com.kenny.service.logistics.model.order.OrderStatus;
+import com.kenny.service.logistics.model.system.Defind;
+import com.kenny.service.logistics.service.user.UserCompanyService;
+import com.kenny.service.logistics.service.user.UserCustomerService;
+import com.kenny.service.logistics.service.user.UserManagerService;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class OrderService {
-
 	@Autowired
 	private OrderSignMapper orderSignMapper;
 	@Autowired
@@ -26,13 +35,9 @@ public class OrderService {
 	@Autowired
 	private OrderTakingMapper orderTakingMapper;
 	@Autowired
-	private OrderStatusMapper orderStatusMapper;
-	@Autowired
 	private FleetDriverMapper fleetDriverMapper;
 	@Autowired
 	private FleetCarMapper fleetCarMapper;
-	@Autowired
-	private UserMapper userMapper;
 	@Autowired
 	private OrderGoodsMapper orderGoodsMapper;
 	@Autowired
@@ -40,8 +45,90 @@ public class OrderService {
 	@Autowired
 	private OrderContractMapper orderContractMapper;
 	@Autowired
-	private UserInfoMapper userInfoMapper;
+	private OrderMapper orderMapper;
+	@Autowired
+	private OrderStatusMapper orderStatusMapper;
+	@Autowired
+	private UserManagerService userManagerService;
 
+	public Order insert(Integer fk_customer_id,Boolean is_company,Integer fk_want_company_id){
+		Order order = new Order();
+		order.setOrder_number(createOrderNumber());
+		order.setSerial_number(createSerialNumber());
+		order.setFk_customer_id(fk_customer_id);
+		order.setIs_company(is_company);
+		order.setFk_want_company_id(fk_want_company_id);
+		order.setStatus(Defind.ORDER_PLACE);
+		order.setTime(new Date());
+		orderMapper.insert(order);
+		return order;
+	}
+
+	//修改订单状态
+	public Order updateStatus(Integer id,Integer user_id, String status) throws ErrorCodeException {
+		Order order = orderMapper.selectByPrimaryKey(id);
+		if (order == null) {
+			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+		}
+		order.setStatus(status);
+		switch (status){
+			case Defind.ORDER_TAKING:
+				order.setFk_company_id(user_id);
+				break;
+		}
+		orderMapper.update(order);
+		//更新状态信息
+		OrderStatus orderStatus = new OrderStatus();
+		orderStatus.setOrder_number(order.getOrder_number());
+		orderStatus.setStatus(status);
+		orderStatus.setFk_user_id(user_id);
+		orderStatus.setTime(new Date());
+		orderStatusMapper.insert(orderStatus);
+		return order;
+	}
+
+	//增加操作信息
+	public Order addController(Integer id,Integer user_id, String status) throws ErrorCodeException {
+		Order order = orderMapper.selectByPrimaryKey(id);
+		if (order == null) {
+			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+		}
+		//更新状态信息
+		OrderStatus orderStatus = new OrderStatus();
+		orderStatus.setOrder_number(order.getOrder_number());
+		orderStatus.setStatus(status);
+		orderStatus.setFk_user_id(user_id);
+		orderStatus.setTime(new Date());
+		orderStatusMapper.insert(orderStatus);
+		return order;
+	}
+
+	/**
+	 * 随机创建订单流水号
+	 *
+	 * @return
+	 */
+	private String createSerialNumber() {
+		Random random = new Random(System.currentTimeMillis());
+		String number = new Date().getTime() + "";
+		for (int i = 0; i < 5; i++)
+			number = number + random.nextInt(9);
+		return number;
+	}
+
+	/**
+	 * 随机创建订单号
+	 *
+	 * @return
+	 */
+	private String createOrderNumber() {
+		Random random = new Random(System.currentTimeMillis());
+		SimpleDateFormat myFmt = new SimpleDateFormat("yyyyMMddHHmm");
+		String number = myFmt.format(new Date());
+		for (int i = 0; i < 5; i++)
+			number = number + random.nextInt(9);
+		return number;
+	}
 
 	/**
 	 * 根据状态查询单据
@@ -52,11 +139,11 @@ public class OrderService {
 	 * @throws ErrorCodeException
 	 */
 	public PageResponse<OrderSet> selectPageByStatus(int offset, int pageSize, String status) throws ErrorCodeException {
-		List<OrderCustomer> orderCustomers = orderCustomerMapper.selectPageByStatus(offset,pageSize,status);
-		int count = orderCustomerMapper.countByStatus(status);
+		List<Order> orders = orderMapper.selectPageByStatus(offset,pageSize,status);
+		int count = orderMapper.countByStatus(status);
 		List<OrderSet> orderSets = new ArrayList<>();
-		for(OrderCustomer orderCustomer : orderCustomers){
-			orderSets.add(selectByCustomer(orderCustomer));
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
 		}
 		PageResponse<OrderSet> response = new PageResponse<>();
 		response.setTotal(count);
@@ -75,11 +162,80 @@ public class OrderService {
 	 * @throws ErrorCodeException
 	 */
 	public PageResponse<OrderSet> selectPageByCustomer(int offset, int pageSize, Integer user_id) throws ErrorCodeException {
-		List<OrderCustomer> orderCustomers = orderCustomerMapper.selectPageByUser(offset,pageSize,user_id);
-		int count = orderCustomerMapper.countByUser(user_id);
+		List<Order> orders = orderMapper.selectPageByCustomer(offset,pageSize,user_id);
+		int count = orderMapper.countByCustomer(user_id);
 		List<OrderSet> orderSets = new ArrayList<>();
-		for(OrderCustomer orderCustomer : orderCustomers){
-			orderSets.add(selectByCustomer(orderCustomer));
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
+		}
+		PageResponse<OrderSet> response = new PageResponse<>();
+		response.setTotal(count);
+		response.setItem(orderSets);
+		response.setPageSize(pageSize);
+		response.setOffset(offset);
+		return response;
+	}
+
+	/**
+	 * 查询物流公司订单列表
+	 * 包括已经接单的和客户意向的
+	 * @param offset
+	 * @param pageSize
+	 * @param user_id
+	 * @return
+	 * @throws ErrorCodeException
+	 */
+	public PageResponse<OrderSet> selectPageByCompany(int offset, int pageSize, Integer user_id) throws ErrorCodeException {
+		List<Order> orders = orderMapper.selectPageByCompany(offset,pageSize,user_id);
+		int count = orderMapper.countByCompany(user_id);
+		List<OrderSet> orderSets = new ArrayList<>();
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
+		}
+		PageResponse<OrderSet> response = new PageResponse<>();
+		response.setTotal(count);
+		response.setItem(orderSets);
+		response.setPageSize(pageSize);
+		response.setOffset(offset);
+		return response;
+	}
+
+	/**
+	 * 查询物流公司能够接单列表
+	 * @param offset
+	 * @param pageSize
+	 * @param user_id
+	 * @return
+	 * @throws ErrorCodeException
+	 */
+	public PageResponse<OrderSet> selectPageByWantCompany(int offset, int pageSize, Integer user_id) throws ErrorCodeException {
+		List<Order> orders = orderMapper.selectPageByCompanyAndStatus(offset,pageSize,user_id,Defind.ORDER_PLACE);
+		int count = orderMapper.countByCompanyAndStatus(user_id,Defind.ORDER_PLACE);
+		List<OrderSet> orderSets = new ArrayList<>();
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
+		}
+		PageResponse<OrderSet> response = new PageResponse<>();
+		response.setTotal(count);
+		response.setItem(orderSets);
+		response.setPageSize(pageSize);
+		response.setOffset(offset);
+		return response;
+	}
+
+	/**
+	 * 查询未结单的开放订单
+	 * @param offset
+	 * @param pageSize
+	 * @return
+	 * @throws ErrorCodeException
+	 */
+	public PageResponse<OrderSet> selectPageByOpenCompany(int offset, int pageSize) throws ErrorCodeException {
+		List<Order> orders = orderMapper.selectPageByOpenCompany(offset,pageSize,Defind.ORDER_PLACE);
+		int count = orderMapper.countByOpenCompany(Defind.ORDER_PLACE);
+		List<OrderSet> orderSets = new ArrayList<>();
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
 		}
 		PageResponse<OrderSet> response = new PageResponse<>();
 		response.setTotal(count);
@@ -98,11 +254,11 @@ public class OrderService {
 	 * @throws ErrorCodeException
 	 */
 	public PageResponse<OrderSet> selectPageByCustomerAndStatus(int offset, int pageSize, Integer user_id,String status) throws ErrorCodeException {
-		List<OrderCustomer> orderCustomers = orderCustomerMapper.selectPageByUserAndStatus(offset,pageSize,user_id,status);
-		int count = orderCustomerMapper.countByUserAndStatus(user_id,status);
+		List<Order> orders = orderMapper.selectPageByCustomerAndStatus(offset,pageSize,user_id,status);
+		int count = orderMapper.countByCustomerAndStatus(user_id,status);
 		List<OrderSet> orderSets = new ArrayList<>();
-		for(OrderCustomer orderCustomer : orderCustomers){
-			orderSets.add(selectByCustomer(orderCustomer));
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
 		}
 		PageResponse<OrderSet> response = new PageResponse<>();
 		response.setTotal(count);
@@ -121,11 +277,11 @@ public class OrderService {
 	 * @throws ErrorCodeException
 	 */
 	public PageResponse<OrderSet> selectPage(int offset, int pageSize) throws ErrorCodeException {
-		List<OrderCustomer> orderCustomers = orderCustomerMapper.selectPage(offset,pageSize);
-		int count = orderCustomerMapper.count();
+		List<Order> orders = orderMapper.selectPage(offset,pageSize);
+		int count = orderMapper.count();
 		List<OrderSet> orderSets = new ArrayList<>();
-		for(OrderCustomer orderCustomer : orderCustomers){
-			orderSets.add(selectByCustomer(orderCustomer));
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
 		}
 		PageResponse<OrderSet> response = new PageResponse<>();
 		response.setTotal(count);
@@ -135,79 +291,45 @@ public class OrderService {
 		return response;
 	}
 
-	/**
-	 * 查询指定用户所有的单据
-	 * @param offset
-	 * @param pageSize
-	 * @return
-	 * @throws ErrorCodeException
-	 */
-	public PageResponse<OrderSet> selectPageByUserId(int offset, int pageSize,int user_id) throws ErrorCodeException {
-		List<OrderCustomer> orderCustomers = orderCustomerMapper.selectPageByUser(offset,pageSize,user_id);
-		int count = orderCustomerMapper.countByUser(user_id);
-		List<OrderSet> orderSets = new ArrayList<>();
-		for(OrderCustomer orderCustomer : orderCustomers){
-			orderSets.add(selectByCustomer(orderCustomer));
-		}
-		PageResponse<OrderSet> response = new PageResponse<>();
-		response.setTotal(count);
-		response.setItem(orderSets);
-		response.setPageSize(pageSize);
-		response.setOffset(offset);
-		return response;
+	public OrderSet selectByPrimaryKeyEx(int order_id) throws ErrorCodeException {
+		Order order = orderMapper.selectByPrimaryKey(order_id);
+		return selectByOrder(order);
 	}
 
-	/**
-	 * 查询客户用户类型所有的单据
-	 * @param offset
-	 * @param pageSize
-	 * @return
-	 * @throws ErrorCodeException
-	 */
-	public PageResponse<OrderSet> selectPageByCustomer(int offset, int pageSize) throws ErrorCodeException {
-		List<OrderCustomer> orderCustomers = orderCustomerMapper.selectPageByUserType(offset,pageSize,"customer");
-		int count = orderCustomerMapper.countByUserType("customer");
-		List<OrderSet> orderSets = new ArrayList<>();
-		for(OrderCustomer orderCustomer : orderCustomers){
-			orderSets.add(selectByCustomer(orderCustomer));
-		}
-		PageResponse<OrderSet> response = new PageResponse<>();
-		response.setTotal(count);
-		response.setItem(orderSets);
-		response.setPageSize(pageSize);
-		response.setOffset(offset);
-		return response;
-	}
-
-	public OrderSet selectByPrimaryKey(int order_id) throws ErrorCodeException {
-		OrderCustomer orderCustomer = orderCustomerMapper.selectByPrimaryKey(order_id);
-		return selectByCustomer(orderCustomer);
+	public Order selectByPrimaryKey(int order_id) throws ErrorCodeException {
+		Order order = orderMapper.selectByPrimaryKey(order_id);
+		return order;
 	}
 
 	public void deleteByPrimaryKey(int order_id){
-		orderCustomerMapper.deleteByPrimaryKey(order_id);
-		orderTakingMapper.deleteByOrderCustomer(order_id);
-		orderSignMapper.deleteByOrderCustomer(order_id);
-		orderContractMapper.deleteByOrderCustomer(order_id);
-		orderGoodsMapper.deleteByOrderCustomer(order_id);
-		orderStatusMapper.deleteByOrderCustomer(order_id);
+		orderMapper.deleteByPrimaryKey(order_id);
+		orderCustomerMapper.deleteByOrderId(order_id);
+		orderTakingMapper.deleteByOrderId(order_id);
+		orderSignMapper.deleteByOrderId(order_id);
+		orderContractMapper.deleteByOrderId(order_id);
+		orderGoodsMapper.deleteByOrderId(order_id);
+		orderStatusMapper.deleteByOrderId(order_id);
+		profitMapper.deleteByOrderId(order_id);
 	}
 
 	//核心操作，通过订单查询所有东西
-	private OrderSet selectByCustomer(OrderCustomer orderCustomer) throws ErrorCodeException {
+	private OrderSet selectByOrder(Order order) throws ErrorCodeException {
 		OrderSet orderSet = new OrderSet();
-		orderSet.setOrderCustomer(orderCustomer);
-		orderSet.setOrderStatuses(orderStatusMapper.selectByOrderId(orderCustomer.getId()));
-		orderSet.setOrderTaking(orderTakingMapper.selectByOrderCustomer(orderCustomer.getId()));
-		orderSet.setOrderSign(orderSignMapper.selectByOrderCustomer(orderCustomer.getId()));
-		orderSet.setUser(userMapper.selectByPrimaryKey(orderCustomer.getFk_user_id()));
-		orderSet.setUserInfo(userInfoMapper.selectByUserId(orderCustomer.getFk_user_id()));
-		orderSet.setOrderGoods(orderGoodsMapper.selectByOrderCustomerId(orderCustomer.getId()));
+		orderSet.setOrder(order);
+		orderSet.setOrderCustomer(orderCustomerMapper.selectByOrderId(order.getId()));
+		orderSet.setOrderStatuses(orderStatusMapper.selectByOrderId(order.getId()));
+		orderSet.setOrderTaking(orderTakingMapper.selectByOrderId(order.getId()));
+		orderSet.setOrderSign(orderSignMapper.selectByOrderId(order.getId()));
+		orderSet.setCustomer(userManagerService.selectByPrimaryKeyEx(order.getFk_customer_id()));
+		if(order.getIs_company())
+			orderSet.setWantCompany(userManagerService.selectByPrimaryKeyEx(order.getFk_want_company_id()));
+		orderSet.setOrderGoods(orderGoodsMapper.selectByOrderId(order.getId()));
 		if(orderSet.getOrderTaking() != null) {
-			orderSet.setOrderContract(orderContractMapper.selectByOrderCustomerId(orderCustomer.getId()));
+			orderSet.setCompany(userManagerService.selectByPrimaryKeyEx(order.getFk_company_id()));
+			orderSet.setOrderContract(orderContractMapper.selectByOrderId(order.getId()));
 			orderSet.setFleetCar(fleetCarMapper.selectByPrimaryKey(orderSet.getOrderTaking().getFk_car_id()));
 			orderSet.setFleetDriver(fleetDriverMapper.selectByPrimaryKey(orderSet.getOrderTaking().getFk_driver_id()));
-			orderSet.setProfit(profitMapper.selectPageByOrderCustomer(orderCustomer.getId()));
+			orderSet.setProfit(profitMapper.selectByOrderId(order.getId()));
 		}
 		return orderSet;
 	}

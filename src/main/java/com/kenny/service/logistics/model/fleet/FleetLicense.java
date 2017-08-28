@@ -19,7 +19,7 @@ public class FleetLicense{
 	@ApiModelProperty("有效日期止")
 	private Date unvalide_date;
 	@ApiModelProperty("附件")
-	private String files;
+	private Object files;
 	@ApiModelProperty("")
 	private Integer fk_driver_id;
 	@ApiModelProperty("")
@@ -77,11 +77,11 @@ public class FleetLicense{
 		this.unvalide_date = unvalide_date;
 	}
 
-	public String getFiles(){
+	public Object getFiles(){
 		return files;
 	}
 
-	public void setFiles(String files){
+	public void setFiles(Object files){
 		this.files = files;
 	}
 

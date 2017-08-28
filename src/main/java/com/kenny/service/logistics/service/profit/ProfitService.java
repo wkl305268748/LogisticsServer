@@ -21,9 +21,9 @@ public class ProfitService{
 	@Autowired
 	private ProfitStatusMapper profitStatusMapper;
 
-	public Profit insert(Integer fk_order_customer_id,String order_number,Float recive,Float pay, Integer belong_user_id){
+	public Profit insert(Integer fk_order_id,String order_number,Float recive,Float pay, Integer belong_user_id){
 		Profit profit = new Profit();
-		profit.setFk_order_customer_id(fk_order_customer_id);
+		profit.setFk_order_id(fk_order_id);
 		profit.setOrder_number(order_number);
 		profit.setRecive(recive);
 		profit.setPay(pay);
@@ -38,12 +38,12 @@ public class ProfitService{
 		return profit;
 	}
 
-	public Profit update(Integer id,Integer fk_order_customer_id,String order_number,Float recive,Float pay,Float recive_now,Float pay_now,Boolean is_recive,Boolean is_pay) throws ErrorCodeException{
+	public Profit update(Integer id,Integer fk_order_id,String order_number,Float recive,Float pay,Float recive_now,Float pay_now,Boolean is_recive,Boolean is_pay) throws ErrorCodeException{
 		Profit profit = profitMapper.selectByPrimaryKey(id);
 		if(profit == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
 		}
-		profit.setFk_order_customer_id(fk_order_customer_id);
+		profit.setFk_order_id(fk_order_id);
 		profit.setOrder_number(order_number);
 		profit.setRecive(recive);
 		profit.setPay(pay);

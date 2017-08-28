@@ -22,15 +22,19 @@ public class OrderTakingService{
 	private OrderCustomerMapper orderCustomerMapper;
 
 	//接受订单
-	public OrderTaking taking(Integer fk_order_customer_id,
+	public OrderTaking taking(Integer fk_order_id,
 							  Integer fk_car_id,
 							  Integer fk_driver_id,
+							  Float freight,
+							  Float safes,
 							  Float recive,
 							  Float pay){
  		OrderTaking orderTaking = new OrderTaking();
-		orderTaking.setFk_order_customer_id(fk_order_customer_id);
+		orderTaking.setFk_order_id(fk_order_id);
 		orderTaking.setFk_car_id(fk_car_id);
 		orderTaking.setFk_driver_id(fk_driver_id);
+		orderTaking.setSafes(safes);
+		orderTaking.setFreight(freight);
 		orderTaking.setRecive(recive);
 		orderTaking.setPay(pay);
 		orderTaking.setTime(new Date());
@@ -40,17 +44,16 @@ public class OrderTakingService{
 
 	//修改接收的订单
 	public OrderTaking update(Integer id,
-							  Integer fk_order_customer_id,
+							  Integer fk_order_id,
 							  Integer fk_car_id,
 							  Integer fk_driver_id,
 							  Float recive,
 							  Float pay) throws ErrorCodeException{
 		OrderTaking orderTaking = orderTakingMapper.selectByPrimaryKey(id);
-		OrderCustomer orderCustomer = orderCustomerMapper.selectByPrimaryKey(fk_order_customer_id);
-		if(orderTaking == null){
+		if(orderTaking == null)
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
-		}
-		orderTaking.setFk_order_customer_id(fk_order_customer_id);
+
+		orderTaking.setFk_order_id(fk_order_id);
 		orderTaking.setFk_car_id(fk_car_id);
 		orderTaking.setFk_driver_id(fk_driver_id);
 		orderTaking.setRecive(recive);

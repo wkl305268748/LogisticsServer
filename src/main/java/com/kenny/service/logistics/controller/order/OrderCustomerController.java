@@ -8,18 +8,24 @@ import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
+import com.kenny.service.logistics.model.order.Order;
 import com.kenny.service.logistics.model.order.OrderCustomer;
 import com.kenny.service.logistics.model.order.OrderGoods;
+import com.kenny.service.logistics.model.system.Defind;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.service.order.*;
+import com.kenny.service.logistics.service.user.UserBaseService;
+import com.kenny.service.logistics.service.user.UserCompanyService;
 import com.kenny.service.logistics.service.user.UserCustomerService;
 import com.kenny.service.logistics.service.user.UserService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -33,11 +39,11 @@ public class OrderCustomerController {
     @Autowired
     OrderCustomerService orderCustomerService;
     @Autowired
-    UserService userService;
-    @Autowired
     OrderStatusService orderStatusService;
     @Autowired
-    UserCustomerService userCustomerService;
+    OrderService orderService;
+    @Autowired
+    UserBaseService userBaseService;
 
     @ApiOperation(value = "增加OrderCustomer")
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -55,22 +61,19 @@ public class OrderCustomerController {
                                           @ApiParam(value = "预计发送时间", required = true) @RequestParam(value = "send_time", required = true) Date send_time,
                                           @ApiParam(value = "限时到达时间", required = true) @RequestParam(value = "recive_time", required = true) Date recive_time,
                                           @ApiParam(value = "配送还是自提", required = true) @RequestParam(value = "dispatching_type", required = true) String dispatching_type,
-                                          @ApiParam(value = "运费", required = true) @RequestParam(value = "freight", required = true) Float freight,
-                                          @ApiParam(value = "保险", required = true) @RequestParam(value = "safes", required = true) Float safes,
+                                          @ApiParam(value = "是否指定物流公司接单", required = true) @RequestParam(value = "is_company", required = true) Boolean is_company,
+                                          @ApiParam(value = "指定物流公司", required = true) @RequestParam(value = "fk_want_company_id", required = false) Integer fk_want_company_id,
                                           @ApiParam(value = "货物列表json", required = false) @RequestParam(value = "goods[]", required = false) String goods) {
 
         try {
-            User user = userService.getUser(token);
-//            if(user.getType().equals(UserCustomerService.type))
-//                userCustomerService.checkMoney(token,(Float)(freight + safes));
-            OrderCustomer orderCustomer = orderCustomerService.insert(send_name, send_phone, send_addr, send_addr_info, recive_name, recive_phone, recive_addr, recive_addr_info, dispatching_type, send_time, recive_time, user.getId(),freight,safes,goods);
-            orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_PLACE", user.getId());
-            orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_PLACE");
-
-//            if(user.getType().equals(UserCustomerService.type))
-//                userCustomerService.reduceMoney(token,(Float)(freight + safes),orderCustomer.getOrder_number());
+            User user = userBaseService.getUserByToken(token);
+            //创建订单
+            Order order = orderService.insert(user.getId(),is_company,fk_want_company_id);
+            OrderCustomer orderCustomer = orderCustomerService.insert(order.getId(),order.getOrder_number(),send_name, send_phone, send_addr, send_addr_info, recive_name, recive_phone, recive_addr, recive_addr_info, dispatching_type, send_time, recive_time,goods);
+            orderService.updateStatus(order.getId(),user.getId(), Defind.ORDER_PLACE);
             return new JsonBean(UserErrorCode.SUCCESS, orderCustomer);
         } catch (ErrorCodeException e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new JsonBean(e.getErrorCode());
         }
     }
@@ -94,7 +97,7 @@ public class OrderCustomerController {
                                           @ApiParam(value = "配送还是自提", required = false) @RequestParam(value = "dispatching_type", required = false) String dispatching_type,
                                           @ApiParam(value = "货物列表json", required = false) @RequestParam(value = "goods", required = false) String goods) {
         try {
-            User user = userService.getUser(token);
+            User user = userBaseService.getUserByToken(token);
             OrderCustomer orderCustomer = orderCustomerService.update(id, send_name, send_phone, send_addr, send_addr_info, recive_name, recive_phone, recive_addr, recive_addr_info, dispatching_type, send_time, recive_time, goods);
             orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_EDIT", user.getId());
             return new JsonBean(ErrorCode.SUCCESS, orderCustomer);
@@ -108,13 +111,12 @@ public class OrderCustomerController {
     @RequestMapping(value = "refuse",method = RequestMethod.POST)
     @ResponseBody
     public JsonBean refuse(@ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token,
-                           @ApiParam(value = "订单外键",required = false)@RequestParam(value = "fk_order_customer_id",required = false)Integer fk_order_customer_id){
+                           @ApiParam(value = "订单外键",required = false)@RequestParam(value = "fk_order_id",required = false)Integer order_id){
 
         try {
-            User user = userService.getUser(token);
-            OrderCustomer orderCustomer = orderCustomerService.selectByPrimaryKey(fk_order_customer_id);
-            orderStatusService.insert(orderCustomer.getOrder_number(), "ORDER_REFUSE", user.getId());
-            orderCustomerService.updateStatus(orderCustomer.getId(),"ORDER_REFUSE");
+            User user = userBaseService.getUserByToken(token);
+            Order order = orderService.selectByPrimaryKey(order_id);
+            orderService.updateStatus(order.getId(),user.getId(),Defind.ORDER_REFUSE);
             return new JsonBean(ErrorCode.SUCCESS);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());

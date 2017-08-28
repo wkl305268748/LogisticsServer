@@ -4,6 +4,7 @@ package com.kenny.service.logistics.service.user;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.response.PageResponse;
+import com.kenny.service.logistics.json.response.SelectOptionResponse;
 import com.kenny.service.logistics.mapper.user.UserInfoMapper;
 import com.kenny.service.logistics.mapper.user.UserMapper;
 import com.kenny.service.logistics.mapper.user.UserTokenMapper;
@@ -129,6 +130,14 @@ public class UserManagerService {
         response.setOffset(offset);
         response.setPageSize(pageSize);
         return response;
+    }
+
+    public List<SelectOptionResponse> selectPageBySelectOption(String type){
+        List<SelectOptionResponse> selectOptionResponse = new ArrayList<>();
+        for(User user: userMapper.selectByType(type)){
+            selectOptionResponse.add(new SelectOptionResponse(userInfoMapper.selectByUserId(user.getId()).getCompany(),user.getId()));
+        }
+        return selectOptionResponse;
     }
 
     public int deleteByPrimaryKey(Integer id){

@@ -4,18 +4,18 @@ package com.kenny.service.logistics.service.user;
 import com.kenny.service.logistics.exception.ErrorCode;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
+import com.kenny.service.logistics.mapper.user.SmsMapper;
 import com.kenny.service.logistics.mapper.user.UserInfoMapper;
 import com.kenny.service.logistics.mapper.user.UserMapper;
 import com.kenny.service.logistics.mapper.user.UserTokenMapper;
-import com.kenny.service.logistics.model.user.User;
-import com.kenny.service.logistics.model.user.UserInfo;
-import com.kenny.service.logistics.model.user.UserSet;
-import com.kenny.service.logistics.model.user.UserToken;
+import com.kenny.service.logistics.model.user.*;
+import com.kenny.service.logistics.service.util.SmsSendService;
 import com.kenny.service.logistics.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Random;
 
 @Service
 public class UserBaseService {
@@ -25,6 +25,8 @@ public class UserBaseService {
     private UserInfoMapper userInfoMapper;
     @Autowired
     private UserTokenMapper userTokenMapper;
+    @Autowired
+    private SmsService smsService;
 
     /**
      * 校验手机号是否已经注册
@@ -158,12 +160,21 @@ public class UserBaseService {
         return user;
     }
 
-
     //重置密码
     public User updatePassword(String token, String old_password, String new_password) throws ErrorCodeException {
         User user = getUserByToken(token);
         if(!user.getPassword().equals(old_password))
             throw new ErrorCodeException(UserErrorCode.PASS_ERROR);
+        user.setPassword(new_password);
+        int result = userMapper.update(user);
+        if (result <= 0)
+            throw new ErrorCodeException(UserErrorCode.DB_ERROR);
+        return user;
+    }
+
+    //重置密码
+    public User updatePassword(String token, String new_password) throws ErrorCodeException {
+        User user = getUserByToken(token);
         user.setPassword(new_password);
         int result = userMapper.update(user);
         if (result <= 0)

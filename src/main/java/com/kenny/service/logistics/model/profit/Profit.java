@@ -9,7 +9,7 @@ public class Profit{
 	@ApiModelProperty("")
 	private Integer id;
 	@ApiModelProperty("")
-	private Integer fk_order_customer_id;
+	private Integer fk_order_id;
 	@ApiModelProperty("")
 	private String order_number;
 	@ApiModelProperty("")
@@ -39,12 +39,12 @@ public class Profit{
 		this.id = id;
 	}
 
-	public Integer getFk_order_customer_id(){
-		return fk_order_customer_id;
+	public Integer getFk_order_id() {
+		return fk_order_id;
 	}
 
-	public void setFk_order_customer_id(Integer fk_order_customer_id){
-		this.fk_order_customer_id = fk_order_customer_id;
+	public void setFk_order_id(Integer fk_order_id) {
+		this.fk_order_id = fk_order_id;
 	}
 
 	public String getOrder_number(){

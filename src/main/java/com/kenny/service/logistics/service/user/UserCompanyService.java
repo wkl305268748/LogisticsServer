@@ -1,24 +1,18 @@
 package com.kenny.service.logistics.service.user;
 
 import com.kenny.service.logistics.exception.ErrorCodeException;
-import com.kenny.service.logistics.exception.UserErrorCode;
-import com.kenny.service.logistics.mapper.user.UserMapper;
-import com.kenny.service.logistics.mapper.user.UserTokenMapper;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.model.user.UserSet;
 import com.kenny.service.logistics.model.user.UserToken;
-import com.kenny.service.logistics.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 /**
  * Created by Kenny on 2017/7/20.
  */
 
 @Service
-public class UserCustomerService {
+public class UserCompanyService {
     @Autowired
     UserBaseService userBaseService;
     @Autowired
@@ -26,7 +20,7 @@ public class UserCustomerService {
     @Autowired
     UserMoneyService userMoneyService;
 
-    public static final String type = "customer";
+    public static final String type = "company";
 
     /**
      * 登录

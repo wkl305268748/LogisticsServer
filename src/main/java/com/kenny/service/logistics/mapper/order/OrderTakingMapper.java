@@ -7,11 +7,11 @@ import com.kenny.service.logistics.model.order.OrderTaking;
 @Mapper
 public interface OrderTakingMapper{
 
-	@Insert("INSERT INTO tb_order_taking(fk_order_customer_id,fk_car_id,fk_driver_id,recive,pay,status,time) VALUES(#{fk_order_customer_id},#{fk_car_id},#{fk_driver_id},#{recive},#{pay},#{status},#{time})")
+	@Insert("INSERT INTO tb_order_taking(fk_order_id,fk_car_id,fk_driver_id,freight,safes,recive,pay,time) VALUES(#{fk_order_id},#{fk_car_id},#{fk_driver_id},#{freight},#{safes},#{recive},#{pay},#{time})")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	int insert(OrderTaking orderTaking);
 
-	@Update("UPDATE tb_order_taking SET fk_order_customer_id=#{fk_order_customer_id},fk_car_id=#{fk_car_id},fk_driver_id=#{fk_driver_id},recive=#{recive},pay=#{pay},status=#{status},time=#{time} WHERE id=#{id}")
+	@Update("UPDATE tb_order_taking SET fk_order_id=#{fk_order_id},fk_car_id=#{fk_car_id},fk_driver_id=#{fk_driver_id},freight=#{freight},safes=#{safes},recive=#{recive},pay=#{pay},time=#{time} WHERE id=#{id}")
 	int update(OrderTaking orderTaking);
 
 	@Select("SELECT * FROM tb_order_taking WHERE id=#{id}")
@@ -27,10 +27,10 @@ public interface OrderTakingMapper{
 	@Delete("DELETE FROM tb_order_taking WHERE id=#{id}")
 	int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
-	@Delete("DELETE FROM tb_order_taking WHERE fk_order_customer_id=#{fk_order_customer_id}")
-	int deleteByOrderCustomer(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
+	@Delete("DELETE FROM tb_order_taking WHERE fk_order_id = #{fk_order_id}")
+	int deleteByOrderId(@Param(value = "fk_order_id") Integer fk_order_id);
 
-	@Select("SELECT * FROM tb_order_taking WHERE fk_order_customer_id=#{fk_order_customer_id}")
-	OrderTaking selectByOrderCustomer(@Param(value = "fk_order_customer_id") Integer fk_order_customer_id);
+	@Select("SELECT * FROM tb_order_taking WHERE fk_order_id = #{fk_order_id}")
+	OrderTaking selectByOrderId(@Param(value = "fk_order_id") Integer fk_order_id);
 
 }

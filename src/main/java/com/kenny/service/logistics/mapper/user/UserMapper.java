@@ -29,6 +29,8 @@ public interface UserMapper {
     @Delete("DELETE FROM tb_user WHERE id=#{id}")
     int  deleteByPrimaryKey(@Param(value = "id") Integer id);
 
+    @Select("SELECT * FROM tb_user WHERE type=#{type} AND is_valid = 1")
+    List<User> selectByType(@Param(value = "type") String type);
 
     @Select("SELECT * FROM tb_user WHERE type=#{type} AND is_valid = 1 limit #{offset},#{pageSize}")
     List<User> selectPageByType(@Param(value = "offset") Integer offset,

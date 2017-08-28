@@ -7,6 +7,7 @@ import com.kenny.service.logistics.service.user.UserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
@@ -67,6 +68,7 @@ public class FleetCarController {
 			fleetLicenseService.insertByCar(license, fleetCar.getId());
 			return new JsonBean(ErrorCode.SUCCESS, fleetCar);
 		} catch (ErrorCodeException e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return new JsonBean(e.getErrorCode());
 		}
 	}
