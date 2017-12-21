@@ -58,6 +58,20 @@ public interface OrderMapper{
 	@Select("SELECT COUNT(*) FROM tb_order WHERE (fk_company_id = #{fk_company_id} OR fk_want_company_id = #{fk_company_id}) AND status = #{status}")
 	int countByCompanyAndStatus(@Param(value = "fk_company_id") Integer fk_company_id,@Param(value = "status") String status);
 
+	//联合OrderTaking表
+	//按司机ID查询所有订单
+	@Select("SELECT tb_order.* FROM tb_order,tb_order_taking WHERE tb_order.id = tb_order_taking.fk_order_id AND tb_order_taking.fk_driver_id = #{fk_driver_id} ORDER BY time DESC limit #{offset},#{pageSize}")
+	List<Order> selectPageByDriver(@Param(value = "offset") Integer offset, @Param(value = "pageSize") Integer pageSize, @Param(value = "fk_driver_id") Integer fk_driver_id);
+
+	@Select("SELECT COUNT(*) FROM tb_order,tb_order_taking WHERE tb_order.id = tb_order_taking.fk_order_id AND tb_order_taking.fk_driver_id = #{fk_driver_id}")
+	int countByDriver(@Param(value = "fk_driver_id") Integer fk_driver_id);
+
+	@Select("SELECT tb_order.* FROM tb_order,tb_order_taking WHERE tb_order.id = tb_order_taking.fk_order_id AND tb_order_taking.fk_driver_id = #{fk_driver_id} AND tb_order.status = #{status} ORDER BY time DESC limit #{offset},#{pageSize}")
+	List<Order> selectPageByDriverAndStatus(@Param(value = "offset") Integer offset, @Param(value = "pageSize") Integer pageSize, @Param(value = "fk_driver_id") Integer fk_driver_id,@Param(value = "status") String status);
+
+	@Select("SELECT COUNT(*) FROM tb_order,tb_order_taking WHERE tb_order.id = tb_order_taking.fk_order_id AND tb_order_taking.fk_driver_id = #{fk_driver_id} AND tb_order.status = #{status}")
+	int countByDriverAndStatus(@Param(value = "fk_driver_id") Integer fk_driver_id,@Param(value = "status") String status);
+
 	//查询开放订单
 	@Select("SELECT * FROM tb_order WHERE is_company = 0 AND status = #{status} ORDER BY time DESC limit #{offset},#{pageSize}")
 	List<Order> selectPageByOpenCompany(@Param(value = "offset") Integer offset, @Param(value = "pageSize") Integer pageSize,@Param(value = "status") String status);

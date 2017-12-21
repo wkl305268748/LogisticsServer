@@ -186,4 +186,15 @@ public class OrderCountService {
         map.put("signCount",signCount);
         return map;
     }
+
+    //--------司机统计
+    public int getDriverTakingCount(int user_id){
+        return orderMapper.countByDriverAndStatus(user_id,"ORDER_TAKING");
+    }
+    public int getDriverSignCount(int user_id){
+        return orderMapper.countByDriverAndStatus(user_id,"ORDER_SIGN");
+    }
+    public int getDriverAllCount(int user_id){
+        return orderMapper.countByDriver(user_id);
+    }
 }

@@ -171,7 +171,7 @@ public class FleetDriverController {
     @ResponseBody
     public JsonBean deletePrimaryKey(@ApiParam(value = "查询主键", required = true) @PathVariable() Integer id) {
         try {
-            userDriverService.deleteByPrimaryKey(fleetDriverService.selectByPrimaryKey(id).getFk_user_id());
+            userBaseService.deleteByPrimaryKey(fleetDriverService.selectByPrimaryKey(id).getFk_user_id());
             return new JsonBean(ErrorCode.SUCCESS, fleetDriverService.deleteByPrimaryKey(id));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());

@@ -6,6 +6,8 @@ import com.kenny.service.logistics.mapper.user.UserInfoMapper;
 import com.kenny.service.logistics.mapper.user.UserMapper;
 import com.kenny.service.logistics.mapper.user.UserTokenMapper;
 import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.user.UserSet;
+import com.kenny.service.logistics.model.user.UserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,15 +34,40 @@ public class UserDriverService {
         return userBaseService.insertByPhone(phone,password,type);
     }
 
-    /*
-    public User selectByPrimaryKey(int user_id){
-    }*/
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @return
+     * @throws ErrorCodeException
+     */
+    public UserToken login(String username, String password) throws ErrorCodeException {
+        return userBaseService.loginUserName(username,password,type);
+    }
+
 
     /**
-     * 删除用户
-     * @param user_id
+     * 退出登陆
+     *
+     * @param token
+     * @return
      */
-    public void deleteByPrimaryKey(int user_id){
-        userBaseService.deleteByPrimaryKey(user_id);
+    public void logout(String token) throws ErrorCodeException {
+        userBaseService.logout(token);
+    }
+
+    //重置密码
+    public void updatePassword(String token, String old_password, String new_password) throws ErrorCodeException {
+        userBaseService.updatePassword(token,old_password,new_password);
+    }
+
+    //根据token获取用户
+    public User getUserByToken(String token) throws ErrorCodeException {
+        return userBaseService.getUserByToken(token);
+    }
+
+    //根据token获取用户ex
+    public UserSet getUserByTokenEx(String token) throws ErrorCodeException {
+        return userBaseService.getUserByTokenEx(token);
     }
 }

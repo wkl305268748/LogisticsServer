@@ -224,6 +224,52 @@ public class OrderService {
 	}
 
 	/**
+	 * 查询司机的订单列表
+	 * @param offset
+	 * @param pageSize
+	 * @param user_id
+	 * @return
+	 * @throws ErrorCodeException
+	 */
+	public PageResponse<OrderSet> selectPageByDriver(int offset, int pageSize, Integer user_id) throws ErrorCodeException {
+		List<Order> orders = orderMapper.selectPageByDriver(offset,pageSize,user_id);
+		int count = orderMapper.countByDriver(user_id);
+		List<OrderSet> orderSets = new ArrayList<>();
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
+		}
+		PageResponse<OrderSet> response = new PageResponse<>();
+		response.setTotal(count);
+		response.setItem(orderSets);
+		response.setPageSize(pageSize);
+		response.setOffset(offset);
+		return response;
+	}
+
+	/**
+	 * 查询司机的订单列表
+	 * @param offset
+	 * @param pageSize
+	 * @param user_id
+	 * @return
+	 * @throws ErrorCodeException
+	 */
+	public PageResponse<OrderSet> selectPageByDriverAndStatus(int offset, int pageSize, Integer user_id,String status) throws ErrorCodeException {
+		List<Order> orders = orderMapper.selectPageByDriverAndStatus(offset,pageSize,user_id,status);
+		int count = orderMapper.countByDriverAndStatus(user_id,status);
+		List<OrderSet> orderSets = new ArrayList<>();
+		for(Order order : orders){
+			orderSets.add(selectByOrder(order));
+		}
+		PageResponse<OrderSet> response = new PageResponse<>();
+		response.setTotal(count);
+		response.setItem(orderSets);
+		response.setPageSize(pageSize);
+		response.setOffset(offset);
+		return response;
+	}
+
+	/**
 	 * 查询未结单的开放订单
 	 * @param offset
 	 * @param pageSize

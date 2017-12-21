@@ -18,6 +18,9 @@ public interface FleetDriverMapper {
     @Select("SELECT * FROM tb_fleet_driver WHERE id=#{id}")
     FleetDriver selectByPrimaryKey(@Param(value = "id") Integer id);
 
+    @Select("SELECT * FROM tb_fleet_driver WHERE fk_user_id=#{fk_user_id}")
+    FleetDriver selectByUserId(@Param(value = "fk_user_id") Integer fk_user_id);
+
     @Select("SELECT * FROM tb_fleet_driver WHERE visible = 1 ORDER BY time DESC limit #{offset},#{pageSize}")
     List<FleetDriver> selectPage(@Param(value = "offset") Integer offset,
                                  @Param(value = "pageSize") Integer pageSize);

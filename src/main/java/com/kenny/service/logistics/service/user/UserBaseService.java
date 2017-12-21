@@ -224,6 +224,13 @@ public class UserBaseService {
         //校验用户
         User user = userMapper.selectByPrimaryKey(userToken.getUser_id());
         UserInfo userInfo = userInfoMapper.selectByUserId(user.getId());
+        if(userInfo == null){
+            userInfo = new UserInfo();
+            userInfo.setNickname(user.getUsername());
+            userInfo.setImg("http://otj3hc8no.bkt.clouddn.com/FgWThEudVEA-ehnqs864frvaVF3T");
+            userInfo.setSex("");
+            userInfoMapper.update(userInfo);
+        }
 
         userSet.setUser(user);
         userSet.setUserInfo(userInfo);

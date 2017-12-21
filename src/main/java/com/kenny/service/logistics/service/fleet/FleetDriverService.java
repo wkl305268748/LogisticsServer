@@ -73,6 +73,15 @@ public class FleetDriverService {
         return fleetDriver;
     }
 
+
+    public FleetDriver selectByUserId(Integer id) throws ErrorCodeException {
+        FleetDriver fleetDriver = fleetDriverMapper.selectByUserId(id);
+        if (fleetDriver == null) {
+            throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+        }
+        return fleetDriver;
+    }
+
     public FleetDriverSet selectByPrimaryKeyEx(Integer id) throws ErrorCodeException {
         FleetDriverSet fleetDriverSet = new FleetDriverSet();
         FleetDriver fleetDriver = fleetDriverMapper.selectByPrimaryKey(id);

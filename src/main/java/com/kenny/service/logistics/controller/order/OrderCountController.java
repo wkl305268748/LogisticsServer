@@ -4,7 +4,9 @@ import com.kenny.service.logistics.exception.ErrorCode;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.model.count.CountMap;
+import com.kenny.service.logistics.model.fleet.FleetDriver;
 import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.service.fleet.FleetDriverService;
 import com.kenny.service.logistics.service.order.OrderCountService;
 import com.kenny.service.logistics.service.user.UserBaseService;
 import com.kenny.service.logistics.service.user.UserCompanyService;
@@ -37,6 +39,8 @@ public class OrderCountController {
     UserCompanyService userCompanyService;
     @Autowired
     UserManagerService userManagerService;
+    @Autowired
+    FleetDriverService fleetDriverService;
 
     @ApiOperation(value = "统计所有数据")
     @RequestMapping(value = "all", method = RequestMethod.GET)
@@ -149,6 +153,23 @@ public class OrderCountController {
             cal.setTime(new Date());
             cal.set(Calendar.DATE, cal.get(Calendar.DATE) - 7);
             return new JsonBean(ErrorCode.SUCCESS,orderCountService.getOrderTakingDayByUserId(user.getId(),cal.getTime(),new Date()));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+    @ApiOperation(value = "（司机）统计所有数据")
+    @RequestMapping(value = "driver/all", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<Map> DriverAll(@ApiParam(value = "token", required = true) @RequestParam(value = "token", required = true)String token){
+        Map<String,Object> countMaps = new HashMap<>();
+        try {
+            User user = userCustomerService.getUserByToken(token);
+            FleetDriver fleetDriver = fleetDriverService.selectByUserId(user.getId());
+            countMaps.put("order_all",orderCountService.getDriverAllCount(fleetDriver.getId()));
+            countMaps.put("order_taking",orderCountService.getDriverTakingCount(fleetDriver.getId()));
+            countMaps.put("order_sign",orderCountService.getDriverSignCount(fleetDriver.getId()));
+            return new JsonBean(ErrorCode.SUCCESS,countMaps);
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }

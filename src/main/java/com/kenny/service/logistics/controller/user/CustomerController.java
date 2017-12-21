@@ -52,7 +52,6 @@ public class CustomerController {
     @ApiOperation(value = "短信验证码创建用户")
     @RequestMapping(value = "/register_sms", method = RequestMethod.POST)
     @ResponseBody
-
     public JsonBean<UserToken> Register(@ApiParam("与验证码绑定的cookie") @RequestParam(required = true) String cookie,
                                         @ApiParam("验证码") @RequestParam(required = true) String code,
                                         @ApiParam("手机号码") @RequestParam(required = true) String phone,
@@ -61,7 +60,7 @@ public class CustomerController {
             //校验验证码
             smsService.CheckCode(cookie, code);
             //用户创建
-            User user = userCustomerService.insertUserName(phone, password);
+            User user = userCustomerService.insertPhone(phone, password);
             //用户信息创建
             userInfoService.insertByRegist(user.getId());
             //用户登陆

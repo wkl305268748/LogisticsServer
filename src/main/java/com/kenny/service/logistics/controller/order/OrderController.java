@@ -5,10 +5,12 @@ import com.kenny.service.logistics.exception.ErrorCode;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
+import com.kenny.service.logistics.model.fleet.FleetDriver;
 import com.kenny.service.logistics.model.order.OrderCustomer;
 import com.kenny.service.logistics.model.order.OrderSet;
 import com.kenny.service.logistics.model.system.Defind;
 import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.service.fleet.FleetDriverService;
 import com.kenny.service.logistics.service.order.OrderService;
 import com.kenny.service.logistics.service.user.UserBaseService;
 import com.kenny.service.logistics.service.user.UserService;
@@ -27,6 +29,8 @@ public class OrderController {
     OrderService orderService;
     @Autowired
     UserBaseService userBaseService;
+    @Autowired
+    FleetDriverService fleetDriverService;
 
     @ApiOperation(value = "列出所有的Order")
     @RequestMapping(value = "/page/all", method = RequestMethod.GET)
@@ -94,6 +98,37 @@ public class OrderController {
         try {
             User user = userBaseService.getUserByToken(token);
             return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByWantCompany(offset, pageSize, user.getId()));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+    @ApiOperation(value = "根据司机Token列出所有Order")
+    @RequestMapping(value = "/page/driver", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<PageResponse<OrderSet>> selectPageByDriverToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                                         @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                                         @ApiParam(value = "司机TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
+        try {
+            User user = userBaseService.getUserByToken(token);
+            FleetDriver fleetDriver = fleetDriverService.selectByUserId(user.getId());
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByDriver(offset, pageSize, fleetDriver.getId()));
+        } catch (ErrorCodeException e) {
+            return new JsonBean(e.getErrorCode());
+        }
+    }
+
+
+    @ApiOperation(value = "根据司机Token列出派车的Order")
+    @RequestMapping(value = "/page_taking/driver", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<PageResponse<OrderSet>> selectPageTakingByDriverToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                                    @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                                    @ApiParam(value = "司机TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
+        try {
+            User user = userBaseService.getUserByToken(token);
+            FleetDriver fleetDriver = fleetDriverService.selectByUserId(user.getId());
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByDriverAndStatus(offset, pageSize, fleetDriver.getId(),Defind.ORDER_TAKING));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
