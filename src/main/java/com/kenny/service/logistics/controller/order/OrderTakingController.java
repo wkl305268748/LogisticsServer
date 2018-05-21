@@ -1,5 +1,6 @@
 package com.kenny.service.logistics.controller.order;
 
+import com.kenny.service.logistics.exception.OrderErrorCode;
 import com.kenny.service.logistics.model.fleet.FleetDriver;
 import com.kenny.service.logistics.model.order.Order;
 import com.kenny.service.logistics.model.order.OrderCustomer;
@@ -67,6 +68,10 @@ public class OrderTakingController{
 		try {
 			User user = userBaseService.getUserByToken(token);
 			OrderSet orderSet = orderService.selectByPrimaryKeyEx(fk_order_id);
+			if(!orderSet.getOrder().getStatus().equals(Defind.ORDER_PLACE)){
+				return new JsonBean(OrderErrorCode.ORDER_TARKING_STATUS);
+			}
+
 			orderService.updateStatus(orderSet.getOrder().getId(),user.getId(), Defind.ORDER_TAKING);
 			//增加财务信息
 			profitService.insert(orderSet.getOrder().getId(),orderSet.getOrder().getOrder_number(),recive,pay,user.getId());
