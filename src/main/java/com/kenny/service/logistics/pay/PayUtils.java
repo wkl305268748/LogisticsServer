@@ -74,7 +74,6 @@ public class PayUtils {
 		return FormString;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Boolean payToBankCard(TransReqBF0040001 entity) throws Exception {
 
 		Boolean paySuccess = false;
