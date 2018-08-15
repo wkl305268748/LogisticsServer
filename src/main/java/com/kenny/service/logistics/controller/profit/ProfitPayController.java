@@ -33,7 +33,7 @@ public class ProfitPayController {
 			enty.setTo_bank_name("中国银行");
 			enty.setTrans_card_id("341282199104260233");
 			enty.setTrans_mobile("18949821385");
-			enty.setTrans_no("test213123123");
+			enty.setTrans_no("test"+System.currentTimeMillis());
 			//收款人姓名、收款人银行帐号、收款人银行名称、银行卡身份证件号、（银行卡预留手机号）
 			PayUtils.payToBankCard(enty);
 		} catch (Exception e) {

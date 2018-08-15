@@ -53,6 +53,24 @@ public class ProfitController{
 		}
 	}
 
+	@ApiOperation(value = "增加付款到银行卡")
+	@RequestMapping(value = "/pay/card/{id}",method = RequestMethod.PUT)
+	@ResponseBody
+	public JsonBean<Profit> payCard(@ApiParam(value = "查询主键", required = true)@PathVariable()Integer id,
+									@ApiParam(value = "",required = false)@RequestParam(value = "token",required = false)String token,
+									@ApiParam(value = "",required = false)@RequestParam(value = "name",required = false)String name,
+									@ApiParam(value = "",required = false)@RequestParam(value = "card",required = false)String card,
+									@ApiParam(value = "",required = false)@RequestParam(value = "bank",required = false)String bank,
+									@ApiParam(value = "",required = false)@RequestParam(value = "phone",required = false)String phone,
+									@ApiParam(value = "",required = false)@RequestParam(value = "idcard",required = false)String idcard,
+									@ApiParam(value = "",required = false)@RequestParam(value = "pay",required = false)Float pay){
+		try{
+			return new JsonBean(ErrorCode.SUCCESS, profitService.payToCard(token,id,name,card,bank,phone,idcard,pay));
+		}catch(ErrorCodeException e){
+			return new JsonBean(e.getErrorCode());
+		}
+	}
+
 	@ApiOperation(value = "增加收款")
 	@RequestMapping(value = "/recive/{id}",method = RequestMethod.PUT)
 	@ResponseBody

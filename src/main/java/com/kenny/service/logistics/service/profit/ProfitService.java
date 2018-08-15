@@ -3,6 +3,8 @@ package com.kenny.service.logistics.service.profit;
 import com.kenny.service.logistics.mapper.profit.ProfitStatusMapper;
 import com.kenny.service.logistics.model.profit.ProfitSet;
 import com.kenny.service.logistics.model.profit.ProfitStatus;
+import com.kenny.service.logistics.pay.PayUtils;
+import com.kenny.service.logistics.service.user.UserCompanyService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class ProfitService{
 	private ProfitMapper profitMapper;
 	@Autowired
 	private ProfitStatusMapper profitStatusMapper;
+	@Autowired
+	private UserCompanyService userCompanyService;
 
 	public Profit insert(Integer fk_order_id,String order_number,Float recive,Float pay, Integer belong_user_id){
 		Profit profit = new Profit();
@@ -69,6 +73,32 @@ public class ProfitService{
 			profit.setPay_now(pay_now);
 			profit.setIs_pay(false);
 		}
+		profitMapper.update(profit);
+
+		//增加记录
+		ProfitStatus profitStatus = new ProfitStatus();
+		profitStatus.setFk_profit_id(id);
+		profitStatus.setType("pay");
+		profitStatus.setValue(pay);
+		profitStatus.setTime(new Date());
+		return profit;
+	}
+
+	public Profit payToCard(String token,int id,String name,String card,String bank,String phone,String idcard,Float pay) throws ErrorCodeException{
+		//校验余额是否充足
+		userCompanyService.checkMoney(token,pay);
+
+		Profit profit = profitMapper.selectByPrimaryKey(id);
+		if(profit == null){
+			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+		}
+		//开始转账到指定银行
+		PayUtils.payToBankCard(profit.getOrder_number(),pay.toString(),name,card,bank,phone,idcard);
+		//修改存款
+		userCompanyService.reduceMoney(token,pay,"to_card_"+profit.getOrder_number());
+		//修改记录
+		Float pay_now = pay;
+		profit.setIs_pay(true);
 		profitMapper.update(profit);
 
 		//增加记录

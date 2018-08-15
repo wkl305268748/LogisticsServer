@@ -7,9 +7,9 @@ public class Keys {
 
 	public static String Md5key = "abcdefg";
 
-	public static String MemberID = "100000178";
+	public static String MemberID = "100000178";//"1218008";
 
-	public static String TerminalID = "100000859";
+	public static String TerminalID = "100000859";//"40374";
 
 	// 正式地址https://gw.baofoo.com/payindex
 	public static String payUrl = "https://vgw.baofoo.com/payindex";// 请求地址
@@ -22,11 +22,12 @@ public class Keys {
 
 	public static String dataType = "xml"; // 数据类型 xml/json
 
+	//https://public.baofoo.com/baofoo-fopay/pay/BF0040001.do
 	public static String payToBankUrl = "https://paytest.baofoo.com/baofoo-fopay/pay/BF0040001.do";
 
-	public static String keyStorePath = "d:\\CER\\m_pri.pfx";
+	public static String keyStorePath = "./cer_test/m_pri.pfx";
 
 	public static String keyStorePassword = "123456";
 
-	public static String pub_key = "d:\\CER\\baofoo_pub.cer";
+	public static String pub_key = "./cer_test/baofu.cer";
 }
