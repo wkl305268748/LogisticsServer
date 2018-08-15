@@ -1,9 +1,14 @@
 package com.kenny.service.logistics.service.profit;
 
+import com.kenny.service.logistics.json.response.PayCardResponse;
 import com.kenny.service.logistics.mapper.profit.ProfitStatusMapper;
+import com.kenny.service.logistics.model.order.OrderSet;
 import com.kenny.service.logistics.model.profit.ProfitSet;
 import com.kenny.service.logistics.model.profit.ProfitStatus;
+import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.user.UserSet;
 import com.kenny.service.logistics.pay.PayUtils;
+import com.kenny.service.logistics.service.order.OrderService;
 import com.kenny.service.logistics.service.user.UserCompanyService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,8 @@ public class ProfitService{
 	private ProfitStatusMapper profitStatusMapper;
 	@Autowired
 	private UserCompanyService userCompanyService;
+	@Autowired
+	private OrderService orderService;
 
 	public Profit insert(Integer fk_order_id,String order_number,Float recive,Float pay, Integer belong_user_id){
 		Profit profit = new Profit();
@@ -108,6 +115,36 @@ public class ProfitService{
 		profitStatus.setValue(pay);
 		profitStatus.setTime(new Date());
 		return profit;
+	}
+
+	public PayCardResponse getCard(String token, int id) throws ErrorCodeException{
+		PayCardResponse payCardResponse = new PayCardResponse();
+
+		//查询余额
+		UserSet userSet = userCompanyService.getUserByTokenEx(token);
+		if(userSet == null){
+			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+		}
+		payCardResponse.setMoney(userSet.getUserInfo().getMoney());
+
+		//查询订单
+		Profit profit = profitMapper.selectByPrimaryKey(id);
+		if(profit == null){
+			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+		}
+		OrderSet orderSet = orderService.selectByPrimaryKeyEx(profit.getFk_order_id());
+		if(orderSet == null){
+			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
+		}
+
+		//司机信息
+		payCardResponse.setBank(orderSet.getFleetDriver().getBank_addr());
+		payCardResponse.setCard(orderSet.getFleetDriver().getBank_number());
+		payCardResponse.setIdcard(orderSet.getFleetDriver().getIdcard());
+		payCardResponse.setName(orderSet.getFleetDriver().getName());
+		payCardResponse.setPhone(orderSet.getFleetDriver().getPhone());
+
+		return payCardResponse;
 	}
 
 	public Profit recive(Integer id,Float recive) throws ErrorCodeException{

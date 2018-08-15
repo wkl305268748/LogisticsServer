@@ -71,6 +71,18 @@ public class ProfitController{
 		}
 	}
 
+	@ApiOperation(value = "获取付款信息")
+	@RequestMapping(value = "/pay/card/{id}",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonBean<Profit> getCard(@ApiParam(value = "查询主键", required = true)@PathVariable()Integer id,
+									@ApiParam(value = "",required = false)@RequestParam(value = "token",required = false)String token){
+		try{
+			return new JsonBean(ErrorCode.SUCCESS, profitService.getCard(token,id));
+		}catch(ErrorCodeException e){
+			return new JsonBean(e.getErrorCode());
+		}
+	}
+
 	@ApiOperation(value = "增加收款")
 	@RequestMapping(value = "/recive/{id}",method = RequestMethod.PUT)
 	@ResponseBody
