@@ -110,7 +110,11 @@ public class PayUtils {
 					throw new ErrorCodeException(new ErrorCode(-1,return_msg));
 				}
 			}
-		} catch (Exception e){
+		}
+		catch (ErrorCodeException e){
+			throw new ErrorCodeException(e.getErrorCode());
+		}
+		catch (Exception e){
 			throw new ErrorCodeException(new ErrorCode(-1,e.getMessage()));
 		}
 	}

@@ -1,5 +1,6 @@
 package com.kenny.service.logistics.controller.profit;
 
+import com.kenny.service.logistics.json.response.PayCardResponse;
 import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.service.user.UserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +75,8 @@ public class ProfitController{
 	@ApiOperation(value = "获取付款信息")
 	@RequestMapping(value = "/pay/card/{id}",method = RequestMethod.GET)
 	@ResponseBody
-	public JsonBean<Profit> getCard(@ApiParam(value = "查询主键", required = true)@PathVariable()Integer id,
-									@ApiParam(value = "",required = false)@RequestParam(value = "token",required = false)String token){
+	public JsonBean<PayCardResponse> getCard(@ApiParam(value = "查询主键", required = true)@PathVariable()Integer id,
+											 @ApiParam(value = "",required = false)@RequestParam(value = "token",required = false)String token){
 		try{
 			return new JsonBean(ErrorCode.SUCCESS, profitService.getCard(token,id));
 		}catch(ErrorCodeException e){

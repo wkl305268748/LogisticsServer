@@ -227,6 +227,8 @@ public class SecurityUtil {
 		return new String(threeDesDecrypt(hex2Bytes(src), key.getBytes()));
 	}
 
+
+	/*
 	public static void main(String[] args) throws Exception {
 		String str = "数据加密的基本过程就是对原来为明文的文件或数据按某种算法进行处理，使其成为不可读的一段代码，通常称为“密文”，"
 				+ "使其只能在输入相应的密钥之后才能显示出本来内容，通过这样的途径来达到保护数据不被非法人窃取、阅读的目的。 " + "该过程的逆过程为解密，即将该编码信息转化为其原来数据的过程。";
@@ -294,6 +296,6 @@ public class SecurityUtil {
 			threeDesDecrypt(str3Des, PWD);
 		System.out.println("3Des:" + (System.currentTimeMillis() - t1));
 
-	}
+	}*/
 
 }

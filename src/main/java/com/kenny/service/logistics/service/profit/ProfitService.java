@@ -10,6 +10,7 @@ import com.kenny.service.logistics.model.user.UserSet;
 import com.kenny.service.logistics.pay.PayUtils;
 import com.kenny.service.logistics.service.order.OrderService;
 import com.kenny.service.logistics.service.user.UserCompanyService;
+import com.kenny.service.logistics.service.util.PayService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ public class ProfitService{
 	private UserCompanyService userCompanyService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private PayService payService;
 
 	public Profit insert(Integer fk_order_id,String order_number,Float recive,Float pay, Integer belong_user_id){
 		Profit profit = new Profit();
@@ -100,7 +103,7 @@ public class ProfitService{
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
 		}
 		//开始转账到指定银行
-		PayUtils.payToBankCard(profit.getOrder_number(),pay.toString(),name,card,bank,phone,idcard);
+		payService.payToBankCard(profit.getOrder_number(),pay.toString(),name,card,bank,phone,idcard);
 		//修改存款
 		userCompanyService.reduceMoney(token,pay,"to_card_"+profit.getOrder_number());
 		//修改记录
@@ -132,6 +135,8 @@ public class ProfitService{
 		if(profit == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
 		}
+		payCardResponse.setPay(profit.getPay());
+
 		OrderSet orderSet = orderService.selectByPrimaryKeyEx(profit.getFk_order_id());
 		if(orderSet == null){
 			throw new ErrorCodeException(ErrorCodeException.DATA_NO_ERROR);
