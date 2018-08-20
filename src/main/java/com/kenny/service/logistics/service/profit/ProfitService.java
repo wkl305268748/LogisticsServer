@@ -107,8 +107,8 @@ public class ProfitService{
 		//修改存款
 		userCompanyService.reduceMoney(token,pay,"to_card_"+profit.getOrder_number());
 		//修改记录
-		Float pay_now = pay;
 		profit.setIs_pay(true);
+		profit.setPay_now(pay);
 		profitMapper.update(profit);
 
 		//增加记录
