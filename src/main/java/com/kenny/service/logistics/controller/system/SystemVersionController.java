@@ -3,12 +3,11 @@ package com.kenny.service.logistics.controller.system;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.system.SystemVersion;
+import com.kenny.service.logistics.model.po.system.SystemVersion;
 import com.kenny.service.logistics.service.system.SystemVersionService;
 
 @Api(value = "/v1/system/version", description = "")

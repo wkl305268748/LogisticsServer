@@ -2,8 +2,8 @@ package com.kenny.service.logistics.service.fleet;
 
 import com.kenny.service.logistics.mapper.fleet.FleetCarMapper;
 import com.kenny.service.logistics.mapper.fleet.FleetLicenseMapper;
-import com.kenny.service.logistics.model.fleet.FleetCar;
-import com.kenny.service.logistics.model.fleet.FleetCarSet;
+import com.kenny.service.logistics.model.po.fleet.FleetCar;
+import com.kenny.service.logistics.model.po.fleet.FleetCarSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

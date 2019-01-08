@@ -1,7 +1,7 @@
 package com.kenny.service.logistics.controller.finance;
 
-import com.kenny.service.logistics.model.user.User;
-import com.kenny.service.logistics.model.user.UserSet;
+import com.kenny.service.logistics.model.po.user.User;
+import com.kenny.service.logistics.model.po.user.UserSet;
 import com.kenny.service.logistics.service.user.UserCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
@@ -11,7 +11,7 @@ import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.finance.FinanceRecharge;
+import com.kenny.service.logistics.model.po.finance.FinanceRecharge;
 import com.kenny.service.logistics.service.finance.FinanceRechargeService;
 
 @Api(value = "/v1/finance/recharge", description = "用户充值表，记录用户充值信息")

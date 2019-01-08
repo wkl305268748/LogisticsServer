@@ -2,25 +2,17 @@ package com.kenny.service.logistics.service.order;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kenny.service.logistics.exception.OrderErrorCode;
 import com.kenny.service.logistics.mapper.order.OrderGoodsMapper;
-import com.kenny.service.logistics.mapper.order.OrderStatusMapper;
-import com.kenny.service.logistics.model.order.OrderGoods;
-import com.kenny.service.logistics.model.order.OrderStatus;
-import com.kenny.service.logistics.model.system.Defind;
-import io.swagger.models.auth.In;
+import com.kenny.service.logistics.model.po.order.OrderGoods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
-import java.util.ArrayList;
-import java.util.Random;
 
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
-import com.kenny.service.logistics.model.order.OrderCustomer;
+import com.kenny.service.logistics.model.po.order.OrderCustomer;
 import com.kenny.service.logistics.mapper.order.OrderCustomerMapper;
 
 @Service

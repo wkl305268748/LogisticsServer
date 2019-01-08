@@ -1,6 +1,6 @@
 package com.kenny.service.logistics.mapper.fleet;
 
-import com.kenny.service.logistics.model.fleet.FleetLicense;
+import com.kenny.service.logistics.model.po.fleet.FleetLicense;
 import org.apache.ibatis.annotations.*;
 import java.util.List;
 

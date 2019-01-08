@@ -2,12 +2,12 @@ package com.kenny.service.logistics.service.profit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Date;
-import java.util.ArrayList;
+
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
-import com.kenny.service.logistics.model.profit.ProfitStatus;
+import com.kenny.service.logistics.model.po.profit.ProfitStatus;
 import com.kenny.service.logistics.mapper.profit.ProfitStatusMapper;
 
 @Service

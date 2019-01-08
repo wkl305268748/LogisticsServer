@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.kenny.service.logistics.mapper.fleet.FleetLicenseMapper;
-import com.kenny.service.logistics.model.fleet.FleetLicense;
+import com.kenny.service.logistics.model.po.fleet.FleetLicense;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

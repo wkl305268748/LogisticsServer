@@ -2,7 +2,7 @@ package com.kenny.service.logistics.mapper.profit;
 
 import org.apache.ibatis.annotations.*;
 import java.util.List;
-import com.kenny.service.logistics.model.profit.ProfitStatus;
+import com.kenny.service.logistics.model.po.profit.ProfitStatus;
 
 @Mapper
 public interface ProfitStatusMapper{

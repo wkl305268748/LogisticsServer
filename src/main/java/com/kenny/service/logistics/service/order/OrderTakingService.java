@@ -1,17 +1,14 @@
 package com.kenny.service.logistics.service.order;
 
 import com.kenny.service.logistics.mapper.order.OrderCustomerMapper;
-import com.kenny.service.logistics.mapper.order.OrderStatusMapper;
-import com.kenny.service.logistics.model.order.OrderCustomer;
-import com.kenny.service.logistics.model.order.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Date;
-import java.util.ArrayList;
+
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
-import com.kenny.service.logistics.model.order.OrderTaking;
+import com.kenny.service.logistics.model.po.order.OrderTaking;
 import com.kenny.service.logistics.mapper.order.OrderTakingMapper;
 
 @Service

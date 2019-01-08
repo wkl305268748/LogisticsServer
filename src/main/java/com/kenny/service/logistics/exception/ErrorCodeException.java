@@ -4,7 +4,7 @@ package com.kenny.service.logistics.exception;
  * 用户自定义异常
  * Created by AutoCode on 2017/7/8
  */
-public class ErrorCodeException extends Exception{
+public class ErrorCodeException extends RuntimeException{
 
     ErrorCode errorCode;
     public static final ErrorCode PARAM_ERROR = new ErrorCode(101, "参数错误");

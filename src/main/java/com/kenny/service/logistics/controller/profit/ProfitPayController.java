@@ -1,19 +1,9 @@
 package com.kenny.service.logistics.controller.profit;
 
-import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.exception.ErrorCodeException;
-import com.kenny.service.logistics.json.JsonBean;
-import com.kenny.service.logistics.json.response.PageResponse;
-import com.kenny.service.logistics.model.profit.Profit;
-import com.kenny.service.logistics.model.user.User;
 import com.kenny.service.logistics.pay.PayUtils;
 import com.kenny.service.logistics.pay.utils.TransReqBF0040001;
-import com.kenny.service.logistics.service.profit.ProfitService;
-import com.kenny.service.logistics.service.user.UserBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "/v1/profit/pay", description = "")

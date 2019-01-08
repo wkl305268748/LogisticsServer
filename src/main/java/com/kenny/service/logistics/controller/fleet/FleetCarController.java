@@ -1,7 +1,7 @@
 package com.kenny.service.logistics.controller.fleet;
 
-import com.kenny.service.logistics.model.fleet.FleetCarSet;
-import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.po.fleet.FleetCarSet;
+import com.kenny.service.logistics.model.po.user.User;
 import com.kenny.service.logistics.service.fleet.FleetLicenseService;
 import com.kenny.service.logistics.service.user.UserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.fleet.FleetCar;
+import com.kenny.service.logistics.model.po.fleet.FleetCar;
 import com.kenny.service.logistics.service.fleet.FleetCarService;
 
 @Api(value = "/v1/fleet/car", description = "车辆模块")
@@ -34,7 +34,7 @@ public class FleetCarController {
 	@ResponseBody
 	@Transactional
 	public JsonBean<FleetCar> Insert(@ApiParam(value = "用户token",required = true)@RequestParam(value = "token",required = true)String token,
-									 @ApiParam(value = "车牌号如皖A5504",required = true)@RequestParam(value = "plate",required = true)String plate,
+									  @ApiParam(value = "车牌号如皖A5504",required = true)@RequestParam(value = "plate",required = true)String plate,
                                      @ApiParam(value = "车辆类型如面包车",required = true)@RequestParam(value = "type",required = true)String type,
                                      @ApiParam(value = "车辆所属如自有车辆",required = true)@RequestParam(value = "resource",required = true)String resource,
                                      @ApiParam(value = "挂车车牌",required = false)@RequestParam(value = "two_plate",required = false)String two_plate,

@@ -3,12 +3,10 @@ package com.kenny.service.logistics.controller.profit;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
-import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.profit.ProfitStatus;
+import com.kenny.service.logistics.model.po.profit.ProfitStatus;
 import com.kenny.service.logistics.service.profit.ProfitStatusService;
 
 @Api(value = "/v1/profit_status", description = "")

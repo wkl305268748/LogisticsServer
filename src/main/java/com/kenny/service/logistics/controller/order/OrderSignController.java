@@ -1,25 +1,20 @@
 package com.kenny.service.logistics.controller.order;
 
-import com.kenny.service.logistics.model.order.Order;
-import com.kenny.service.logistics.model.order.OrderCustomer;
-import com.kenny.service.logistics.model.system.Defind;
-import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.po.order.Order;
+import com.kenny.service.logistics.model.po.system.Defind;
+import com.kenny.service.logistics.model.po.user.User;
 import com.kenny.service.logistics.service.order.*;
 import com.kenny.service.logistics.service.user.UserBaseService;
-import com.kenny.service.logistics.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.order.OrderSign;
-
-import javax.swing.*;
+import com.kenny.service.logistics.model.po.order.OrderSign;
 
 @Api(value = "/v1/order/sign", description = "定单签收表")
 @RequestMapping(value = "/v1/order/sign")

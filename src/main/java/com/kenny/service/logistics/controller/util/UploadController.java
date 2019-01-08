@@ -2,7 +2,6 @@ package com.kenny.service.logistics.controller.util;
 
 import com.kenny.service.logistics.exception.ErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
-import com.kenny.service.logistics.model.user.User;
 import com.qiniu.util.Auth;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

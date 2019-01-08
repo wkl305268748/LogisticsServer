@@ -6,9 +6,8 @@ import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.json.response.SelectOptionResponse;
-import com.kenny.service.logistics.model.user.User;
-import com.kenny.service.logistics.model.user.UserInfo;
-import com.kenny.service.logistics.model.user.UserSet;
+import com.kenny.service.logistics.model.po.user.User;
+import com.kenny.service.logistics.model.po.user.UserSet;
 import com.kenny.service.logistics.service.system.SystemConfigService;
 import com.kenny.service.logistics.service.user.*;
 import io.swagger.annotations.Api;
@@ -17,7 +16,6 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 

@@ -1,11 +1,10 @@
 package com.kenny.service.logistics.mapper.order;
 
-import com.kenny.service.logistics.model.order.OrderCustomer;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
-import com.kenny.service.logistics.model.order.Order;
+import com.kenny.service.logistics.model.po.order.Order;
 
 @Mapper
 public interface OrderMapper{
@@ -97,4 +96,6 @@ public interface OrderMapper{
 	//按天统计指定公司的订单数
 	@Select("SELECT COUNT(*) FROM tb_order WHERE date_format(time,'%Y-%m-%d') = date_format(#{day},'%Y-%m-%d') AND fk_want_company_id = #{fk_want_company_id}")
 	int countByDayAndWantCompany(@Param(value = "day")Date day,@Param(value = "fk_want_company_id")Integer fk_want_company_id);
+
+
 }

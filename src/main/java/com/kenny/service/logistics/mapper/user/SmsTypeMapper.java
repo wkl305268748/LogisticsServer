@@ -1,7 +1,7 @@
 package com.kenny.service.logistics.mapper.user;
 
 
-import com.kenny.service.logistics.model.user.SmsType;
+import com.kenny.service.logistics.model.po.user.SmsType;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

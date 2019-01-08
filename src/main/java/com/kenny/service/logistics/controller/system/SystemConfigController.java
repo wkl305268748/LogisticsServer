@@ -1,16 +1,15 @@
 package com.kenny.service.logistics.controller.system;
 
-import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.po.user.User;
 import com.kenny.service.logistics.service.user.UserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.system.SystemConfig;
+import com.kenny.service.logistics.model.po.system.SystemConfig;
 import com.kenny.service.logistics.service.system.SystemConfigService;
 
 @Api(value = "/v1/system/config", description = "系统配置表")

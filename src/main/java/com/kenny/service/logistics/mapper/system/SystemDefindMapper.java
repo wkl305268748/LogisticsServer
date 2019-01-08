@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-import com.kenny.service.logistics.model.system.SystemDefind;
+import com.kenny.service.logistics.model.po.system.SystemDefind;
 
 @Mapper
 public interface SystemDefindMapper {

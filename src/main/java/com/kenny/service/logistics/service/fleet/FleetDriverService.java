@@ -3,10 +3,10 @@ package com.kenny.service.logistics.service.fleet;
 import com.kenny.service.logistics.mapper.fleet.FleetDriverLicenseMapper;
 import com.kenny.service.logistics.mapper.fleet.FleetDriverMapper;
 import com.kenny.service.logistics.mapper.fleet.FleetLicenseMapper;
-import com.kenny.service.logistics.model.fleet.FleetDriver;
-import com.kenny.service.logistics.model.fleet.FleetDriverLicense;
-import com.kenny.service.logistics.model.fleet.FleetDriverSet;
-import com.kenny.service.logistics.model.fleet.FleetLicense;
+import com.kenny.service.logistics.model.po.fleet.FleetDriver;
+import com.kenny.service.logistics.model.po.fleet.FleetDriverLicense;
+import com.kenny.service.logistics.model.po.fleet.FleetDriverSet;
+import com.kenny.service.logistics.model.po.fleet.FleetLicense;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

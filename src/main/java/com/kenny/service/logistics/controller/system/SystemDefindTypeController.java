@@ -3,14 +3,14 @@ package com.kenny.service.logistics.controller.system;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
+
 import java.util.List;
 
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.system.SystemDefindType;
+import com.kenny.service.logistics.model.po.system.SystemDefindType;
 import com.kenny.service.logistics.service.system.SystemDefindTypeService;
 
 @Api(value = "/v1/system/defind_type", description = "系统所有标准菜单的类型")

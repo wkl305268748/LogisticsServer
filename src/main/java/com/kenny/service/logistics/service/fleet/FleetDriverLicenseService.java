@@ -3,7 +3,7 @@ package com.kenny.service.logistics.service.fleet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kenny.service.logistics.mapper.fleet.FleetDriverLicenseMapper;
-import com.kenny.service.logistics.model.fleet.FleetDriverLicense;
+import com.kenny.service.logistics.model.po.fleet.FleetDriverLicense;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

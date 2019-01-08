@@ -2,7 +2,7 @@ package com.kenny.service.logistics.mapper.user;
 
 import org.apache.ibatis.annotations.*;
 import java.util.List;
-import com.kenny.service.logistics.model.user.UserAuth;
+import com.kenny.service.logistics.model.po.user.UserAuth;
 
 @Mapper
 public interface UserAuthMapper{

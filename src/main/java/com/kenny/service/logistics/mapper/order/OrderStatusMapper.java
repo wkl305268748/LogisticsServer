@@ -1,12 +1,11 @@
 package com.kenny.service.logistics.mapper.order;
 
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
 
-import com.kenny.service.logistics.model.order.OrderStatus;
+import com.kenny.service.logistics.model.po.order.OrderStatus;
 
 @Mapper
 public interface OrderStatusMapper {

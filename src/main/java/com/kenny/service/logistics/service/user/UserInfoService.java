@@ -5,8 +5,8 @@ import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.mapper.user.UserInfoMapper;
 import com.kenny.service.logistics.mapper.user.UserMapper;
-import com.kenny.service.logistics.model.user.User;
-import com.kenny.service.logistics.model.user.UserInfo;
+import com.kenny.service.logistics.model.po.user.User;
+import com.kenny.service.logistics.model.po.user.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

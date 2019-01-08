@@ -1,18 +1,13 @@
 package com.kenny.service.logistics.service.order;
 
-import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.exception.ErrorCodeException;
-import com.kenny.service.logistics.mapper.order.OrderCustomerMapper;
 import com.kenny.service.logistics.mapper.order.OrderMapper;
 import com.kenny.service.logistics.mapper.order.OrderStatusMapper;
-import com.kenny.service.logistics.model.system.Defind;
-import com.kenny.service.logistics.model.user.UserSet;
+import com.kenny.service.logistics.model.po.system.Defind;
+import com.kenny.service.logistics.model.po.user.UserSet;
 import com.kenny.service.logistics.service.user.UserManagerService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -42,6 +37,10 @@ public class OrderCountService {
     }
     public int getAllCount(){
         return orderMapper.count();
+    }
+
+    public int getAllOrderMoney(){
+        return orderMapper.countByStatus("ORDER_SIGN");
     }
 
     public Map<String,Object> getOrderCompanyMap(Integer offset,Integer pageSize){

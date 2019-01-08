@@ -3,12 +3,11 @@ package com.kenny.service.logistics.controller.order;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
 import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.order.OrderContract;
+import com.kenny.service.logistics.model.po.order.OrderContract;
 import com.kenny.service.logistics.service.order.OrderContractService;
 
 @Api(value = "/v1/order/contract", description = "合同信息表")

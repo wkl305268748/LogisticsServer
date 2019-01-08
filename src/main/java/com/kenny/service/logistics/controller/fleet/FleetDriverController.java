@@ -1,8 +1,7 @@
 package com.kenny.service.logistics.controller.fleet;
 
-import com.kenny.service.logistics.exception.UserErrorCode;
-import com.kenny.service.logistics.model.fleet.FleetDriverSet;
-import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.po.fleet.FleetDriverSet;
+import com.kenny.service.logistics.model.po.user.User;
 import com.kenny.service.logistics.service.fleet.FleetDriverLicenseService;
 import com.kenny.service.logistics.service.fleet.FleetLicenseService;
 import com.kenny.service.logistics.service.user.UserBaseService;
@@ -17,7 +16,7 @@ import com.kenny.service.logistics.json.JsonBean;
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.ErrorCode;
-import com.kenny.service.logistics.model.fleet.FleetDriver;
+import com.kenny.service.logistics.model.po.fleet.FleetDriver;
 import com.kenny.service.logistics.service.fleet.FleetDriverService;
 
 @Api(value = "/v1/fleet/driver", description = "司机模块")
@@ -101,7 +100,6 @@ public class FleetDriverController {
                                         @ApiParam(value = "姓名", required = true) @RequestParam(value = "name", required = true) String name,
                                         @ApiParam(value = "", required = false) @RequestParam(value = "sex", required = false) String sex,
                                         @ApiParam(value = "手机号", required = true) @RequestParam(value = "phone", required = true) String phone,
-                                        @ApiParam(value = "司机APP客户端密码，默认123456", required = true) @RequestParam(value = "password", required = true) String password,
                                         @ApiParam(value = "是否短信通知司机", required = true) @RequestParam(value = "is_sms", required = true) Boolean is_sms,
                                         @ApiParam(value = "身份证号码", required = false) @RequestParam(value = "idcard", required = false) String idcard,
                                         @ApiParam(value = "邮箱", required = false) @RequestParam(value = "email", required = false) String email,

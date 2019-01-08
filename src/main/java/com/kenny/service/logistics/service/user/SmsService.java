@@ -5,17 +5,13 @@ import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.mapper.user.SmsMapper;
 import com.kenny.service.logistics.mapper.user.SmsTypeMapper;
-import com.kenny.service.logistics.model.user.Sms;
-import com.kenny.service.logistics.model.user.SmsType;
+import com.kenny.service.logistics.model.po.user.Sms;
 import com.kenny.service.logistics.service.util.SmsSendService;
-import com.kenny.service.logistics.util.AliSmsUtil;
 import com.kenny.service.logistics.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**

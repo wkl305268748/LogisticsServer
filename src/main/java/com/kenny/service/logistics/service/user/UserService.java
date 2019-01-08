@@ -3,20 +3,15 @@ package com.kenny.service.logistics.service.user;
 
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
-import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.mapper.user.UserInfoMapper;
 import com.kenny.service.logistics.mapper.user.UserMapper;
 import com.kenny.service.logistics.mapper.user.UserTokenMapper;
-import com.kenny.service.logistics.model.user.User;
-import com.kenny.service.logistics.model.user.UserInfo;
-import com.kenny.service.logistics.model.user.UserSet;
-import com.kenny.service.logistics.model.user.UserToken;
+import com.kenny.service.logistics.model.po.user.User;
+import com.kenny.service.logistics.model.po.user.UserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class UserService {

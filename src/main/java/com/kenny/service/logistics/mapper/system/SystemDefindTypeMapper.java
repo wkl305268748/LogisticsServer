@@ -2,7 +2,7 @@ package com.kenny.service.logistics.mapper.system;
 
 import org.apache.ibatis.annotations.*;
 import java.util.List;
-import com.kenny.service.logistics.model.system.SystemDefindType;
+import com.kenny.service.logistics.model.po.system.SystemDefindType;
 
 @Mapper
 public interface SystemDefindTypeMapper{

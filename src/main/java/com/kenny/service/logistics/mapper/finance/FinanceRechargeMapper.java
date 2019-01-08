@@ -2,7 +2,7 @@ package com.kenny.service.logistics.mapper.finance;
 
 import org.apache.ibatis.annotations.*;
 import java.util.List;
-import com.kenny.service.logistics.model.finance.FinanceRecharge;
+import com.kenny.service.logistics.model.po.finance.FinanceRecharge;
 
 @Mapper
 public interface FinanceRechargeMapper{

@@ -3,7 +3,7 @@ package com.kenny.service.logistics.controller.user;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
-import com.kenny.service.logistics.model.user.*;
+import com.kenny.service.logistics.model.po.user.*;
 import com.kenny.service.logistics.service.user.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

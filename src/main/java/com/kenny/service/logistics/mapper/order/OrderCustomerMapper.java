@@ -2,7 +2,7 @@ package com.kenny.service.logistics.mapper.order;
 
 import org.apache.ibatis.annotations.*;
 import java.util.List;
-import com.kenny.service.logistics.model.order.OrderCustomer;
+import com.kenny.service.logistics.model.po.order.OrderCustomer;
 
 @Mapper
 public interface OrderCustomerMapper{

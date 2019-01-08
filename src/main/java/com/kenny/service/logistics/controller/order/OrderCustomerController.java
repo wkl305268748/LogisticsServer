@@ -1,36 +1,25 @@
 package com.kenny.service.logistics.controller.order;
 
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.kenny.service.logistics.exception.ErrorCode;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.exception.UserErrorCode;
 import com.kenny.service.logistics.json.JsonBean;
-import com.kenny.service.logistics.json.response.PageResponse;
-import com.kenny.service.logistics.model.order.Order;
-import com.kenny.service.logistics.model.order.OrderCustomer;
-import com.kenny.service.logistics.model.order.OrderGoods;
-import com.kenny.service.logistics.model.system.Defind;
-import com.kenny.service.logistics.model.user.User;
+import com.kenny.service.logistics.model.po.order.Order;
+import com.kenny.service.logistics.model.po.order.OrderCustomer;
+import com.kenny.service.logistics.model.po.system.Defind;
+import com.kenny.service.logistics.model.po.user.User;
 import com.kenny.service.logistics.service.order.*;
 import com.kenny.service.logistics.service.user.UserBaseService;
-import com.kenny.service.logistics.service.user.UserCompanyService;
-import com.kenny.service.logistics.service.user.UserCustomerService;
-import com.kenny.service.logistics.service.user.UserService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
-import java.util.List;
 
 
 @Api(value = "/v1/order/customer", description = "客户订单接口模块")

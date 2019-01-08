@@ -2,24 +2,20 @@ package com.kenny.service.logistics.service.profit;
 
 import com.kenny.service.logistics.json.response.PayCardResponse;
 import com.kenny.service.logistics.mapper.profit.ProfitStatusMapper;
-import com.kenny.service.logistics.model.order.OrderSet;
-import com.kenny.service.logistics.model.profit.ProfitSet;
-import com.kenny.service.logistics.model.profit.ProfitStatus;
-import com.kenny.service.logistics.model.user.User;
-import com.kenny.service.logistics.model.user.UserSet;
-import com.kenny.service.logistics.pay.PayUtils;
+import com.kenny.service.logistics.model.po.order.OrderSet;
+import com.kenny.service.logistics.model.po.profit.ProfitStatus;
+import com.kenny.service.logistics.model.po.user.UserSet;
 import com.kenny.service.logistics.service.order.OrderService;
 import com.kenny.service.logistics.service.user.UserCompanyService;
 import com.kenny.service.logistics.service.util.PayService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Date;
-import java.util.ArrayList;
+
 import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.exception.ErrorCodeException;
-import com.kenny.service.logistics.model.profit.Profit;
+import com.kenny.service.logistics.model.po.profit.Profit;
 import com.kenny.service.logistics.mapper.profit.ProfitMapper;
 
 @Service
