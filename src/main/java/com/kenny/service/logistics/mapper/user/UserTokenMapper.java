@@ -1,13 +1,14 @@
 package com.kenny.service.logistics.mapper.user;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.kenny.service.logistics.model.po.user.UserToken;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface UserTokenMapper {
+public interface UserTokenMapper extends BaseMapper<UserToken> {
 
     @Insert("INSERT INTO tb_user_token(token,user_id,time,is_valid) VALUES(#{token},#{user_id},#{time},#{is_valid})")
     @Options(useGeneratedKeys = true, keyProperty = "id")

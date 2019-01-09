@@ -43,6 +43,14 @@ public interface OrderMapper{
 	@Select("SELECT COUNT(*) FROM tb_order WHERE fk_customer_id = #{fk_customer_id}")
 	int countByCustomer(@Param(value = "fk_customer_id") Integer fk_customer_id);
 
+
+	//按下单用户
+	@Select("SELECT * FROM tb_order WHERE fk_customer_id = #{fk_customer_id} AND order_number like '%#{keyword}%' ORDER BY time DESC limit #{offset},#{pageSize}")
+	List<Order> selectPageByCustomer(@Param(value = "offset") Integer offset, @Param(value = "pageSize") Integer pageSize, @Param(value = "fk_customer_id") Integer fk_customer_id, @Param(value = "keyword") String keyword);
+
+	@Select("SELECT COUNT(*) FROM tb_order WHERE fk_customer_id = #{fk_customer_id} AND order_number like '%#{keyword}%'")
+	int countByCustomer(@Param(value = "fk_customer_id") Integer fk_customer_id, @Param(value = "keyword") String keyword);
+
 	//按接单物流公司查询（指定物流公司或者接单物流公司）
 	@Select("SELECT * FROM tb_order WHERE fk_company_id = #{fk_company_id} OR fk_want_company_id = #{fk_company_id}  ORDER BY time DESC limit #{offset},#{pageSize}")
 	List<Order> selectPageByCompany(@Param(value = "offset") Integer offset, @Param(value = "pageSize") Integer pageSize, @Param(value = "fk_company_id") Integer fk_company_id);
@@ -98,4 +106,10 @@ public interface OrderMapper{
 	int countByDayAndWantCompany(@Param(value = "day")Date day,@Param(value = "fk_want_company_id")Integer fk_want_company_id);
 
 
+	//获取所有订单金额
+	@Select("SELECT SUM(total) FROM tb_order_customer")
+	Float countAllMoney();
+
+	@Select("SELECT SUM(tb_order_customer.total) FROM tb_order,tb_order_customer WHERE tb_order.id = tb_order_customer.fk_order_id AND tb_order.fk_company_id = #{fk_company_id}")
+	Float countMoneyByCompany(@Param(value = "fk_company_id") Integer fk_company_id);
 }

@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.IOException;
 
-@MapperScan("com.kenny.service.logistics.mapper")
+@MapperScan({"com.kenny.service.logistics.mapper","com.baomidou.mybatisplus.samples.quickstart.mapper"})
 @SpringBootApplication
  //启动入口
 public class Application {

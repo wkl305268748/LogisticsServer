@@ -50,7 +50,16 @@ public class OrderCountController {
         countMaps.put("order_taking",orderCountService.getTakingCount());
         countMaps.put("order_sign",orderCountService.getSignCount());
         countMaps.put("order_refuse",orderCountService.getRefuseCount());
+        countMaps.put("order_all_money",orderCountService.getAllOrderMoney());
         return new JsonBean(ErrorCode.SUCCESS,countMaps);
+    }
+
+    @ApiOperation(value = "按账户Top10统计金额总数量")
+    @RequestMapping(value = "order/company/money", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonBean<Map> OrderCompanyMoney() throws ErrorCodeException {
+
+        return new JsonBean(ErrorCode.SUCCESS,orderCountService.getOrderCompanyMoneyMapTop10());
     }
 
     @ApiOperation(value = "按账户统计订单总数量")

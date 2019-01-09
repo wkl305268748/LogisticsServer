@@ -49,11 +49,12 @@ public class OrderController {
     @RequestMapping(value = "/page/customer", method = RequestMethod.GET)
     @ResponseBody
     public JsonBean<PageResponse<OrderSet>> selectPageByCustomerToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
-                                                              @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                              @ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
+                                                                      @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                                      @ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token,
+                                                                      @ApiParam(value = "关键字", required = false) @RequestParam(value = "keyword", required = false) String keyword) {
         try {
             User user = userBaseService.getUserByToken(token);
-            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByCustomer(offset, pageSize, user.getId()));
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByCustomer(offset, pageSize, user.getId(),keyword));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -64,10 +65,11 @@ public class OrderController {
     @ResponseBody
     public JsonBean<PageResponse<OrderSet>> selectPageByCompanyToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
                                                                      @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                                     @ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
+                                                                     @ApiParam(value = "用户TOKEN", required = true) @RequestParam(value = "token", required = true) String token,
+                                                                     @ApiParam(value = "关键字", required = false) @RequestParam(value = "keyword", required = false) String keyword) {
         try {
             User user = userBaseService.getUserByToken(token);
-            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByCompany(offset, pageSize, user.getId()));
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByCompany(offset, pageSize, user.getId(),keyword));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -105,8 +107,8 @@ public class OrderController {
     @RequestMapping(value = "/page/driver", method = RequestMethod.GET)
     @ResponseBody
     public JsonBean<PageResponse<OrderSet>> selectPageByDriverToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
-                                                                         @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                                         @ApiParam(value = "司机TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
+                                                                    @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                                    @ApiParam(value = "司机TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
         try {
             User user = userBaseService.getUserByToken(token);
             FleetDriver fleetDriver = fleetDriverService.selectByUserId(user.getId());
@@ -121,12 +123,12 @@ public class OrderController {
     @RequestMapping(value = "/page_taking/driver", method = RequestMethod.GET)
     @ResponseBody
     public JsonBean<PageResponse<OrderSet>> selectPageTakingByDriverToken(@ApiParam(value = "从第几个开始列出") @RequestParam(required = false, defaultValue = "0") Integer offset,
-                                                                    @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                                    @ApiParam(value = "司机TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
+                                                                          @ApiParam(value = "每页内容数量") @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                                          @ApiParam(value = "司机TOKEN", required = true) @RequestParam(value = "token", required = true) String token) {
         try {
             User user = userBaseService.getUserByToken(token);
             FleetDriver fleetDriver = fleetDriverService.selectByUserId(user.getId());
-            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByDriverAndStatus(offset, pageSize, fleetDriver.getId(),Defind.ORDER_TAKING));
+            return new JsonBean(ErrorCode.SUCCESS, orderService.selectPageByDriverAndStatus(offset, pageSize, fleetDriver.getId(), Defind.ORDER_TAKING));
         } catch (ErrorCodeException e) {
             return new JsonBean(e.getErrorCode());
         }
@@ -169,7 +171,7 @@ public class OrderController {
     @ApiOperation(value = "删除Order")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public JsonBean deleteByPrimaryKey(@ApiParam(value = "查询主键", required = true) @PathVariable() Integer id){
+    public JsonBean deleteByPrimaryKey(@ApiParam(value = "查询主键", required = true) @PathVariable() Integer id) {
         orderService.deleteByPrimaryKey(id);
         return new JsonBean(ErrorCode.SUCCESS);
     }

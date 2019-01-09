@@ -21,6 +21,7 @@ public class AdviceController {
         jsonBean.setSuccess(false);
         jsonBean.setError_code(500);
         jsonBean.setMsg("系统错误，请联系开发人员："+ex.getMessage());
+        ex.printStackTrace();
         return jsonBean;
     }
 

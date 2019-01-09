@@ -1,5 +1,9 @@
 package com.kenny.service.logistics.service.order;
 
+import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kenny.service.logistics.exception.ErrorCodeException;
 import com.kenny.service.logistics.mapper.fleet.FleetCarMapper;
 import com.kenny.service.logistics.mapper.fleet.FleetDriverMapper;
@@ -11,6 +15,9 @@ import com.kenny.service.logistics.json.response.PageResponse;
 import com.kenny.service.logistics.model.po.order.OrderStatus;
 import com.kenny.service.logistics.model.po.system.Defind;
 import com.kenny.service.logistics.service.user.UserManagerService;
+import com.sun.org.apache.xpath.internal.operations.Or;
+import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +47,8 @@ public class OrderService {
 	private OrderContractMapper orderContractMapper;
 	@Autowired
 	private OrderMapper orderMapper;
+	@Autowired
+	private OrderPlusMapper orderPlusMapper;
 	@Autowired
 	private OrderStatusMapper orderStatusMapper;
 	@Autowired
@@ -149,24 +158,37 @@ public class OrderService {
 
 	/**
 	 * 查询用户下单列表
+	 * 多条件查询
+	 * 1.根据订单号模糊查询
 	 * @param offset
 	 * @param pageSize
 	 * @param user_id
 	 * @return
 	 * @throws ErrorCodeException
 	 */
-	public PageResponse<OrderSet> selectPageByCustomer(int offset, int pageSize, Integer user_id) throws ErrorCodeException {
-		List<Order> orders = orderMapper.selectPageByCustomer(offset,pageSize,user_id);
-		int count = orderMapper.countByCustomer(user_id);
+	public PageResponse<OrderSet> selectPageByCustomer(int offset,
+													   int pageSize,
+													   Integer user_id,
+													   String keyword) throws ErrorCodeException {
+		QueryWrapper<Order> wrapper = new QueryWrapper();
+		Page<Order> page = new Page<>(offset, pageSize);
+		wrapper.eq("fk_customer_id",user_id)
+				.orderByDesc("time");
+		if(StringUtils.isNotEmpty(keyword)){
+			wrapper.like("order_number",keyword);
+		}
+
+		IPage<Order> orders = orderPlusMapper.selectPage(page,wrapper);
+
 		List<OrderSet> orderSets = new ArrayList<>();
-		for(Order order : orders){
+		for(Order order : orders.getRecords()){
 			orderSets.add(selectByOrder(order));
 		}
 		PageResponse<OrderSet> response = new PageResponse<>();
-		response.setTotal(count);
+		response.setTotal((int)orders.getTotal());
 		response.setItem(orderSets);
-		response.setPageSize(pageSize);
-		response.setOffset(offset);
+		response.setPageSize((int)orders.getPages());
+		response.setOffset((int)orders.getCurrent());
 		return response;
 	}
 
@@ -179,18 +201,28 @@ public class OrderService {
 	 * @return
 	 * @throws ErrorCodeException
 	 */
-	public PageResponse<OrderSet> selectPageByCompany(int offset, int pageSize, Integer user_id) throws ErrorCodeException {
-		List<Order> orders = orderMapper.selectPageByCompany(offset,pageSize,user_id);
-		int count = orderMapper.countByCompany(user_id);
+	public PageResponse<OrderSet> selectPageByCompany(int offset, int pageSize, Integer user_id,String keyword) throws ErrorCodeException {
+		QueryWrapper<Order> wrapper = new QueryWrapper();
+
+		wrapper.eq("fk_company_id",user_id)
+				.or()
+				.eq("fk_want_company_id",user_id)
+				.orderByDesc("time");
+		if(StringUtils.isNotEmpty(keyword)){
+			wrapper.like("order_number",keyword);
+		}
+
+
+		IPage<Order> orders = orderPlusMapper.selectPage(new Page(offset/pageSize+1, pageSize, true),wrapper);
 		List<OrderSet> orderSets = new ArrayList<>();
-		for(Order order : orders){
+		for(Order order : orders.getRecords()){
 			orderSets.add(selectByOrder(order));
 		}
 		PageResponse<OrderSet> response = new PageResponse<>();
-		response.setTotal(count);
+		response.setTotal((int)orders.getTotal());
 		response.setItem(orderSets);
-		response.setPageSize(pageSize);
-		response.setOffset(offset);
+		response.setPageSize((int)orders.getPages());
+		response.setOffset((int)orders.getCurrent());
 		return response;
 	}
 
